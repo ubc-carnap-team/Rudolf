@@ -25,7 +25,9 @@ module.exports = {
     'plugin:promise/recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     'prettier/@typescript-eslint',
+    'prettier/react',
   ],
   root: true,
   env: {
@@ -41,7 +43,7 @@ module.exports = {
     // 'promise/prefer-await-to-callbacks': 'warn',
     // 'promise/prefer-await-to-then': 'warn',
     // 'implicit-arrow-linebreak': 'off',
-    // '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
     // '@typescript-eslint/explicit-member-accessibility': 'off',
     // '@typescript-eslint/no-explicit-any': 'off',
     // '@typescript-eslint/type-annotation-spacing': 'off',

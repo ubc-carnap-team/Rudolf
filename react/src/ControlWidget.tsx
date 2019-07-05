@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, SyntheticEvent, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 
 import { printTerm } from './typings/Term'
 import { TreeNode } from './typings/TreeNode'

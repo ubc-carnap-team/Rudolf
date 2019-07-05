@@ -1,6 +1,6 @@
 import './App.css'
 
-import React, { FormEvent, SyntheticEvent, useState } from 'react'
+import React, { useState } from 'react'
 import Tree from 'react-vertical-tree'
 
 import Carnap from './Carnap.jpg'
@@ -16,10 +16,10 @@ const rootNode: TreeNode = TreeNode(Or(P, And(Q, Not(P))), [
   TreeNode(And(Q, Not(P)), [TreeNode(Q, [TreeNode(Not(P))])]),
 ])
 
-const App: React.FC = () => {
+const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
 
-  const handleNodeClick = (args: TreeNode) => {
+  const handleNodeClick = (args: TreeNode): void => {
     selectNode(args)
   }
 
