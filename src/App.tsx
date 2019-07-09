@@ -1,12 +1,12 @@
-import './App.css'
+import './App.css';
 
-import React, { useState } from 'react'
-import Tree from 'react-vertical-tree'
+import React, { useState } from 'react';
+import Tree from 'react-vertical-tree';
 
-import Carnap from './Carnap.jpg'
-import { ControlWidget } from './ControlWidget'
-import { And, Atom, Not, Or } from './typings/Term'
-import { TreeNode } from './typings/TreeNode'
+import Carnap from './Carnap.jpg';
+import { ControlWidget } from './ControlWidget';
+import { And, Atom, Not, Or } from './typings/Term';
+import { TreeNode } from './typings/TreeNode';
 
 const Q = Atom('Q')
 const P = Atom('P')
@@ -18,6 +18,7 @@ const rootNode: TreeNode = TreeNode(Or(P, And(Q, Not(P))), [
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
+  const [tree, setTree] = useState(rootNode)
 
   const handleNodeClick = (args: TreeNode): void => {
     selectNode(args)
@@ -42,6 +43,7 @@ const App: React.FC = (): JSX.Element => {
      *  a way of marking nodes as open/closed yet.)
      */
     selectNode(null)
+    rootNode.resolved = true
     console.log(strategy, newNodes)
   }
 
@@ -54,7 +56,11 @@ const App: React.FC = (): JSX.Element => {
         {selectedNode && (
           <ControlWidget selectedNode={selectedNode} onSubmit={handleSubmit} />
         )}
-        <Tree data={[rootNode]} onClick={handleNodeClick} />
+        <Tree
+          data={[rootNode]}
+          onClick={handleNodeClick}
+          state={[rootNode.resolved]}
+        />
       </main>
     </div>
   )
