@@ -18,6 +18,8 @@ const rootNode: TreeNode = TreeNode(Or(P, And(Q, Not(P))), [
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
+
+  // put tree in state of the app component
   const [tree, setTree] = useState(rootNode)
 
   const handleNodeClick = (args: TreeNode): void => {
@@ -42,8 +44,16 @@ const App: React.FC = (): JSX.Element => {
      *  (For now, this can just be all branches, since we don't have
      *  a way of marking nodes as open/closed yet.)
      */
+
+    // changed resolved to true
+    tree.resolved = true
+
+    //added children
+    tree.children = [TreeNode(P), TreeNode(And(Q, Not(P)))]
+    setTree(TreeNode(P))
+    console.log(tree.resolved)
+    // unselect current node setting it to null
     selectNode(null)
-    rootNode.resolved = true
     console.log(strategy, newNodes)
   }
 
@@ -59,7 +69,7 @@ const App: React.FC = (): JSX.Element => {
         <Tree
           data={[rootNode]}
           onClick={handleNodeClick}
-          state={[rootNode.resolved]}
+          resolved={rootNode.resolved}
         />
       </main>
     </div>
