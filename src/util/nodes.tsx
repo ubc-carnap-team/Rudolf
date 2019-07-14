@@ -1,6 +1,6 @@
 import { Formula } from '../typings/Formula'
 import { TreeNode } from '../typings/TruthTree'
-import { parseFormula, printTerm } from './formulas'
+import { parseFormula } from './formulas'
 
 export const decomposeNode = (
   root: TreeNode,
@@ -22,7 +22,6 @@ export const makeNode = (
   children: TreeNode[] = []
 ): TreeNode => ({
   term: term,
-  name: printTerm(term),
   children: children,
   resolved: false,
 })
