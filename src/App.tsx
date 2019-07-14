@@ -7,6 +7,7 @@ import Carnap from './Carnap.jpg'
 import { ControlWidget } from './ControlWidget'
 import { And, Atom, Not, Or } from './typings/Term'
 import { TreeNode, Strategy } from './typings/TruthTree'
+import NodeView from './NodeView'
 
 const Q = Atom('Q')
 const P = Atom('P')
@@ -103,7 +104,7 @@ const App: React.FC = (): JSX.Element => {
         {selectedNode && (
           <ControlWidget selectedNode={selectedNode} onSubmit={handleSubmit} />
         )}
-        <Tree data={[tree]} onClick={handleNodeClick} />
+        <Tree data={[tree]} onClick={handleNodeClick} render={NodeView} />
       </main>
     </div>
   )
