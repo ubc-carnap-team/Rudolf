@@ -66,7 +66,7 @@ const App: React.FC = (): JSX.Element => {
         <Tree
           data={[tree]}
           onClick={handleNodeClick}
-          // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
+          render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
       </main>
     </div>
