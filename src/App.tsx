@@ -1,12 +1,12 @@
-import './App.css';
+import './App.css'
 
-import React, { useState } from 'react';
-import Tree from 'react-vertical-tree';
+import React, { useState } from 'react'
+import Tree from 'react-vertical-tree'
 
-import Carnap from './Carnap.jpg';
-import { ControlWidget } from './ControlWidget';
-import { And, Atom, Not, Or } from './typings/Term';
-import { TreeNode } from './typings/TreeNode';
+import Carnap from './Carnap.jpg'
+import { ControlWidget } from './ControlWidget'
+import { And, Atom, Not, Or } from './typings/Term'
+import { TreeNode } from './typings/TreeNode'
 
 const Q = Atom('Q')
 const P = Atom('P')
@@ -15,6 +15,22 @@ const rootNode: TreeNode = TreeNode(Or(P, And(Q, Not(P))), [
   TreeNode(P),
   TreeNode(And(Q, Not(P)), [TreeNode(Q, [TreeNode(Not(P))])]),
 ])
+
+const parseTerm = (asString: any) => {
+  return asString
+}
+
+const decomposeNode = (
+  oldTree: TreeNode,
+  selectedNode: TreeNode,
+  strategy: string,
+  newNodes: TreeNode[]
+) => oldTree
+
+const parseNodes = (asString: string) =>
+  asString
+    .split(',')
+    .map((subFormula: string) => TreeNode(parseTerm(subFormula), []))
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
@@ -45,12 +61,17 @@ const App: React.FC = (): JSX.Element => {
      *  a way of marking nodes as open/closed yet.)
      */
 
-    // changed resolved to true
-    tree.resolved = true
-
+    // change resolved to true on target node
+    setTree((oldTree: TreeNode) => {
+      return decomposeNode(
+        oldTree,
+        selectedNode,
+        strategy,
+        parseNodes(newNodes)
+      )
+    })
     //added children
     tree.children = [TreeNode(P), TreeNode(And(Q, Not(P)))]
-    setTree(TreeNode(P))
     console.log(tree.resolved)
     // unselect current node setting it to null
     selectNode(null)
