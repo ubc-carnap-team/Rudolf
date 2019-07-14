@@ -10,17 +10,11 @@ module.exports = {
     },
   },
   settings: {
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-      },
+    node: {
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     },
   },
   plugins: ['@typescript-eslint'],
-  globals: {
-    $: true,
-    $$: true,
-  },
   extends: [
     'plugin:promise/recommended',
     'plugin:react/recommended',
@@ -50,5 +44,6 @@ module.exports = {
     '@typescript-eslint/prefer-interface': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'prefer-template': 'error',
   },
 }

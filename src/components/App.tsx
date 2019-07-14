@@ -63,7 +63,11 @@ const App: React.FC = (): JSX.Element => {
         {selectedNode && (
           <ControlWidget selectedNode={selectedNode} onSubmit={handleSubmit} />
         )}
-        <Tree data={[tree]} onClick={handleNodeClick} render={NodeView} />
+        <Tree
+          data={[tree]}
+          onClick={handleNodeClick}
+          // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
+        />
       </main>
     </div>
   )
