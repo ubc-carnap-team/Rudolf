@@ -6,7 +6,7 @@ import Tree from 'react-vertical-tree'
 import Carnap from './Carnap.jpg'
 import { ControlWidget } from './ControlWidget'
 import { And, Atom, Not, Or } from './typings/Term'
-import { TreeNode } from './typings/TreeNode'
+import { TreeNode, Strategy } from './typings/TreeNode'
 
 const Q = Atom('Q')
 const P = Atom('P')
@@ -42,7 +42,7 @@ const App: React.FC = (): JSX.Element => {
 
   const handleSubmit = (
     selectedNode: TreeNode,
-    strategy: 'split' | 'stack',
+    strategy: Strategy,
     newNodes: string
   ): void => {
     /**
