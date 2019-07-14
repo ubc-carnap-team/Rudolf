@@ -43,6 +43,7 @@ const App: React.FC = (): JSX.Element => {
   }
 
   const handleSubmit = (
+    selectedNode: TreeNode,
     strategy: 'split' | 'stack',
     newNodes: string
   ): void => {

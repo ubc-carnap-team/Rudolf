@@ -13,7 +13,7 @@ export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
   const [newNodes, setNewNodes] = useState('')
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    onSubmit(strategy, newNodes)
+    onSubmit(selectedNode, strategy, newNodes)
   }
   return (
     <div className="control-widget">
