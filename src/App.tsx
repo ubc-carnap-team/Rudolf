@@ -17,12 +17,12 @@ const rootNode: TreeNode = TreeNode(Or(P, And(Q, Not(P))), [
 ])
 
 const appendChildren = (root: TreeNode, newNodes: TreeNode[]): TreeNode =>
-  root.children === []
+  root.children.length === 0
     ? { ...root, children: newNodes }
     : {
         ...root,
-        children: root.children.map<TreeNode>((_: TreeNode) =>
-          appendChildren(_, newNodes)
+        children: root.children.map<TreeNode>((child: TreeNode) =>
+          appendChildren(child, newNodes)
         ),
       }
 
@@ -35,15 +35,13 @@ const decomposeNode = (
   newNodes: TreeNode[]
 ): TreeNode =>
   root == selectedNode
-    ? (console.log('found it', root),
-      appendChildren(markResolved(selectedNode), newNodes))
-    : (console.log('still searching', root),
-      {
+    ? appendChildren(markResolved(selectedNode), newNodes)
+    : {
         ...root,
         children: root.children.map((child) =>
           decomposeNode(child, selectedNode, strategy, newNodes)
         ),
-      })
+      }
 
 // TODO: stub
 const parseNodes = (asString: string) =>
