@@ -1,6 +1,6 @@
 import React from 'react'
 import { printTerm } from './typings/Term'
-import { TreeNode } from './typings/TreeNode'
+import { TreeNode } from './typings/TruthTree'
 
 type Props = {
   root: TreeNode

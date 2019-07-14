@@ -1,11 +1,15 @@
 import React, { FormEvent, useState } from 'react'
 
 import { printTerm } from './typings/Term'
-import { TreeNode } from './typings/TreeNode'
+import { TreeNode, Strategy } from './typings/TruthTree'
 
 type Props = {
   selectedNode: TreeNode
-  onSubmit: (strategy: 'stack' | 'split', newNodes: string) => void
+  onSubmit: (
+    selectedNode: TreeNode,
+    strategy: Strategy,
+    newNodes: string
+  ) => void
 }
 
 export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
@@ -23,7 +27,7 @@ export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
         <select
           value={strategy}
           onChange={(event) =>
-            selectStrategy(event.currentTarget.value as 'stack' | 'split')
+            selectStrategy(event.currentTarget.value as Strategy)
           }
         >
           <option value="split">split</option>

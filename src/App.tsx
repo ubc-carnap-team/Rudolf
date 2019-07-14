@@ -6,7 +6,7 @@ import Tree from 'react-vertical-tree'
 import Carnap from './Carnap.jpg'
 import { ControlWidget } from './ControlWidget'
 import { And, Atom, Not, Or } from './typings/Term'
-import { TreeNode, Strategy } from './typings/TreeNode'
+import { TreeNode, Strategy } from './typings/TruthTree'
 
 const Q = Atom('Q')
 const P = Atom('P')
