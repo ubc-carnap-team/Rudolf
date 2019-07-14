@@ -16,21 +16,42 @@ const rootNode: TreeNode = TreeNode(Or(P, And(Q, Not(P))), [
   TreeNode(And(Q, Not(P)), [TreeNode(Q, [TreeNode(Not(P))])]),
 ])
 
-const parseTerm = (asString: any) => {
-  return asString
-}
+const appendChildren = (root: TreeNode, newNodes: TreeNode[]): TreeNode =>
+  root.children === []
+    ? { ...root, children: newNodes }
+    : {
+        ...root,
+        children: root.children.map<TreeNode>((_: TreeNode) =>
+          appendChildren(_, newNodes)
+        ),
+      }
+
+const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
 
 const decomposeNode = (
-  oldTree: TreeNode,
+  root: TreeNode,
   selectedNode: TreeNode,
   strategy: string,
   newNodes: TreeNode[]
-) => oldTree
+): TreeNode =>
+  root == selectedNode
+    ? (console.log('found it', root),
+      appendChildren(markResolved(selectedNode), newNodes))
+    : (console.log('still searching', root),
+      {
+        ...root,
+        children: root.children.map((child) =>
+          decomposeNode(child, selectedNode, strategy, newNodes)
+        ),
+      })
 
+// TODO: stub
 const parseNodes = (asString: string) =>
   asString
     .split(',')
-    .map((subFormula: string) => TreeNode(parseTerm(subFormula), []))
+    .map((subFormula: string) =>
+      TreeNode({ type: 'ATOM', name: subFormula }, [])
+    )
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
@@ -62,19 +83,17 @@ const App: React.FC = (): JSX.Element => {
 
     // change resolved to true on target node
     setTree((oldTree: TreeNode) => {
-      return decomposeNode(
+      const newTree = decomposeNode(
         oldTree,
         selectedNode,
         strategy,
         parseNodes(newNodes)
       )
+      console.log(newTree)
+      return newTree
     })
-    //added children
-    tree.children = [TreeNode(P), TreeNode(And(Q, Not(P)))]
-    console.log(tree.resolved)
-    // unselect current node setting it to null
+    // unselect current node
     selectNode(null)
-    console.log(strategy, newNodes)
   }
 
   return (
@@ -86,11 +105,7 @@ const App: React.FC = (): JSX.Element => {
         {selectedNode && (
           <ControlWidget selectedNode={selectedNode} onSubmit={handleSubmit} />
         )}
-        <Tree
-          data={[rootNode]}
-          onClick={handleNodeClick}
-          resolved={rootNode.resolved}
-        />
+        <Tree data={[tree]} onClick={handleNodeClick} />
       </main>
     </div>
   )

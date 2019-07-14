@@ -13,7 +13,7 @@ type Props = {
 }
 
 export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
-  const [strategy, selectStrategy] = useState<'stack' | 'split'>('split')
+  const [strategy, selectStrategy] = useState<Strategy>('split')
   const [newNodes, setNewNodes] = useState('')
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
