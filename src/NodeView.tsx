@@ -1,5 +1,5 @@
 import React from 'react'
-import { printTerm } from './typings/Term'
+import { printTerm } from './util/formulas'
 import { TreeNode } from './typings/TruthTree'
 import Check from '@material-ui/icons/Check'
 

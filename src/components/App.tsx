@@ -3,54 +3,20 @@ import './App.css'
 import React, { useState } from 'react'
 import Tree from 'react-vertical-tree'
 
-import Carnap from './Carnap.jpg'
+import Carnap from '../assets/Carnap.jpg'
+import NodeView from '../NodeView'
+import { And, Atom, Not, Or } from '../typings/Formula'
+import { Strategy, TreeNode } from '../typings/TruthTree'
+import { decomposeNode, makeNode, parseNodes } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
-import { And, Atom, Not, Or } from './typings/Term'
-import { TreeNode, Strategy } from './typings/TruthTree'
-import NodeView from './NodeView'
 
 const Q = Atom('Q')
 const P = Atom('P')
 
-const rootNode: TreeNode = TreeNode(Or(P, And(Q, Not(P))), [
-  TreeNode(P),
-  TreeNode(And(Q, Not(P)), [TreeNode(Q, [TreeNode(Not(P))])]),
+const rootNode: TreeNode = makeNode(Or(P, And(Q, Not(P))), [
+  makeNode(P),
+  makeNode(And(Q, Not(P)), [makeNode(Q, [makeNode(Not(P))])]),
 ])
-
-const appendChildren = (root: TreeNode, newNodes: TreeNode[]): TreeNode =>
-  root.children.length === 0
-    ? { ...root, children: newNodes }
-    : {
-        ...root,
-        children: root.children.map<TreeNode>((child: TreeNode) =>
-          appendChildren(child, newNodes)
-        ),
-      }
-
-const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
-
-const decomposeNode = (
-  root: TreeNode,
-  selectedNode: TreeNode,
-  strategy: string,
-  newNodes: TreeNode[]
-): TreeNode =>
-  root == selectedNode
-    ? appendChildren(markResolved(selectedNode), newNodes)
-    : {
-        ...root,
-        children: root.children.map((child) =>
-          decomposeNode(child, selectedNode, strategy, newNodes)
-        ),
-      }
-
-// TODO: stub
-const parseNodes = (asString: string) =>
-  asString
-    .split(',')
-    .map((subFormula: string) =>
-      TreeNode({ type: 'ATOM', name: subFormula }, [])
-    )
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)

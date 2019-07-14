@@ -1,17 +1,10 @@
-import { printTerm, Term } from './Term'
+import { Formula } from './Formula'
 
 export interface TreeNode {
-  term: Term
+  term: Formula
   name: string
   children: TreeNode[]
   resolved: boolean
 }
 
 export type Strategy = 'split' | 'stack'
-
-export const TreeNode = (term: Term, children: TreeNode[] = []): TreeNode => ({
-  term: term,
-  name: printTerm(term),
-  children: children,
-  resolved: false,
-})

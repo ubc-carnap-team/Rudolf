@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react'
 
-import { printTerm } from './typings/Term'
-import { TreeNode, Strategy } from './typings/TruthTree'
+import { printTerm } from '../util/formulas'
+import { TreeNode, Strategy } from '../typings/TruthTree'
 
 type Props = {
   selectedNode: TreeNode
