@@ -34,8 +34,6 @@ const parseNodes = (asString: string) =>
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
-
-  // put tree in state of the app component
   const [tree, setTree] = useState(rootNode)
 
   const handleNodeClick = (args: TreeNode): void => {
