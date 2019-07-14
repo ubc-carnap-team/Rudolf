@@ -1,7 +1,6 @@
 import React, { FormEvent, useState } from 'react'
 
-import { printTerm } from '../util/formulas'
-import { TreeNode, Strategy } from '../typings/TruthTree'
+import { TreeNode, Strategy } from '../typings/TreeNode'
 
 type Props = {
   selectedNode: TreeNode
@@ -22,7 +21,7 @@ export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
   return (
     <div className="control-widget">
       Decompose node?:
-      {printTerm(selectedNode.term)}
+      {selectedNode.formula}
       <form onSubmit={handleSubmit}>
         <select
           value={strategy}

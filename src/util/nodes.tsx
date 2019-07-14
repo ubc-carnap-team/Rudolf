@@ -1,6 +1,4 @@
-import { Formula } from '../typings/Formula'
-import { TreeNode } from '../typings/TruthTree'
-import { parseFormula } from './formulas'
+import { TreeNode } from '../typings/TreeNode'
 
 export const decomposeNode = (
   root: TreeNode,
@@ -18,10 +16,10 @@ export const decomposeNode = (
       }
 
 export const makeNode = (
-  term: Formula,
+  formula: string,
   children: TreeNode[] = []
 ): TreeNode => ({
-  term: term,
+  formula: formula,
   children: children,
   resolved: false,
 })
@@ -40,6 +38,5 @@ export const appendChildren = (
       }
 export const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
 
-// TODO: stub
 export const parseNodes = (asString: string) =>
-  asString.split(',').map((formula: string) => makeNode(parseFormula(formula)))
+  asString.split(',').map((formula: string) => makeNode(formula))

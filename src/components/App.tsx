@@ -5,18 +5,11 @@ import Tree from 'react-vertical-tree'
 
 import Carnap from '../assets/Carnap.jpg'
 import NodeView from '../NodeView'
-import { And, Atom, Not, Or } from '../typings/Formula'
-import { Strategy, TreeNode } from '../typings/TruthTree'
+import { Strategy, TreeNode } from '../typings/TreeNode'
 import { decomposeNode, makeNode, parseNodes } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
 
-const Q = Atom('Q')
-const P = Atom('P')
-
-const rootNode: TreeNode = makeNode(Or(P, And(Q, Not(P))), [
-  makeNode(P),
-  makeNode(And(Q, Not(P)), [makeNode(Q, [makeNode(Not(P))])]),
-])
+const rootNode: TreeNode = makeNode('P\\/(Q/\\~P)', [makeNode('P=>Q')])
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
