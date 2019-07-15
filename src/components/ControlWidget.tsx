@@ -1,15 +1,12 @@
 import React, { FormEvent, useState } from 'react'
 
-import { TreeNode, Strategy } from '../typings/TreeNode'
-import { parseBranch } from '../util/nodes'
+import { parseBranches } from '../util/nodes'
+import { Strategy, TreeNode } from '../typings/TreeNode'
 
 type Props = {
   selectedNode: TreeNode
   onSubmit: (selectedNode: TreeNode, newNodes: TreeNode[]) => void
 }
-
-const removeNulls = <T extends {}>(arr: (T | null)[]): T[] =>
-  arr.filter((_: T | null) => _ != null) as T[]
 
 export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
   const [strategy, selectStrategy] = useState<Strategy>('split')
@@ -17,10 +14,8 @@ export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
   const [rightBranchInput, setRightBranchInput] = useState<string>('')
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const leftBranch: TreeNode | null = parseBranch(leftBranchInput)
-    const rightBranch: TreeNode | null =
-      strategy === 'split' ? parseBranch(rightBranchInput) : null
-    onSubmit(selectedNode, removeNulls([leftBranch, rightBranch]))
+    const newNodes = parseBranches(leftBranchInput, strategy, rightBranchInput)
+    onSubmit(selectedNode, newNodes)
   }
   return (
     <div className="control-widget">

@@ -76,3 +76,17 @@ export const parseBranch = (inputString: string): TreeNode | null => {
     return null
   }
 }
+
+export const parseBranches = (
+  leftBranchInput: string,
+  strategy: string,
+  rightBranchInput: string
+) => {
+  const leftBranch: TreeNode | null = parseBranch(leftBranchInput)
+  const rightBranch: TreeNode | null =
+    strategy === 'split' ? parseBranch(rightBranchInput) : null
+  const newNodes = [leftBranch, rightBranch].filter(
+    (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
+  )
+  return newNodes
+}
