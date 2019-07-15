@@ -3,7 +3,6 @@ import './App.css'
 import React, { useState } from 'react'
 import Tree from 'react-vertical-tree'
 
-import Carnap from '../assets/Carnap.jpg'
 import NodeView from '../NodeView'
 import { TreeNode } from '../typings/TreeNode'
 import { decomposeNode, makeNode } from '../util/nodes'
@@ -39,9 +38,6 @@ const App: React.FC = (): JSX.Element => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={Carnap} className="App-logo" alt="logo" />
-      </header>
       <main className="App-main">
         {selectedNode && (
           <ControlWidget selectedNode={selectedNode} onSubmit={handleSubmit} />
