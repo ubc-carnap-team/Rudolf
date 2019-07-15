@@ -57,8 +57,6 @@ export const appendChildren = (
  */
 export const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
 
-export class FormulaParseError extends Error {}
-
 /**
  *
  * @param formulas a comma-separated list of formulas, as a string.
