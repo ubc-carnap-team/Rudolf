@@ -9,7 +9,10 @@ import { TreeNode } from '../typings/TreeNode'
 import { decomposeNode, makeNode } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
 
-const rootNode: TreeNode = makeNode('P\\/(Q/\\~P)', [makeNode('P=>Q')])
+const rootNode: TreeNode = makeNode('P\\/(Q/\\~P)', [
+  makeNode('P=>Q'),
+  makeNode('P/\\~Q', [makeNode('P', [makeNode('P')])]),
+])
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
@@ -27,10 +30,9 @@ const App: React.FC = (): JSX.Element => {
      */
 
     // change resolved to true on target node
-    setTree((oldTree: TreeNode) => {
-      const newTree = decomposeNode(oldTree, selectedNode, newNodes)
-      return newTree
-    })
+    setTree((oldTree: TreeNode) =>
+      decomposeNode(oldTree, selectedNode, newNodes)
+    )
     // unselect current node
     selectNode(null)
   }
