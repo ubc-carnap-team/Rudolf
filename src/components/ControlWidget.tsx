@@ -1,22 +1,21 @@
 import React, { FormEvent, useState } from 'react'
 
-import { TreeNode, Strategy } from '../typings/TreeNode'
+import { parseBranches } from '../util/nodes'
+import { Strategy, TreeNode } from '../typings/TreeNode'
 
 type Props = {
   selectedNode: TreeNode
-  onSubmit: (
-    selectedNode: TreeNode,
-    strategy: Strategy,
-    newNodes: string
-  ) => void
+  onSubmit: (selectedNode: TreeNode, newNodes: TreeNode[]) => void
 }
 
 export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
   const [strategy, selectStrategy] = useState<Strategy>('split')
-  const [newNodes, setNewNodes] = useState('')
+  const [leftBranchInput, setLeftBranchInput] = useState<string>('')
+  const [rightBranchInput, setRightBranchInput] = useState<string>('')
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    onSubmit(selectedNode, strategy, newNodes)
+    const newNodes = parseBranches(leftBranchInput, strategy, rightBranchInput)
+    onSubmit(selectedNode, newNodes)
   }
   return (
     <div className="control-widget">
@@ -33,9 +32,19 @@ export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
           <option value="stack">stack</option>
         </select>
         <input
-          type={newNodes}
-          onChange={(event) => setNewNodes(event.currentTarget.value)}
+          type="text"
+          value={leftBranchInput}
+          onChange={(event) => setLeftBranchInput(event.currentTarget.value)}
         />
+
+        {strategy === 'split' && (
+          <input
+            type="text"
+            value={rightBranchInput}
+            onChange={(event) => setRightBranchInput(event.currentTarget.value)}
+          />
+        )}
+
         <button type="submit" formTarget={undefined}>
           Submit
         </button>

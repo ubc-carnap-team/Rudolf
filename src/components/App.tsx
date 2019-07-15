@@ -5,8 +5,8 @@ import Tree from 'react-vertical-tree'
 
 import Carnap from '../assets/Carnap.jpg'
 import NodeView from '../NodeView'
-import { Strategy, TreeNode } from '../typings/TreeNode'
-import { decomposeNode, makeNode, parseNodes } from '../util/nodes'
+import { TreeNode } from '../typings/TreeNode'
+import { decomposeNode, makeNode } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
 
 const rootNode: TreeNode = makeNode('P\\/(Q/\\~P)', [makeNode('P=>Q')])
@@ -15,39 +15,20 @@ const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
   const [tree, setTree] = useState(rootNode)
 
-  const handleNodeClick = (args: TreeNode): void => {
-    selectNode(args)
+  const handleNodeClick = (node: TreeNode): void => {
+    if (node.resolved) return
+    selectNode(node)
   }
 
-  const handleSubmit = (
-    selectedNode: TreeNode,
-    strategy: Strategy,
-    newNodes: string
-  ): void => {
+  const handleSubmit = (selectedNode: TreeNode, newNodes: TreeNode[]): void => {
     /**
-     * The form data should contain:
-     * - A choice of stack|split
-     * - A list of children to add, in the form of a string.
-     * - This should probably be a comma-separated list,
-     *  like "P,~Q". If we want, we could have the user submit
-     *  these in separate boxes. Whatever's easiest.
-     * TODO:
-     * 1. Mark the currently selected node as resolved.
-     * 2. Unselect the current node (by setting selectedNode to null)
-     * 3. Apply the changes to the bottom of the open branches.
-     *  (For now, this can just be all branches, since we don't have
-     *  a way of marking nodes as open/closed yet.)
+    - call decomposeNode inside setTree to make changes to tree State,
+    - deselect the current node (by setting selectedNode to null)
      */
 
     // change resolved to true on target node
     setTree((oldTree: TreeNode) => {
-      const newTree = decomposeNode(
-        oldTree,
-        selectedNode,
-        strategy,
-        parseNodes(newNodes)
-      )
-      console.log(newTree)
+      const newTree = decomposeNode(oldTree, selectedNode, newNodes)
       return newTree
     })
     // unselect current node
