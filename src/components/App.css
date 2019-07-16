@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100%;
 }
 
 .App-logo {
@@ -36,7 +37,6 @@
   border-style: solid;
   border-color: red;
 }
-
 
 @keyframes App-logo-spin {
   from {
