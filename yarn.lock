@@ -9984,6 +9984,11 @@ ts-essentials@^3.0.0:
   resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-3.0.0.tgz#301890fd7011dd19611aa54f4b9efc2d7ecbd955"
   integrity sha512-9fOlNAH2MbPbSNaCKEj4K/SQcWaeQpn+3DWE20q642c1bieUGLY0uEZnh9xcMkfnzV5AW+/b2aw+Jq3ABTAOkA==
 
+ts-optchain@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/ts-optchain/-/ts-optchain-0.1.7.tgz#525b8cde0909b06b4fe3258f7fc16eb6a9446895"
+  integrity sha512-akxVhbQjWFU9J4jbu+hWmJSou8yZmh6J0GynYlIOq2qNoVD02wQcMZlce6Gs3hShynMpUjKFy0ivqNH028oh3Q==
+
 ts-pnp@1.1.2, ts-pnp@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.1.2.tgz#be8e4bfce5d00f0f58e0666a82260c34a57af552"

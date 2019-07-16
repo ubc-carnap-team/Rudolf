@@ -18,8 +18,7 @@ const App: React.FC = (): JSX.Element => {
   const [tree, setTree] = useState(rootNode)
 
   const handleNodeClick = (node: TreeNode): void => {
-    if (node.resolved) return
-    selectNode(node)
+    selectNode(selectedNode === node ? null : node)
   }
 
   const handleSubmit = (selectedNode: TreeNode, newNodes: TreeNode[]): void => {
@@ -39,14 +38,12 @@ const App: React.FC = (): JSX.Element => {
   return (
     <div className="App">
       <main className="App-main">
-        {selectedNode && (
-          <ControlWidget selectedNode={selectedNode} onSubmit={handleSubmit} />
-        )}
         <Tree
           data={[tree]}
           onClick={handleNodeClick}
           render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
+        <ControlWidget selectedNode={selectedNode} onSubmit={handleSubmit} />
       </main>
     </div>
   )

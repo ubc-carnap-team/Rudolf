@@ -4,8 +4,8 @@ import { parseBranches } from '../util/nodes'
 import { Strategy, TreeNode } from '../typings/TreeNode'
 
 type Props = {
-  selectedNode: TreeNode
   onSubmit: (selectedNode: TreeNode, newNodes: TreeNode[]) => void
+  selectedNode: TreeNode | null
 }
 
 export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
@@ -14,13 +14,17 @@ export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
   const [rightBranchInput, setRightBranchInput] = useState<string>('')
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const newNodes = parseBranches(leftBranchInput, strategy, rightBranchInput)
-    onSubmit(selectedNode, newNodes)
+    if (selectedNode) {
+      const newNodes = parseBranches(
+        leftBranchInput,
+        strategy,
+        rightBranchInput
+      )
+      onSubmit(selectedNode, newNodes)
+    }
   }
   return (
     <div className="control-widget">
-      Decompose node?:
-      {selectedNode.formula}
       <form onSubmit={handleSubmit}>
         <select
           value={strategy}
@@ -45,8 +49,8 @@ export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
           />
         )}
 
-        <button type="submit" formTarget={undefined}>
-          Submit
+        <button type="submit" formTarget={undefined} disabled={!selectedNode}>
+          Resolve Selected Node
         </button>
       </form>
     </div>
