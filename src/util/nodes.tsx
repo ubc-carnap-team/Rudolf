@@ -13,16 +13,11 @@ import { TreeNode } from '../typings/TreeNode'
 export const decomposeNode = (
   root: TreeNode,
   selectedNode: TreeNode,
-  newNodes: TreeNode[]
-): TreeNode =>
-  root === selectedNode
-    ? appendChildren(markResolved(selectedNode), newNodes)
-    : {
-        ...root,
-        children: root.children.map((child) =>
-          decomposeNode(child, selectedNode, newNodes)
-        ),
-      }
+  nodeInput: [string, string]
+): TreeNode => {
+  const createNodes = getNodeGenerator(nodeInput)
+  return resolveSelectedNode(root, selectedNode, createNodes)
+}
 
 export const makeNode = (
   formula: string,
@@ -38,16 +33,16 @@ export const makeNode = (
  * @param root The root of a subTree
  * @param newNodes nodes to append, as-is, to the bottom of all open branches.
  */
-export const appendChildren = (
+const appendChildren = (
   root: TreeNode,
-  newNodes: TreeNode[]
+  createNodes: () => TreeNode[]
 ): TreeNode =>
   root.children.length === 0
-    ? { ...root, children: newNodes }
+    ? { ...root, children: createNodes() }
     : {
         ...root,
         children: root.children.map<TreeNode>((child: TreeNode) =>
-          appendChildren(child, newNodes)
+          appendChildren(child, createNodes)
         ),
       }
 /**
@@ -55,13 +50,13 @@ export const appendChildren = (
  * @param root - The node to mark as resolved.
  * Mark the currently selected node as resolved.
  */
-export const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
+const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
 
 /**
  *
  * @param formulas a comma-separated list of formulas, as a string.
  */
-export const parseBranch = (inputString: string): TreeNode | null => {
+const parseBranch = (inputString: string): TreeNode | null => {
   const formulas = inputString.split(',').filter((formula) => formula) // filter out empty strings.
   if (formulas.length) {
     return formulas
@@ -75,16 +70,30 @@ export const parseBranch = (inputString: string): TreeNode | null => {
   }
 }
 
-export const parseBranches = (
-  leftBranchInput: string,
-  strategy: string,
-  rightBranchInput: string
-) => {
-  const leftBranch: TreeNode | null = parseBranch(leftBranchInput)
-  const rightBranch: TreeNode | null =
-    strategy === 'split' ? parseBranch(rightBranchInput) : null
-  const newNodes = [leftBranch, rightBranch].filter(
-    (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
-  )
-  return newNodes
+const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
+  string,
+  string
+]) => () => {
+  const leftBranch: () => TreeNode | null = () => parseBranch(leftBranchInput)
+  const rightBranch: () => TreeNode | null = () => parseBranch(rightBranchInput)
+  while (true) {
+    const newNodes = [leftBranch(), rightBranch()].filter(
+      (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
+    )
+    return newNodes
+  }
+}
+const resolveSelectedNode = (
+  root: TreeNode,
+  selectedNode: TreeNode,
+  createNodes: () => TreeNode[]
+): TreeNode => {
+  return root === selectedNode
+    ? appendChildren(markResolved(selectedNode), createNodes)
+    : {
+        ...root,
+        children: root.children.map((child) =>
+          resolveSelectedNode(child, selectedNode, createNodes)
+        ),
+      }
 }

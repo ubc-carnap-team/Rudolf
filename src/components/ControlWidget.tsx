@@ -1,10 +1,9 @@
 import React, { FormEvent, useState } from 'react'
 
-import { parseBranches } from '../util/nodes'
 import { Strategy, TreeNode } from '../typings/TreeNode'
 
 type Props = {
-  onSubmit: (selectedNode: TreeNode, newNodes: TreeNode[]) => void
+  onSubmit: (selectedNode: TreeNode, nodeInput: [string, string]) => void
   selectedNode: TreeNode | null
 }
 
@@ -15,12 +14,7 @@ export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (selectedNode) {
-      const newNodes = parseBranches(
-        leftBranchInput,
-        strategy,
-        rightBranchInput
-      )
-      onSubmit(selectedNode, newNodes)
+      onSubmit(selectedNode, [leftBranchInput, rightBranchInput])
     }
   }
   return (

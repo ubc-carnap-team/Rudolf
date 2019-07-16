@@ -21,7 +21,10 @@ const App: React.FC = (): JSX.Element => {
     selectNode(selectedNode === node ? null : node)
   }
 
-  const handleSubmit = (selectedNode: TreeNode, newNodes: TreeNode[]): void => {
+  const handleSubmit = (
+    selectedNode: TreeNode,
+    nodeInput: [string, string]
+  ): void => {
     /**
     - call decomposeNode inside setTree to make changes to tree State,
     - deselect the current node (by setting selectedNode to null)
@@ -29,7 +32,7 @@ const App: React.FC = (): JSX.Element => {
 
     // change resolved to true on target node
     setTree((oldTree: TreeNode) =>
-      decomposeNode(oldTree, selectedNode, newNodes)
+      decomposeNode(oldTree, selectedNode, nodeInput)
     )
     // unselect current node
     selectNode(null)
