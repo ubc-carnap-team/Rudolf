@@ -24,6 +24,7 @@ describe(decomposeNode, () => {
           resolved: false,
           children: [],
         },
+        // @ts-ignore
         []
       )
     ).toMatchObject(ponensTree)

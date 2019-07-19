@@ -56,7 +56,7 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
  *
  * @param formulas a comma-separated list of formulas, as a string.
  */
-const parseBranch = (inputString: string): TreeNode | null => {
+export const parseBranch = (inputString: string): TreeNode | null => {
   const formulas = inputString.split(',').filter((formula) => formula) // filter out empty strings.
   if (formulas.length) {
     return formulas
@@ -76,12 +76,10 @@ const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
 ]) => () => {
   const leftBranch: () => TreeNode | null = () => parseBranch(leftBranchInput)
   const rightBranch: () => TreeNode | null = () => parseBranch(rightBranchInput)
-  while (true) {
-    const newNodes = [leftBranch(), rightBranch()].filter(
-      (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
-    )
-    return newNodes
-  }
+  const newNodes = [leftBranch(), rightBranch()].filter(
+    (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
+  )
+  return newNodes
 }
 const resolveSelectedNode = (
   root: TreeNode,
