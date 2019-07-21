@@ -25,10 +25,11 @@ const App: React.FC = (): JSX.Element => {
         closed: true,
       }))
     })
+    selectNode(null)
   }
 
   const handleNodeClick = (node: TreeNode): void => {
-    selectNode(selectedNode === node ? null : node)
+    !node.resolved && selectNode(selectedNode === node ? null : node)
   }
 
   const resolveNode = (
