@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import Tree from 'react-vertical-tree'
 
 import NodeView from '../NodeView'
-import { TreeNode } from '../typings/TreeNode'
-import { decomposeNode, makeNode } from '../util/nodes'
+import { TreeNode, LeafNode } from '../typings/TreeNode'
+import { decomposeNode, makeNode, updateNode } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
 
 const rootNode: TreeNode = makeNode('P\\/(Q/\\~P)', [
@@ -17,11 +17,21 @@ const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
   const [tree, setTree] = useState(rootNode)
 
+  const closeBranch = (selectedNode: LeafNode) => {
+    setTree((oldTree) => {
+      console.log(oldTree === tree)
+      return updateNode(oldTree, selectedNode, (node: TreeNode) => ({
+        ...node,
+        closed: true,
+      }))
+    })
+  }
+
   const handleNodeClick = (node: TreeNode): void => {
     selectNode(selectedNode === node ? null : node)
   }
 
-  const handleSubmit = (
+  const resolveNode = (
     selectedNode: TreeNode,
     nodeInput: [string, string]
   ): void => {
@@ -46,7 +56,7 @@ const App: React.FC = (): JSX.Element => {
           onClick={handleNodeClick}
           render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
-        <ControlWidget selectedNode={selectedNode} onSubmit={handleSubmit} />
+        <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
       </main>
     </div>
   )

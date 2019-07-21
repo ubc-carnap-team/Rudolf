@@ -1,52 +1,58 @@
-import React, { FormEvent, useState } from 'react'
+import React, { useState } from 'react'
 
-import { Strategy, TreeNode } from '../typings/TreeNode'
+import { TreeNode } from '../typings/TreeNode'
+import { isLeaf } from '../util/nodes'
 
 type Props = {
-  onSubmit: (selectedNode: TreeNode, nodeInput: [string, string]) => void
+  resolveNode: (selectedNode: TreeNode, nodeInput: [string, string]) => void
   selectedNode: TreeNode | null
+  closeBranch: (selectedNode: TreeNode & { children: [] }) => void
 }
 
-export const ControlWidget = ({ selectedNode, onSubmit }: Props) => {
-  const [strategy, selectStrategy] = useState<Strategy>('split')
+export const ControlWidget = ({
+  selectedNode,
+  resolveNode,
+  closeBranch,
+}: Props) => {
   const [leftBranchInput, setLeftBranchInput] = useState<string>('')
   const [rightBranchInput, setRightBranchInput] = useState<string>('')
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (selectedNode) {
-      onSubmit(selectedNode, [leftBranchInput, rightBranchInput])
-    }
-  }
   return (
     <div className="control-widget">
-      <form onSubmit={handleSubmit}>
-        <select
-          value={strategy}
-          onChange={(event) =>
-            selectStrategy(event.currentTarget.value as Strategy)
-          }
-        >
-          <option value="split">split</option>
-          <option value="stack">stack</option>
-        </select>
+      <form>
         <input
+          id="#left-branch-input"
           type="text"
           value={leftBranchInput}
           onChange={(event) => setLeftBranchInput(event.currentTarget.value)}
         />
 
-        {strategy === 'split' && (
-          <input
-            type="text"
-            value={rightBranchInput}
-            onChange={(event) => setRightBranchInput(event.currentTarget.value)}
-          />
-        )}
+        <input
+          id="#left-branch-input"
+          type="text"
+          value={rightBranchInput}
+          onChange={(event) => setRightBranchInput(event.currentTarget.value)}
+        />
 
-        <button type="submit" formTarget={undefined} disabled={!selectedNode}>
+        <button
+          type="button"
+          disabled={!selectedNode}
+          onClick={() => {
+            selectedNode &&
+              resolveNode(selectedNode, [leftBranchInput, rightBranchInput])
+          }}
+        >
           Resolve Selected Node
         </button>
       </form>
+      <button
+        type="button"
+        disabled={
+          selectedNode == null || selectedNode.closed || !isLeaf(selectedNode)
+        }
+        onClick={() => isLeaf(selectedNode) && closeBranch(selectedNode)}
+      >
+        Close Branch
+      </button>
     </div>
   )
 }

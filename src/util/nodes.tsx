@@ -1,4 +1,4 @@
-import { TreeNode } from '../typings/TreeNode'
+import { TreeNode, LeafNode } from '../typings/TreeNode'
 
 /**
  *
@@ -26,6 +26,7 @@ export const makeNode = (
   formula: formula,
   children: children,
   resolved: false,
+  closed: false,
 })
 
 /**
@@ -36,15 +37,18 @@ export const makeNode = (
 const appendChildren = (
   root: TreeNode,
   createNodes: () => TreeNode[]
-): TreeNode =>
-  root.children.length === 0
-    ? { ...root, children: createNodes() }
-    : {
-        ...root,
-        children: root.children.map<TreeNode>((child: TreeNode) =>
-          appendChildren(child, createNodes)
-        ),
-      }
+): TreeNode => {
+  if (root.children.length === 0) {
+    return root.closed ? root : { ...root, children: createNodes() }
+  } else {
+    return {
+      ...root,
+      children: root.children.map<TreeNode>((child: TreeNode) =>
+        appendChildren(child, createNodes)
+      ),
+    }
+  }
+}
 /**
  *
  * @param root - The node to mark as resolved.
@@ -85,13 +89,24 @@ const resolveSelectedNode = (
   root: TreeNode,
   selectedNode: TreeNode,
   createNodes: () => TreeNode[]
-): TreeNode => {
-  return root === selectedNode
-    ? appendChildren(markResolved(selectedNode), createNodes)
+): TreeNode =>
+  updateNode(root, selectedNode, (node) =>
+    appendChildren(markResolved(node), createNodes)
+  )
+
+export const updateNode = <Updater extends (node: TreeNode) => TreeNode>(
+  root: TreeNode,
+  selectedNode: TreeNode,
+  updater: Updater
+): TreeNode =>
+  root === selectedNode
+    ? updater({ ...root })
     : {
         ...root,
         children: root.children.map((child) =>
-          resolveSelectedNode(child, selectedNode, createNodes)
+          updateNode(child, selectedNode, updater)
         ),
       }
-}
+
+export const isLeaf = (node: TreeNode | null): node is LeafNode =>
+  node != null && node.children.length === 0

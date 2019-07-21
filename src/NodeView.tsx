@@ -7,6 +7,7 @@ export default function NodeView(node: TreeNode, selected: boolean) {
     <div className={`node ${selected ? 'selected' : ''}`}>
       {node.formula}
       {node.resolved ? <Check /> : ''}
+      {node.closed && <div className="closed-branch-marker">X</div>}
     </div>
   )
 }
