@@ -35,7 +35,7 @@ export const ControlWidget = ({
 
         <button
           type="button"
-          disabled={!selectedNode}
+          disabled={!selectedNode || selectedNode.resolved}
           onClick={() => {
             selectedNode &&
               resolveNode(selectedNode, [leftBranchInput, rightBranchInput])
