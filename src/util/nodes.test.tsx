@@ -1,4 +1,4 @@
-import { parseBranch, makeNode, decomposeNode } from './nodes'
+import { decomposeNode, makeNode, parseBranch } from './nodes'
 
 const conclusionNode = makeNode('Q')
 const conditionalNode = makeNode('P->Q', [conclusionNode])
@@ -22,7 +22,7 @@ describe(decomposeNode, () => {
       decomposeNode(
         ponensTree,
         {
-          formula: 'Q/\\~P',
+          name: 'Q/\\~P',
           resolved: false,
           children: [],
           closed: false,

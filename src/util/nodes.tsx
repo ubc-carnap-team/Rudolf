@@ -1,4 +1,4 @@
-import { LeafNode, ReactD3TreeItem } from '../typings/TreeNode'
+import { LeafNode, TreeNode } from '../typings/TreeNode'
 
 /**
  *
@@ -11,19 +11,19 @@ import { LeafNode, ReactD3TreeItem } from '../typings/TreeNode'
  *  a way of marking branches as open/closed yet.)
  */
 export const decomposeNode = (
-  root: ReactD3TreeItem,
-  selectedNode: ReactD3TreeItem,
+  root: TreeNode,
+  selectedNode: TreeNode,
   nodeInput: [string, string]
-): ReactD3TreeItem => {
+): TreeNode => {
   const createNodes = getNodeGenerator(nodeInput)
   return resolveSelectedNode(root, selectedNode, createNodes)
 }
 
 export const makeNode = (
   formula: string,
-  children: ReactD3TreeItem[] = []
-): ReactD3TreeItem => ({
-  formula: formula,
+  children: TreeNode[] = []
+): TreeNode => ({
+  name: formula,
   children: children,
   resolved: false,
   closed: false,
@@ -35,15 +35,15 @@ export const makeNode = (
  * @param newNodes nodes to append, as-is, to the bottom of all open branches.
  */
 const appendChildren = (
-  root: ReactD3TreeItem,
-  createNodes: () => ReactD3TreeItem[]
-): ReactD3TreeItem => {
+  root: TreeNode,
+  createNodes: () => TreeNode[]
+): TreeNode => {
   if (root.children.length === 0) {
     return root.closed ? root : { ...root, children: createNodes() }
   } else {
     return {
       ...root,
-      children: root.children.map<ReactD3TreeItem>((child: ReactD3TreeItem) =>
+      children: root.children.map<TreeNode>((child: TreeNode) =>
         appendChildren(child, createNodes)
       ),
     }
@@ -54,18 +54,18 @@ const appendChildren = (
  * @param root - The node to mark as resolved.
  * Mark the currently selected node as resolved.
  */
-const markResolved = (root: ReactD3TreeItem) => ({ ...root, resolved: true })
+const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
 
 /**
  *
  * @param formulas a comma-separated list of formulas, as a string.
  */
-export const parseBranch = (inputString: string): ReactD3TreeItem | null => {
+export const parseBranch = (inputString: string): TreeNode | null => {
   const formulas = inputString.split(',').filter((formula) => formula) // filter out empty strings.
   if (formulas.length) {
     return formulas
       .map((formula: string) => makeNode(formula))
-      .reduceRight((prev: ReactD3TreeItem, curr: ReactD3TreeItem) => ({
+      .reduceRight((prev: TreeNode, curr: TreeNode) => ({
         ...curr,
         children: [prev],
       }))
@@ -78,27 +78,27 @@ const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
   string,
   string
 ]) => () => {
-  const leftBranch: () => ReactD3TreeItem | null = () => parseBranch(leftBranchInput)
-  const rightBranch: () => ReactD3TreeItem | null = () => parseBranch(rightBranchInput)
+  const leftBranch: () => TreeNode | null = () => parseBranch(leftBranchInput)
+  const rightBranch: () => TreeNode | null = () => parseBranch(rightBranchInput)
   const newNodes = [leftBranch(), rightBranch()].filter(
-    (maybeNode: ReactD3TreeItem | null): maybeNode is ReactD3TreeItem => maybeNode != null
+    (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
   )
   return newNodes
 }
 const resolveSelectedNode = (
-  root: ReactD3TreeItem,
-  selectedNode: ReactD3TreeItem,
-  createNodes: () => ReactD3TreeItem[]
-): ReactD3TreeItem =>
+  root: TreeNode,
+  selectedNode: TreeNode,
+  createNodes: () => TreeNode[]
+): TreeNode =>
   updateNode(root, selectedNode, (node) =>
     appendChildren(markResolved(node), createNodes)
   )
 
-export const updateNode = <Updater extends (node: ReactD3TreeItem) => ReactD3TreeItem>(
-  root: ReactD3TreeItem,
-  selectedNode: ReactD3TreeItem,
+export const updateNode = <Updater extends (node: TreeNode) => TreeNode>(
+  root: TreeNode,
+  selectedNode: TreeNode,
   updater: Updater
-): ReactD3TreeItem =>
+): TreeNode =>
   root === selectedNode
     ? updater({ ...root })
     : {
@@ -108,5 +108,5 @@ export const updateNode = <Updater extends (node: ReactD3TreeItem) => ReactD3Tre
       ),
     }
 
-export const isLeaf = (node: ReactD3TreeItem | null): node is LeafNode =>
+export const isLeaf = (node: TreeNode | null): node is LeafNode =>
   node != null && node.children.length === 0

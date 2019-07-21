@@ -1,8 +1,12 @@
-export interface ReactD3TreeItem {
-  formula: string
-  children: ReactD3TreeItem[]
-  resolved: boolean
-  closed: boolean
+export interface TreeNode {
+  name?: string
+  attributes?: {
+    [key: string]: string
+  }
+  children?: TreeNode[]
+  resolved?: boolean
+  closed?: boolean
+  _collapsed?: boolean
 }
 
-export type LeafNode = ReactD3TreeItem & { children: [] }
+export type LeafNode = TreeNode & { children: [] }

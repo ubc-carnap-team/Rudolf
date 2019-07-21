@@ -4,23 +4,23 @@ import React, { useState } from 'react'
 import Tree from 'react-d3-tree'
 
 import NodeView from '../NodeView'
-import { LeafNode, ReactD3TreeItem } from '../typings/TreeNode'
+import { LeafNode, TreeNode } from '../typings/TreeNode'
 import { decomposeNode, makeNode, updateNode } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
 
 
-const rootNode: ReactD3TreeItem = makeNode('P', [
+const rootNode: TreeNode = makeNode('P', [
   makeNode('P=>Q', [makeNode('~Q', [])]),
 ])
 
 const App: React.FC = (): JSX.Element => {
-  const [selectedNode, selectNode] = useState<ReactD3TreeItem | null>(null)
+  const [selectedNode, selectNode] = useState<TreeNode | null>(null)
   const [tree, setTree] = useState(rootNode)
 
   const closeBranch = (selectedNode: LeafNode) => {
     setTree((oldTree) => {
       console.log(oldTree === tree)
-      return updateNode(oldTree, selectedNode, (node: ReactD3TreeItem) => ({
+      return updateNode(oldTree, selectedNode, (node: TreeNode) => ({
         ...node,
         closed: true,
       }))
@@ -28,12 +28,12 @@ const App: React.FC = (): JSX.Element => {
     selectNode(null)
   }
 
-  const handleNodeClick = (targetNode: ReactD3TreeItem): any => {
+  const handleNodeClick = (targetNode: TreeNode): any => {
     !targetNode.resolved && selectNode(selectedNode === targetNode ? null : targetNode)
   }
 
   const resolveNode = (
-    selectedNode: ReactD3TreeItem,
+    selectedNode: TreeNode,
     nodeInput: [string, string]
   ): void => {
     /**
@@ -42,7 +42,7 @@ const App: React.FC = (): JSX.Element => {
      */
 
     // change resolved to true on target node
-    setTree((oldTree: ReactD3TreeItem) =>
+    setTree((oldTree: TreeNode) =>
       decomposeNode(oldTree, selectedNode, nodeInput)
     )
     // unselect current node
@@ -54,8 +54,8 @@ const App: React.FC = (): JSX.Element => {
       <main className="App-main">
         <Tree
           data={[tree]}
-          onClick={() => handleNodeClick(rootNode)}
-          render={(item: ReactD3TreeItem) => NodeView(item, selectedNode === item)}
+          onClick={(item: TreeNode) => handleNodeClick(item)}
+          render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
         <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
       </main>
