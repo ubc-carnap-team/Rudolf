@@ -8,9 +8,8 @@ import { TreeNode, LeafNode } from '../typings/TreeNode'
 import { decomposeNode, makeNode, updateNode } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
 
-const rootNode: TreeNode = makeNode('P\\/(Q/\\~P)', [
-  makeNode('P=>Q'),
-  makeNode('P/\\~Q', [makeNode('P', [makeNode('P')])]),
+const rootNode: TreeNode = makeNode('P', [
+  makeNode('P=>Q', [makeNode('~Q', [])]),
 ])
 
 const App: React.FC = (): JSX.Element => {
