@@ -37,8 +37,11 @@ export const ControlWidget = ({
           type="button"
           disabled={!selectedNode || selectedNode.resolved}
           onClick={() => {
-            selectedNode &&
+            if (selectedNode) {
               resolveNode(selectedNode, [leftBranchInput, rightBranchInput])
+              setLeftBranchInput('')
+              setRightBranchInput('')
+            }
           }}
         >
           Resolve Selected Node
