@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 
-import { TreeNode } from '../typings/TreeNode'
+import { ReactD3TreeItem } from '../typings/TreeNode'
 import { isLeaf } from '../util/nodes'
 
 type Props = {
-  resolveNode: (selectedNode: TreeNode, nodeInput: [string, string]) => void
-  selectedNode: TreeNode | null
-  closeBranch: (selectedNode: TreeNode & { children: [] }) => void
+  resolveNode: (selectedNode: ReactD3TreeItem, nodeInput: [string, string]) => void
+  selectedNode: ReactD3TreeItem | null
+  closeBranch: (selectedNode: ReactD3TreeItem & { children: [] }) => void
 }
 
 export const ControlWidget = ({

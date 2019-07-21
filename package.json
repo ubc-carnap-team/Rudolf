@@ -14,6 +14,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.2",
     "react": "^16.8.6",
+    "react-d3-tree": "^1.13.0",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
     "react-vertical-tree": "^1.1.7",
