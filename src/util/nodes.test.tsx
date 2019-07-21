@@ -1,6 +1,8 @@
 import { parseBranch, makeNode, decomposeNode } from './nodes'
 
-const ponensTree = makeNode('P', [makeNode('Q/\\~P')])
+const conclusionNode = makeNode('Q')
+const conditionalNode = makeNode('P->Q', [conclusionNode])
+const ponensTree = makeNode('P', [conditionalNode])
 
 describe(parseBranch, () => {
   it('should parse "P,Q" as two stacked nodes', () => {
@@ -23,7 +25,9 @@ describe(decomposeNode, () => {
           formula: 'Q/\\~P',
           resolved: false,
           children: [],
+          closed: false,
         },
+        // @ts-ignore
         []
       )
     ).toMatchObject(ponensTree)

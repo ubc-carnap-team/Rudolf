@@ -2,6 +2,7 @@ export interface TreeNode {
   formula: string
   children: TreeNode[]
   resolved: boolean
+  closed: boolean
 }
 
-export type Strategy = 'split' | 'stack'
+export type LeafNode = TreeNode & { children: [] }
