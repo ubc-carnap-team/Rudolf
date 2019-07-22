@@ -3,7 +3,7 @@ export interface TreeNode {
   attributes?: {
     [key: string]: string
   }
-  children?: TreeNode[]
+  children: TreeNode[]
   resolved?: boolean
   closed?: boolean
   _collapsed?: boolean
