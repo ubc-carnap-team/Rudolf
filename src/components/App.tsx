@@ -54,6 +54,7 @@ const App: React.FC = (): JSX.Element => {
         <Tree
           data={[tree]}
           onClick={(item: TreeNode) => handleNodeClick(item)}
+          orientation={"vertical"}
         //render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
         <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
