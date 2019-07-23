@@ -3,7 +3,6 @@ import './App.css'
 import React, { useState } from 'react'
 import Tree from 'react-d3-tree'
 
-import NodeView from '../NodeView'
 import { LeafNode, TreeNode } from '../typings/TreeNode'
 import { decomposeNode, makeNode, updateNode } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
@@ -55,7 +54,7 @@ const App: React.FC = (): JSX.Element => {
         <Tree
           data={[tree]}
           onClick={(item: TreeNode) => handleNodeClick(item)}
-          render={(item: TreeNode) => NodeView(item, selectedNode === item)}
+        //render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
         <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
       </main>
