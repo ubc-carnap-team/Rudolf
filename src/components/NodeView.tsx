@@ -12,7 +12,9 @@ type Props = {
 }
 export default function NodeView({ root, selectedNode, onClick }: Props) {
   return (
-    <>
+    <div
+      className={`node-container ${selectedNode === root ? 'selected' : ''}`}
+    >
       <div
         className={`node ${selectedNode === root ? 'selected' : ''}`}
         onClick={() => onClick(root)}
@@ -21,30 +23,25 @@ export default function NodeView({ root, selectedNode, onClick }: Props) {
         {root.resolved ? <Check /> : ''}
         {root.closed && <div className="closed-branch-marker">X</div>}
       </div>
-      {root.children.length > 0 && (
-        <div className="children">
-          {root.children.length === 1 ? (
-            <div className="stack">
+      {root.children.length > 0 &&
+        (root.children.length === 1 ? (
+          <div className="children stack">
+            <NodeView {...{ root: root.children[0], selectedNode, onClick }} />
+          </div>
+        ) : (
+          <div className="children split">
+            {root.children.map((child) => (
               <NodeView
-                {...{ root: root.children[0], selectedNode, onClick }}
+                key={child.formula}
+                {...{
+                  root: child,
+                  selectedNode,
+                  onClick,
+                }}
               />
-            </div>
-          ) : (
-            <div className="split">
-              {root.children.map((child) => (
-                <NodeView
-                  key={child.formula}
-                  {...{
-                    root: child,
-                    selectedNode,
-                    onClick,
-                  }}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-    </>
+            ))}
+          </div>
+        ))}
+    </div>
   )
 }
