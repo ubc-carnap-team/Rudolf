@@ -10,6 +10,7 @@ import NodeView from './NodeView'
 
 
 
+
 const exampleNode: TreeNode = makeNode('P', [
   makeNode('P=>Q', [makeNode('~Q', [makeNode('~P'), makeNode('Q')])]),
 ])
@@ -19,8 +20,12 @@ const App: React.FC = (): JSX.Element => {
   const [tree, setTree] = useState(exampleNode)
   const [modalShow, setModalShow] = useState(false)
 
-  const handleClose = () => setModalShow(false);
+  const handleClose = () => {
+    setModalShow(false)
+    selectNode(null)
+  };
   const handleShow = () => setModalShow(true);
+
 
 
   const closeBranch = (selectedNode: LeafNode) => {
@@ -74,10 +79,9 @@ const App: React.FC = (): JSX.Element => {
           onHide={handleClose}
           size="sm"
           aria-labelledby="contained-modal-title-vcenter"
-          animation={true}
-          centered>
+          centered
+        >
           <Modal.Header closeButton>
-            <Modal.Title>Node Control Widget</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
@@ -85,6 +89,8 @@ const App: React.FC = (): JSX.Element => {
         </Modal>
       </main>
     </div>
+
+
   )
 }
 
