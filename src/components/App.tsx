@@ -1,11 +1,13 @@
 import './App.css'
 
 import React, { useState } from 'react'
+import Modal from 'react-bootstrap/Modal'
 
-import NodeView from './NodeView'
-import { TreeNode, LeafNode } from '../typings/TreeNode'
+import { LeafNode, TreeNode } from '../typings/TreeNode'
 import { decomposeNode, makeNode, updateNode } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
+import NodeView from './NodeView'
+
 
 const exampleNode: TreeNode = makeNode('P', [
   makeNode('P=>Q', [makeNode('~Q', [makeNode('~P'), makeNode('Q')])]),
@@ -14,6 +16,11 @@ const exampleNode: TreeNode = makeNode('P', [
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
   const [tree, setTree] = useState(exampleNode)
+  const [modalShow, setModalShow] = useState(false)
+
+  const handleClose = () => setModalShow(false);
+  const handleShow = () => setModalShow(true);
+
 
   const closeBranch = (selectedNode: LeafNode) => {
     setTree((oldTree) => {
@@ -52,11 +59,13 @@ const App: React.FC = (): JSX.Element => {
       <main className="App-main">
         <NodeView
           root={tree}
-          onClick={handleNodeClick}
+          onClick={handleShow}
           selectedNode={selectedNode}
-          // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
+        // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
-        <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
+        <Modal show={modalShow}>
+          <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
+        </Modal>
       </main>
     </div>
   )
