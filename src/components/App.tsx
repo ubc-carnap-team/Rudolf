@@ -9,6 +9,7 @@ import { ControlWidget } from './ControlWidget'
 import NodeView from './NodeView'
 
 
+
 const exampleNode: TreeNode = makeNode('P', [
   makeNode('P=>Q', [makeNode('~Q', [makeNode('~P'), makeNode('Q')])]),
 ])
@@ -63,8 +64,18 @@ const App: React.FC = (): JSX.Element => {
           selectedNode={selectedNode}
         // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
-        <Modal show={modalShow}>
-          <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
+        <Modal
+          show={modalShow}
+          onHide={handleClose}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Node Control Widget</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
+          </Modal.Body>
         </Modal>
       </main>
     </div>
