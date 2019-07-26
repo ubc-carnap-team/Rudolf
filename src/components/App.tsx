@@ -55,20 +55,26 @@ const App: React.FC = (): JSX.Element => {
     selectNode(null)
   }
 
+  const handleClick = (node: TreeNode): void => {
+    handleNodeClick(node)
+    handleShow()
+  }
+
   return (
     <div className="App">
       <main className="App-main">
         <NodeView
           root={tree}
-          onClick={handleShow}
+          onClick={handleClick}
           selectedNode={selectedNode}
         // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
         <Modal
           show={modalShow}
           onHide={handleClose}
-          size="lg"
+          size="sm"
           aria-labelledby="contained-modal-title-vcenter"
+          animation={true}
           centered>
           <Modal.Header closeButton>
             <Modal.Title>Node Control Widget</Modal.Title>
