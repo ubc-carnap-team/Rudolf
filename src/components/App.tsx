@@ -26,8 +26,6 @@ const App: React.FC = (): JSX.Element => {
   };
   const handleShow = () => setModalShow(true);
 
-
-
   const closeBranch = (selectedNode: LeafNode) => {
     setTree((oldTree) => {
       console.log(oldTree === tree)
@@ -79,9 +77,11 @@ const App: React.FC = (): JSX.Element => {
           onHide={handleClose}
           size="sm"
           aria-labelledby="contained-modal-title-vcenter"
-          centered
+          keyboard={true}
+          animation={true}
         >
           <Modal.Header closeButton>
+            Node Control Widget
           </Modal.Header>
           <Modal.Body>
             <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
