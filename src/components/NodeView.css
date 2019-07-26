@@ -1,0 +1,38 @@
+.split {
+  display: flex;
+  /* flex-direction: row; */
+}
+
+.stack {
+  display: block;
+}
+
+.node {
+  display: block;
+}
+
+.node.selected {
+  border-style: solid;
+  border-color: red;
+}
+
+.node-container {
+  display: inline-block;
+  padding: 0.2em;
+  text-align: center;
+}
+
+.node-container.selected > .children {
+  border-style: solid;
+  border-color: orange;
+}
+
+.split > :first-child::before {
+  content: '/';
+  color: white;
+}
+
+.split > :nth-child(2)::before {
+  content: '\\';
+  color: white;
+}

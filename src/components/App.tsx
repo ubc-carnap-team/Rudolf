@@ -1,20 +1,19 @@
 import './App.css'
 
 import React, { useState } from 'react'
-import Tree from 'react-vertical-tree'
 
-import NodeView from '../NodeView'
+import NodeView from './NodeView'
 import { TreeNode, LeafNode } from '../typings/TreeNode'
 import { decomposeNode, makeNode, updateNode } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
 
-const rootNode: TreeNode = makeNode('P', [
-  makeNode('P=>Q', [makeNode('~Q', [])]),
+const exampleNode: TreeNode = makeNode('P', [
+  makeNode('P=>Q', [makeNode('~Q', [makeNode('~P'), makeNode('Q')])]),
 ])
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
-  const [tree, setTree] = useState(rootNode)
+  const [tree, setTree] = useState(exampleNode)
 
   const closeBranch = (selectedNode: LeafNode) => {
     setTree((oldTree) => {
@@ -51,10 +50,11 @@ const App: React.FC = (): JSX.Element => {
   return (
     <div className="App">
       <main className="App-main">
-        <Tree
-          data={[tree]}
+        <NodeView
+          root={tree}
           onClick={handleNodeClick}
-          render={(item: TreeNode) => NodeView(item, selectedNode === item)}
+          selectedNode={selectedNode}
+          // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
         <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
       </main>
