@@ -8,9 +8,6 @@ import { decomposeNode, makeNode, updateNode } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
 import NodeView from './NodeView'
 
-
-
-
 const exampleNode: TreeNode = makeNode('P', [
   makeNode('P=>Q', [makeNode('~Q', [makeNode('~P'), makeNode('Q')])]),
 ])
@@ -76,7 +73,6 @@ const App: React.FC = (): JSX.Element => {
           show={modalShow}
           onHide={handleClose}
           size="sm"
-          aria-labelledby="contained-modal-title-vcenter"
           keyboard={true}
           animation={true}
         >
