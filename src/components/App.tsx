@@ -1,7 +1,6 @@
 import './App.css'
 
 import React, { useState } from 'react'
-import Modal from 'react-bootstrap/Modal'
 
 import { LeafNode, TreeNode } from '../typings/TreeNode'
 import { decomposeNode, makeNode, updateNode } from '../util/nodes'
@@ -15,10 +14,8 @@ const exampleNode: TreeNode = makeNode('P', [
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
   const [tree, setTree] = useState(exampleNode)
-  const [modalShow, setModalShow] = useState(false)
 
   const handleClose = () => {
-    setModalShow(false)
     selectNode(null)
   }
 
@@ -35,7 +32,6 @@ const App: React.FC = (): JSX.Element => {
 
   const handleNodeClick = (node: TreeNode): void => {
     !node.resolved && selectNode(selectedNode === node ? null : node)
-    setModalShow(true)
   }
 
   const resolveNode = (
@@ -64,20 +60,7 @@ const App: React.FC = (): JSX.Element => {
           selectedNode={selectedNode}
         // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
-        <Modal
-          show={modalShow}
-          onHide={handleClose}
-          size="sm"
-          keyboard={true}
-          animation={true}
-        >
-          <Modal.Header closeButton>
-            Selected Node: {selectedNode && selectedNode.formula}
-          </Modal.Header>
-          <Modal.Body>
-            <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
-          </Modal.Body>
-        </Modal>
+        <ControlWidget {...{ selectedNode, resolveNode, closeBranch, handleClose }} />
       </main>
     </div>
 
