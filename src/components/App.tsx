@@ -20,8 +20,7 @@ const App: React.FC = (): JSX.Element => {
   const handleClose = () => {
     setModalShow(false)
     selectNode(null)
-  };
-  const handleShow = () => setModalShow(true);
+  }
 
   const closeBranch = (selectedNode: LeafNode) => {
     setTree((oldTree) => {
@@ -36,6 +35,7 @@ const App: React.FC = (): JSX.Element => {
 
   const handleNodeClick = (node: TreeNode): void => {
     !node.resolved && selectNode(selectedNode === node ? null : node)
+    setModalShow(true)
   }
 
   const resolveNode = (
@@ -55,17 +55,12 @@ const App: React.FC = (): JSX.Element => {
     selectNode(null)
   }
 
-  const handleClick = (node: TreeNode): void => {
-    handleNodeClick(node)
-    handleShow()
-  }
-
   return (
     <div className="App">
       <main className="App-main">
         <NodeView
           root={tree}
-          onClick={handleClick}
+          onClick={handleNodeClick}
           selectedNode={selectedNode}
         // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
