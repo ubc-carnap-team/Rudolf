@@ -72,7 +72,7 @@ const App: React.FC = (): JSX.Element => {
           animation={true}
         >
           <Modal.Header closeButton>
-            Node Control Widget
+            Selected Node: {selectedNode && selectedNode.formula}
           </Modal.Header>
           <Modal.Body>
             <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
