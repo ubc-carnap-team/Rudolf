@@ -1,3 +1,5 @@
+import './ControlWidget.css'
+
 import React, { useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 
@@ -26,23 +28,21 @@ export const ControlWidget = ({
       size="lg"
       keyboard={true}
       animation={true}
+      dialogClassName={"modal-90w"}
     >
       <Modal.Header closeButton>
         {selectedNode && selectedNode.formula}
       </Modal.Header>
       <Modal.Body>
         <form>
-          Left:
+          <h6> First Branch </h6>
           <input
-            id="#left-branch-input"
             type="text"
             value={leftBranchInput}
             onChange={(event) => setLeftBranchInput(event.currentTarget.value)}
           />
 
-          Right:
           <input
-            id="#left-branch-input"
             type="text"
             value={rightBranchInput}
             onChange={(event) => setRightBranchInput(event.currentTarget.value)}
