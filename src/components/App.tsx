@@ -2,10 +2,10 @@ import './App.css'
 
 import React, { useState } from 'react'
 
-import NodeView from './NodeView'
-import { TreeNode, LeafNode } from '../typings/TreeNode'
+import { LeafNode, TreeNode } from '../typings/TreeNode'
 import { decomposeNode, makeNode, updateNode } from '../util/nodes'
 import { ControlWidget } from './ControlWidget'
+import NodeView from './NodeView'
 
 const exampleNode: TreeNode = makeNode('P', [
   makeNode('P=>Q', [makeNode('~Q', [makeNode('~P'), makeNode('Q')])]),
@@ -14,6 +14,10 @@ const exampleNode: TreeNode = makeNode('P', [
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
   const [tree, setTree] = useState(exampleNode)
+
+  const handleClose = () => {
+    selectNode(null)
+  }
 
   const closeBranch = (selectedNode: LeafNode) => {
     setTree((oldTree) => {
@@ -54,11 +58,13 @@ const App: React.FC = (): JSX.Element => {
           root={tree}
           onClick={handleNodeClick}
           selectedNode={selectedNode}
-          // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
+        // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
-        <ControlWidget {...{ selectedNode, resolveNode, closeBranch }} />
+        <ControlWidget {...{ selectedNode, resolveNode, closeBranch, handleClose }} />
       </main>
     </div>
+
+
   )
 }
 
