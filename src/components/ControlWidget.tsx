@@ -35,7 +35,7 @@ export const ControlWidget = ({
       </Modal.Header>
       <Modal.Body>
         <form>
-          <h6> First Branch </h6>
+          <label> First Branch </label>
           <input
             type="text"
             value={leftBranchInput}
