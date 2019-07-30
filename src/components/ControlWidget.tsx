@@ -23,15 +23,16 @@ export const ControlWidget = ({
     <Modal
       show={selectedNode != null && !selectedNode.resolved}
       onHide={handleClose}
-      size="sm"
+      size="lg"
       keyboard={true}
       animation={true}
     >
       <Modal.Header closeButton>
-        Selected Node: {selectedNode && selectedNode.formula}
+        {selectedNode && selectedNode.formula}
       </Modal.Header>
       <Modal.Body>
         <form>
+          Left:
           <input
             id="#left-branch-input"
             type="text"
@@ -39,6 +40,7 @@ export const ControlWidget = ({
             onChange={(event) => setLeftBranchInput(event.currentTarget.value)}
           />
 
+          Right:
           <input
             id="#left-branch-input"
             type="text"
