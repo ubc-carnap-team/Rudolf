@@ -13,8 +13,9 @@ module.exports = {
     node: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     },
+    react: { version: 'detect' },
   },
-  plugins: ['@typescript-eslint', 'jsx-a11y'],
+  plugins: ['@typescript-eslint', 'jsx-a11y', 'react'],
   extends: [
     'plugin:promise/recommended',
     'plugin:react/recommended',
@@ -46,5 +47,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'prefer-template': 'error',
     'jsx-a11y/label-has-associated-control': 'error',
+    'react/prop-types': 'off',
+    'no-useless-rename': 'error',
   },
 }
