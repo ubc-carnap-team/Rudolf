@@ -14,7 +14,7 @@ module.exports = {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     },
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'jsx-a11y'],
   extends: [
     'plugin:promise/recommended',
     'plugin:react/recommended',
@@ -45,5 +45,6 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'prefer-template': 'error',
+    'plugin:jsx-a11y/label-has-associated-control': 'error',
   },
 }

@@ -28,26 +28,33 @@ export const ControlWidget = ({
       size="lg"
       keyboard={true}
       animation={true}
-      dialogClassName={"modal-90w"}
+      dialogClassName={'modal-90w'}
     >
       <Modal.Header closeButton>
         {selectedNode && selectedNode.formula}
       </Modal.Header>
       <Modal.Body>
         <form>
-          <label> First Branch </label>
-          <input
-            type="text"
-            value={leftBranchInput}
-            onChange={(event) => setLeftBranchInput(event.currentTarget.value)}
-          />
-
-          <input
-            type="text"
-            value={rightBranchInput}
-            onChange={(event) => setRightBranchInput(event.currentTarget.value)}
-          />
-
+          <label>
+            First Branch
+            <input
+              type="text"
+              value={leftBranchInput}
+              onChange={(event) =>
+                setLeftBranchInput(event.currentTarget.value)
+              }
+            />
+          </label>
+          <label>
+            Right Branch (optional)
+            <input
+              type="text"
+              value={rightBranchInput}
+              onChange={(event) =>
+                setRightBranchInput(event.currentTarget.value)
+              }
+            />
+          </label>
           <button
             type="button"
             disabled={!selectedNode || selectedNode.resolved}
@@ -60,7 +67,7 @@ export const ControlWidget = ({
             }}
           >
             Resolve Selected Node
-            </button>
+          </button>
         </form>
         <button
           type="button"
@@ -70,7 +77,7 @@ export const ControlWidget = ({
           onClick={() => isLeaf(selectedNode) && closeBranch(selectedNode)}
         >
           Close Branch
-          </button>
+        </button>
       </Modal.Body>
     </Modal>
   )
