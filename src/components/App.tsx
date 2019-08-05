@@ -4,8 +4,9 @@ import React, { useState } from 'react'
 
 import { LeafNode, TreeNode } from '../typings/TreeNode'
 import { decomposeNode, updateNode, parseBranch } from '../util/nodes'
-import { ControlWidget } from './ControlWidget'
+import { ResolutionModal } from './ResolutionModal'
 import NodeView from './NodeView'
+import PremiseInput from './PremiseInputProps'
 
 const examplePremises = 'P->Q,P,~Q'
 const exampleTree: TreeNode | null = parseBranch(examplePremises)
@@ -36,10 +37,8 @@ const App: React.FC = (): JSX.Element => {
     !node.resolved && selectNode(selectedNode === node ? null : node)
   }
 
-  const handleSubmitPremises = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log(event)
-    setTree(parseBranch((event.currentTarget as any)[0].value) || null)
+  const handleSubmitPremises = (premises: string) => {
+    setTree(parseBranch(premises) || null)
   }
 
   const resolveNode = (
@@ -59,15 +58,10 @@ const App: React.FC = (): JSX.Element => {
   return (
     <div className="App">
       <main className="App-main">
-        <form onSubmit={handleSubmitPremises}>
-          <input
-            type="text"
-            className="premises"
-            aria-label="Enter Premises"
-            defaultValue={examplePremises}
-          />
-          <button>Declare Premises</button>
-        </form>
+        <PremiseInput
+          defaultPremises={examplePremises}
+          onSubmit={handleSubmitPremises}
+        />
         {tree ? (
           <NodeView
             root={tree}
@@ -77,7 +71,7 @@ const App: React.FC = (): JSX.Element => {
         ) : (
           '{}'
         )}
-        <ControlWidget
+        <ResolutionModal
           {...{ selectedNode, resolveNode, closeBranch, handleClose }}
         />
       </main>
