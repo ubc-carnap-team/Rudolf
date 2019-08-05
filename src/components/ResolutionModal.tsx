@@ -13,7 +13,7 @@ type Props = {
   handleClose: () => void
 }
 
-export const ControlWidget = ({
+export const ResolutionModal = ({
   selectedNode,
   resolveNode,
   closeBranch,

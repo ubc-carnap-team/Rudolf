@@ -45,6 +45,6 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'prefer-template': 'error',
-    'plugin:jsx-a11y/label-has-associated-control': 'error',
+    'jsx-a11y/label-has-associated-control': 'error',
   },
 }
