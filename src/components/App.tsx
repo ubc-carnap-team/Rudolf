@@ -64,7 +64,7 @@ const App: React.FC = (): JSX.Element => {
             type="text"
             className="premises"
             aria-label="Enter Premises"
-            defaultValue=""
+            defaultValue={examplePremises}
           />
           <button>Declare Premises</button>
         </form>
