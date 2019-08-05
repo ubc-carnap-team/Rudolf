@@ -35,26 +35,20 @@ export const ControlWidget = ({
       </Modal.Header>
       <Modal.Body>
         <form>
-          <label>
-            First Branch
-            <input
-              type="text"
-              value={leftBranchInput}
-              onChange={(event) =>
-                setLeftBranchInput(event.currentTarget.value)
-              }
-            />
-          </label>
-          <label>
-            Right Branch (optional)
-            <input
-              type="text"
-              value={rightBranchInput}
-              onChange={(event) =>
-                setRightBranchInput(event.currentTarget.value)
-              }
-            />
-          </label>
+          <input
+            type="text"
+            value={leftBranchInput}
+            aria-label="Left Branch"
+            placeholder="Left Branch"
+            onChange={(event) => setLeftBranchInput(event.currentTarget.value)}
+          />
+          <input
+            type="text"
+            value={rightBranchInput}
+            placeholder="Right Branch"
+            aria-label="Right Branch"
+            onChange={(event) => setRightBranchInput(event.currentTarget.value)}
+          />
           <button
             type="button"
             disabled={!selectedNode || selectedNode.resolved}
