@@ -2,6 +2,7 @@ import './NodeView.css'
 
 import Check from '@material-ui/icons/Check'
 import React from 'react'
+import LineTo from 'react-lineto'
 
 import { TreeNode } from '../typings/TreeNode'
 
@@ -16,7 +17,7 @@ export default function NodeView({ root, selectedNode, onClick }: Props) {
       className={`node-container ${selectedNode === root ? 'selected' : ''}`}
     >
       <div
-        className={`node ${selectedNode === root ? 'selected' : ''}`}
+        className={`node ${root ? root.formula : ''} ${selectedNode === root ? 'selected' : ''} `}
         onClick={() => onClick(root)}
       >
         {root.formula}
@@ -40,6 +41,20 @@ export default function NodeView({ root, selectedNode, onClick }: Props) {
                   }}
                 />
               ))}
+              <LineTo
+                from={root.formula}
+                to={root.children[0].formula}
+                borderColor="white"
+                borderWidth="30"
+                fromAnchor="bottom"
+                toAnchor="top" />
+              <LineTo
+                from={root.formula}
+                to={root.children[1].formula}
+                borderColor="white"
+                borderWidth="30"
+                fromAnchor="bottom"
+                toAnchor="top" />
             </div>
           ))}
     </div>

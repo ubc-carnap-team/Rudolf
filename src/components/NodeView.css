@@ -27,12 +27,10 @@
   border-color: orange;
 }
 
-.split > :first-child::before {
-  content: '/';
-  color: white;
+.children.split {
+  padding-top: 0.75em;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
-.split > :nth-child(2)::before {
-  content: '\\';
-  color: white;
-}
+
