@@ -29,19 +29,19 @@ export default function NodeView({ root, selectedNode, onClick }: Props) {
             <NodeView {...{ root: root.children[0], selectedNode, onClick }} />
           </div>
         ) : (
-          <div className="children split">
-            {root.children.map((child) => (
-              <NodeView
-                key={child.formula}
-                {...{
-                  root: child,
-                  selectedNode,
-                  onClick,
-                }}
-              />
-            ))}
-          </div>
-        ))}
+            <div className="children split">
+              {root.children.map((child) => (
+                <NodeView
+                  key={child.formula}
+                  {...{
+                    root: child,
+                    selectedNode,
+                    onClick,
+                  }}
+                />
+              ))}
+            </div>
+          ))}
     </div>
   )
 }
