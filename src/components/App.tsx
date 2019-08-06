@@ -58,7 +58,6 @@ const App: React.FC = (): JSX.Element => {
           root={tree}
           onClick={handleNodeClick}
           selectedNode={selectedNode}
-        // render={(item: TreeNode) => NodeView(item, selectedNode === item)}
         />
         <ControlWidget {...{ selectedNode, resolveNode, closeBranch, handleClose }} />
       </main>

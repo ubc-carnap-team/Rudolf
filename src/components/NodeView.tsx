@@ -45,16 +45,16 @@ export default function NodeView({ root, selectedNode, onClick }: Props) {
                 from={root.formula}
                 to={root.children[0].formula}
                 borderColor="white"
-                borderWidth="30"
                 fromAnchor="bottom"
-                toAnchor="top" />
+                toAnchor="top"
+                delay="0" />
               <LineTo
                 from={root.formula}
                 to={root.children[1].formula}
                 borderColor="white"
-                borderWidth="30"
                 fromAnchor="bottom"
-                toAnchor="top" />
+                toAnchor="top"
+                delay="0" />
             </div>
           ))}
     </div>
