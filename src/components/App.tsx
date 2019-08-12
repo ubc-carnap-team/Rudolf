@@ -10,8 +10,6 @@ import { ResolutionModal } from './ResolutionModal'
 import SelectInput from './SelectInput'
 
 const examplePremises = 'P->Q,P,~Q'
-const mp = 'P->Q'
-const dmg = '~Q'
 const exampleTree: TreeNode | null = parseBranch(examplePremises)
 
 const App: React.FC = (): JSX.Element => {
