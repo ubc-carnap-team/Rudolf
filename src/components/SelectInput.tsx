@@ -12,13 +12,12 @@ const SelectInput: React.FC<Props> = ({ onSubmit }) => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onChange={handleSubmit}>
             <select>
                 <option value="examplePremises">Basic Example</option>
                 <option value="P->Q">Modus Ponens</option>
                 <option value="~Q">De Morgen's Law</option>
             </select>
-            <input type="submit" value="Submit" />
         </form>
     )
 }
