@@ -1,13 +1,13 @@
-import React, { FormEventHandler } from 'react'
+import React, { ChangeEventHandler, FormEventHandler } from 'react'
 
 type Props = {
     onChange: (premises: string) => void
 }
 
 const PremisesSelector: React.FC<Props> = ({ onChange }) => {
-    const handleSubmit: FormEventHandler<HTMLSelectElement> = (event) => {
+    const handleSubmit: ChangeEventHandler<HTMLSelectElement> = (event) => {
         event.preventDefault()
-        const premises: string = (event.currentTarget as any)[0].value
+        const premises: string = (event.currentTarget.value)
         onChange(premises)
     }
 
