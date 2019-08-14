@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, FormEventHandler } from 'react'
+import React, { ChangeEventHandler } from 'react'
 
 type Props = {
   onChange: (premises: string) => void
@@ -15,7 +15,7 @@ const PremisesSelector: React.FC<Props> = ({ onChange }) => {
     <select onChange={handleSubmit}>
       <option value="P->Q,P,~Q">Basic Example</option>
       <option value="P->Q">Modus Ponens</option>
-      <option value="~PvQ">De Morgen's Law</option>
+      <option value="~PvQ">De Morgens Law</option>
     </select>
   )
 }
