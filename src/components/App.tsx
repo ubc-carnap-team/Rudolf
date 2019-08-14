@@ -59,9 +59,7 @@ const App: React.FC = (): JSX.Element => {
   return (
     <div className="App">
       <main className="App-main">
-        <PremisesSelector
-          onChange={handleSubmitPremises}
-        />
+        <PremisesSelector onChange={handleSubmitPremises} />
 
         <PremiseInput
           defaultPremises={examplePremises}
@@ -74,13 +72,13 @@ const App: React.FC = (): JSX.Element => {
             selectedNode={selectedNode}
           />
         ) : (
-            '{}'
-          )}
+          '{}'
+        )}
         <ResolutionModal
           {...{ selectedNode, resolveNode, closeBranch, handleClose }}
         />
       </main>
-    </div >
+    </div>
   )
 }
 

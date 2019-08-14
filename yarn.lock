@@ -8731,7 +8731,6 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-<<<<<<< HEAD
 react-lineto@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/react-lineto/-/react-lineto-3.1.3.tgz#b15ed10a846d11e5d44a7b7a7951f46307511006"
@@ -8740,8 +8739,6 @@ react-lineto@^3.1.3:
     prop-types "15.6.0"
     react "16.2.0"
 
-=======
->>>>>>> aab4097dbb7ff84560ca608bc70c30acfed4698d
 react-overlays@^0.8.0:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-overlays/-/react-overlays-0.8.3.tgz#fad65eea5b24301cca192a169f5dddb0b20d3ac5"
