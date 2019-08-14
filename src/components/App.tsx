@@ -38,7 +38,7 @@ const App: React.FC = (): JSX.Element => {
     !node.resolved && selectNode(selectedNode === node ? null : node)
   }
 
-  const handleSubmitPremises = (premises: string) => {
+  const handleSubmitPremises = (premises: any) => {
     setTree(parseBranch(premises) || null)
   }
 
