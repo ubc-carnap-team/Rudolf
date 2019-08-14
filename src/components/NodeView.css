@@ -9,6 +9,8 @@
 
 .node {
   display: block;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
 }
 
 .node.selected {
@@ -27,12 +29,7 @@
   border-color: orange;
 }
 
-.split > :first-child::before {
-  content: '/';
-  color: white;
+.children.split {
+  padding-top: 0.75em;
 }
 
-.split > :nth-child(2)::before {
-  content: '\\';
-  color: white;
-}
