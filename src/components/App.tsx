@@ -3,17 +3,17 @@ import './App.css'
 import React, { useState } from 'react'
 
 import { LeafNode, TreeNode } from '../typings/TreeNode'
-import { decomposeNode, makeNode, updateNode } from '../util/nodes'
-import { ControlWidget } from './ControlWidget'
+import { decomposeNode, parseBranch, updateNode } from '../util/nodes'
 import NodeView from './NodeView'
+import PremiseInput from './PremiseInputProps'
+import { ResolutionModal } from './ResolutionModal'
 
-const exampleNode: TreeNode = makeNode('P', [
-  makeNode('P=>Q', [makeNode('~Q', [makeNode('~P'), makeNode('Q')])]),
-])
+const examplePremises = 'P->Q,P,~Q'
+const exampleTree: TreeNode | null = parseBranch(examplePremises)
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
-  const [tree, setTree] = useState(exampleNode)
+  const [tree, setTree] = useState<TreeNode | null>(exampleTree)
 
   const handleClose = () => {
     selectNode(null)
@@ -22,10 +22,13 @@ const App: React.FC = (): JSX.Element => {
   const closeBranch = (selectedNode: LeafNode) => {
     setTree((oldTree) => {
       console.log(oldTree === tree)
-      return updateNode(oldTree, selectedNode, (node: TreeNode) => ({
-        ...node,
-        closed: true,
-      }))
+      return (
+        oldTree &&
+        updateNode(oldTree, selectedNode, (node: TreeNode) => ({
+          ...node,
+          closed: true,
+        }))
+      )
     })
     selectNode(null)
   }
@@ -34,18 +37,19 @@ const App: React.FC = (): JSX.Element => {
     !node.resolved && selectNode(selectedNode === node ? null : node)
   }
 
+  const handleSubmitPremises = (premises: string) => {
+    setTree(parseBranch(premises) || null)
+  }
+
   const resolveNode = (
     selectedNode: TreeNode,
     nodeInput: [string, string]
   ): void => {
-    /**
-    - call decomposeNode inside setTree to make changes to tree State,
-    - deselect the current node (by setting selectedNode to null)
-     */
+    // call decomposeNode inside setTree to make changes to tree State,
 
-    // change resolved to true on target node
-    setTree((oldTree: TreeNode) =>
-      decomposeNode(oldTree, selectedNode, nodeInput)
+    setTree(
+      (oldTree: TreeNode | null) =>
+        oldTree && decomposeNode(oldTree, selectedNode, nodeInput)
     )
     // unselect current node
     selectNode(null)
@@ -54,16 +58,24 @@ const App: React.FC = (): JSX.Element => {
   return (
     <div className="App">
       <main className="App-main">
-        <NodeView
-          root={tree}
-          onClick={handleNodeClick}
-          selectedNode={selectedNode}
+        <PremiseInput
+          defaultPremises={examplePremises}
+          onSubmit={handleSubmitPremises}
         />
-        <ControlWidget {...{ selectedNode, resolveNode, closeBranch, handleClose }} />
+        {tree ? (
+          <NodeView
+            root={tree}
+            onClick={handleNodeClick}
+            selectedNode={selectedNode}
+          />
+        ) : (
+            '{}'
+          )}
+        <ResolutionModal
+          {...{ selectedNode, resolveNode, closeBranch, handleClose }}
+        />
       </main>
     </div>
-
-
   )
 }
 

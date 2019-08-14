@@ -12,6 +12,7 @@
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
     "bootstrap": "^4.3.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.2",
     "react": "^16.8.6",
@@ -32,6 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "yarn eslint --ext '.ts,.tsx' src",
     "eslint-check": "eslint --print-config ./src/App.tsx | eslint-config-prettier-check"
   },
   "browserslist": {
