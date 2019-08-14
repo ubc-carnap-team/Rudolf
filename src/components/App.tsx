@@ -7,7 +7,7 @@ import { decomposeNode, parseBranch, updateNode } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInputProps'
 import { ResolutionModal } from './ResolutionModal'
-import SelectInput from './SelectInput'
+import PremisesSelector from './SelectInput'
 
 const examplePremises = 'P->Q,P,~Q'
 const exampleTree: TreeNode | null = parseBranch(examplePremises)
@@ -59,7 +59,7 @@ const App: React.FC = (): JSX.Element => {
   return (
     <div className="App">
       <main className="App-main">
-        <SelectInput
+        <PremisesSelector
           onSubmit={handleSubmitPremises}
         />
 
