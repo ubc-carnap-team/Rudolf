@@ -6,6 +6,7 @@ import { LeafNode, TreeNode } from '../typings/TreeNode'
 import { decomposeNode, parseBranch, updateNode } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInputProps'
+import PremisesSelector from './PremisesSelector'
 import { ResolutionModal } from './ResolutionModal'
 
 const examplePremises = 'P->Q,P,~Q'
@@ -58,6 +59,8 @@ const App: React.FC = (): JSX.Element => {
   return (
     <div className="App">
       <main className="App-main">
+        <PremisesSelector onChange={handleSubmitPremises} />
+
         <PremiseInput
           defaultPremises={examplePremises}
           onSubmit={handleSubmitPremises}
@@ -69,8 +72,8 @@ const App: React.FC = (): JSX.Element => {
             selectedNode={selectedNode}
           />
         ) : (
-            '{}'
-          )}
+          '{}'
+        )}
         <ResolutionModal
           {...{ selectedNode, resolveNode, closeBranch, handleClose }}
         />
