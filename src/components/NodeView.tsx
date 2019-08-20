@@ -23,7 +23,7 @@ export default function NodeView({
       className={`node-container ${selectedNode === root ? 'selected' : ''}`}
     >
       <div
-        className={`node ${root ? root.formula : ''} ${
+        className={`node ${counter()} ${
           selectedNode === root ? 'selected' : ''
         } `}
         onClick={() => onClick(root)}

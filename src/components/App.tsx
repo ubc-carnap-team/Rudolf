@@ -20,9 +20,9 @@ const App: React.FC = (): JSX.Element => {
     selectNode(null)
   }
 
+  let count = 0
   const counter = () => {
-    let count = 0
-    return () => count++
+    return count++
   }
 
   const closeBranch = (selectedNode: LeafNode) => {
