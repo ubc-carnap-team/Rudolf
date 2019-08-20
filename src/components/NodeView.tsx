@@ -53,16 +53,16 @@ export default function NodeView({
               />
             ))}
             <LineTo
-              from={root.formula}
-              to={root.children[0].formula}
+              from={root.children.length}
+              to={root.children.length + 4}
               borderColor="white"
               fromAnchor="bottom"
               toAnchor="top"
               delay="0"
             />
             <LineTo
-              from={root.formula}
-              to={root.children[1].formula}
+              from={root.children.length}
+              to={root.children.length + 5}
               borderColor="white"
               fromAnchor="bottom"
               toAnchor="top"
