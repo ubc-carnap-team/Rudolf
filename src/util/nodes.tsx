@@ -61,10 +61,12 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
  * @param formulas a comma-separated list of formulas, as a string.
  */
 export const parseBranch = (inputString: string): TreeNode | null => {
-  const singleArrow = inputString.replace('->', '⊃') // replace -> with proper hook
-  const doubleArrow = singleArrow.replace('=>', '⊃') // replace => with proper hook
+  const singleArrow = inputString.replace('->', '⊃') // replace -> with proper hook symbol
+  const doubleArrow = singleArrow.replace('=>', '⊃') // replace => with proper hook symbol
+  const negation = doubleArrow.replace('~', '¬') // replace ~ with proper negation symbol
+  const conjunction = negation.replace('^', '&') // replace v with proper conjunction symbol
 
-  const formulas = doubleArrow.split(',').filter((formula) => formula) // filter out empty strings.
+  const formulas = conjunction.split(',').filter((formula) => formula) // filter out empty strings.
 
   if (formulas.length) {
     return formulas
