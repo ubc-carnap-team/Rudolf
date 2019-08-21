@@ -65,8 +65,9 @@ export const parseBranch = (inputString: string): TreeNode | null => {
   const doubleArrow = singleArrow.replace('=>', '⊃') // replace => with proper hook symbol
   const negation = doubleArrow.replace('~', '¬') // replace ~ with proper negation symbol
   const conjunction = negation.replace('^', '&') // replace v with proper conjunction symbol
+  const biconditional = conjunction.replace('=', '≡') // replace = with proper biconditional symbol
 
-  const formulas = conjunction.split(',').filter((formula) => formula) // filter out empty strings.
+  const formulas = biconditional.split(',').filter((formula) => formula) // filter out empty strings.
 
   if (formulas.length) {
     return formulas
