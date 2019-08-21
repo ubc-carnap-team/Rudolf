@@ -61,13 +61,9 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
  * @param formulas a comma-separated list of formulas, as a string.
  */
 export const parseBranch = (inputString: string): TreeNode | null => {
-  const singleArrow = inputString.replace('->', '⊃') // replace -> with proper hook symbol
-  const doubleArrow = singleArrow.replace('=>', '⊃') // replace => with proper hook symbol
-  const negation = doubleArrow.replace('~', '¬') // replace ~ with proper negation symbol
-  const conjunction = negation.replace('^', '&') // replace v with proper conjunction symbol
-  const biconditional = conjunction.replace('=', '≡') // replace = with proper biconditional symbol
+  const replacedInput = replaceSymbols(inputString)
 
-  const formulas = biconditional.split(',').filter((formula) => formula) // filter out empty strings.
+  const formulas = replacedInput.split(',').filter((formula) => formula) // filter out empty strings from 'final'
 
   if (formulas.length) {
     return formulas
@@ -79,6 +75,16 @@ export const parseBranch = (inputString: string): TreeNode | null => {
   } else {
     return null
   }
+}
+
+const replaceSymbols = (inputString: string): string => {
+  const singleArrow = inputString.replace('->', '⊃') // replace -> with proper hook symbol
+  const doubleArrow = singleArrow.replace('=>', '⊃') // replace => with proper hook symbol
+  const negation = doubleArrow.replace('~', '¬') // replace ~ with proper negation symbol
+  const conjunction = negation.replace('^', '&') // replace v with proper conjunction symbol
+  const final = conjunction.replace('=', '≡') // replace = with proper biconditional symbol
+
+  return final
 }
 
 const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
