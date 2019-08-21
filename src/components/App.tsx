@@ -20,10 +20,10 @@ const App: React.FC = (): JSX.Element => {
     selectNode(null)
   }
 
-  let count = 0
-  const counter = () => {
-    return count++
-  }
+  const getNextNodeId = (() => {
+    let count = 0
+    return () => `${count++}`
+  })()
 
   const closeBranch = (selectedNode: LeafNode) => {
     setTree((oldTree) => {
@@ -75,7 +75,8 @@ const App: React.FC = (): JSX.Element => {
             root={tree}
             onClick={handleNodeClick}
             selectedNode={selectedNode}
-            counter={counter}
+            getNextNodeId={getNextNodeId}
+            nodeId={getNextNodeId()}
           />
         ) : (
           '{}'

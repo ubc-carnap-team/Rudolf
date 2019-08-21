@@ -1,7 +1,7 @@
 import './NodeView.css'
 
 import Check from '@material-ui/icons/Check'
-import React from 'react'
+import React, { FC, Fragment } from 'react'
 import LineTo from 'react-lineto'
 
 import { TreeNode } from '../typings/TreeNode'
@@ -10,22 +10,22 @@ type Props = {
   root: TreeNode
   selectedNode: TreeNode | null
   onClick: (_: TreeNode) => void
-  counter: any
+  getNextNodeId: () => string
+  nodeId: string
 }
-export default function NodeView({
+const NodeView: FC<Props> = ({
   root,
   selectedNode,
   onClick,
-  counter,
-}: Props) {
+  getNextNodeId,
+  nodeId,
+}) => {
   return (
     <div
       className={`node-container ${selectedNode === root ? 'selected' : ''}`}
     >
       <div
-        className={`node ${counter()} ${
-          selectedNode === root ? 'selected' : ''
-        } `}
+        className={`node ${nodeId} ${selectedNode === root ? 'selected' : ''} `}
         onClick={() => onClick(root)}
       >
         {root.formula}
@@ -36,40 +36,45 @@ export default function NodeView({
         (root.children.length === 1 ? (
           <div className="children stack">
             <NodeView
-              {...{ root: root.children[0], selectedNode, onClick, counter }}
+              {...{
+                root: root.children[0],
+                selectedNode,
+                onClick,
+                getNextNodeId,
+                nodeId: getNextNodeId(),
+              }}
             />
           </div>
         ) : (
           <div className="children split">
-            {root.children.map((child) => (
-              <NodeView
-                key={child.formula}
-                {...{
-                  root: child,
-                  selectedNode,
-                  onClick,
-                  counter,
-                }}
-              />
-            ))}
-            <LineTo
-              from={root.formula}
-              to={root.children[0].formula}
-              borderColor="white"
-              fromAnchor="bottom"
-              toAnchor="top"
-              delay="0"
-            />
-            <LineTo
-              from={root.formula}
-              to={root.children[1].formula}
-              borderColor="white"
-              fromAnchor="bottom"
-              toAnchor="top"
-              delay="0"
-            />
+            {root.children.map((child) => {
+              const childNodeId = getNextNodeId()
+              return (
+                <Fragment key={childNodeId}>
+                  <LineTo
+                    from={nodeId}
+                    to={childNodeId}
+                    borderColor="white"
+                    fromAnchor="bottom"
+                    toAnchor="top"
+                    delay={0}
+                  />
+                  <NodeView
+                    {...{
+                      root: child,
+                      selectedNode,
+                      onClick,
+                      getNextNodeId,
+                      nodeId: childNodeId,
+                    }}
+                  />
+                </Fragment>
+              )
+            })}
           </div>
         ))}
     </div>
   )
 }
+
+export default NodeView
