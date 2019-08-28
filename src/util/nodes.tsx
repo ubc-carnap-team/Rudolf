@@ -80,9 +80,12 @@ export const parseBranch = (inputString: string): TreeNode | null => {
 const replaceSymbols = (inputString: string): string => {
   const singleArrow = inputString.replace('->', '⊃') // replace -> with proper hook symbol
   const doubleArrow = singleArrow.replace('=>', '⊃') // replace => with proper hook symbol
-  const negation = doubleArrow.replace('~', '¬') // replace ~ with proper negation symbol
-  const conjunction = negation.replace('^', '&') // replace v with proper conjunction symbol
-  const final = conjunction.replace('=', '≡') // replace = with proper biconditional symbol
+  const cond = doubleArrow.replace('>', '⊃') // replace > with proper hook symbol
+  const negation = cond.replace('~', '¬') // replace ~ with proper negation symbol
+  const dash = negation.replace('-', '¬') // replace - with proper negation symbol
+  const conjunction = dash.replace('^', '&') // replace ^ with proper conjunction symbol
+  const disjunction = conjunction.replace('v', '∨') // replace v with proper disjunction symbol
+  const final = disjunction.replace('=', '≡') // replace = with proper biconditional symbol
 
   return final
 }
