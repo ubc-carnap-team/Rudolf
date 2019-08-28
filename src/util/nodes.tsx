@@ -87,6 +87,17 @@ const replaceSymbols = (inputString: string): string => {
   const disjunction = conjunction.replace('v', '∨') // replace v with proper disjunction symbol
   const final = disjunction.replace('=', '≡') // replace = with proper biconditional symbol
 
+  var symbols = [
+    ['->', '⊃'],
+    ['=>', '⊃'],
+    ['>', '⊃'],
+    ['~', '¬'],
+    ['-', '¬'],
+    ['^', '&'],
+    ['v', '∨'],
+    ['=', '≡'],
+  ]
+
   return final
 }
 

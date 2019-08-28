@@ -25,9 +25,6 @@ const NodeView: FC<Props> = ({
       className={`node-container ${selectedNode === root ? 'selected' : ''}`}
     >
       <div
-        className={`node ${counter()} ${
-          selectedNode === root ? 'selected' : ''
-        } `}
         className={`node ${nodeId} ${selectedNode === root ? 'selected' : ''} `}
         onClick={() => onClick(root)}
       >
