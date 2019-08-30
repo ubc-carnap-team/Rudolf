@@ -87,7 +87,7 @@ const replaceSymbols = (inputString: string): string => {
   const disjunction = conjunction.replace('v', '∨') // replace v with proper disjunction symbol
   const final = disjunction.replace('=', '≡') // replace = with proper biconditional symbol
 
-  var symbols = [
+  const symbols = [
     ['->', '⊃'],
     ['=>', '⊃'],
     ['>', '⊃'],
@@ -97,8 +97,15 @@ const replaceSymbols = (inputString: string): string => {
     ['v', '∨'],
     ['=', '≡'],
   ]
+}
 
-  return final
+const reducerMethod = (
+  inputString: string,
+  replace: string,
+  properSymbol: string
+) => () => {
+  inputString.replace(replace, properSymbol)
+  return inputString
 }
 
 const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [

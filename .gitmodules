@@ -1,0 +1,3 @@
+[submodule "FiraLogic"]
+	path = FiraLogic
+	url = https://github.com/gleachkr/FiraLogic.git
