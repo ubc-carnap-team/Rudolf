@@ -97,6 +97,7 @@ const replaceSymbols = (inputString: string): string => {
     '-': '¬',
     '^': '&',
     '=': '≡',
+    v: '∨',
   }
 
   const newInput = Object.entries(symbols).reduce(reducer, initialValue)
