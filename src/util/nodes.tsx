@@ -1,4 +1,4 @@
-import { TreeNode, LeafNode } from '../typings/TreeNode'
+import { LeafNode, TreeNode } from '../typings/TreeNode'
 
 /**
  *
@@ -58,10 +58,11 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
 
 /**
  *
- * @param formulas a comma-separated list of formulas, as a string.
+ * @param inputString a comma-separated list of formulas, as a string.
  */
 export const parseBranch = (inputString: string): TreeNode | null => {
-  const formulas = inputString.split(',').filter((formula) => formula) // filter out empty strings.
+  const formulas = inputString.split(',').filter((formula) => formula) // filter out empty strings
+
   if (formulas.length) {
     return formulas
       .map((formula: string) => makeNode(formula))
