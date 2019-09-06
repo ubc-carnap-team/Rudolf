@@ -22,5 +22,5 @@ code {
 @font-face {
   font-family: 'FiraLogic';
   src: local('FiraLogic'),
-    url(./FiraLogic/dist/FiraLogic-Regular.woff) format('woff');
+    url(assets/FiraLogic/dist/FiraLogic-Regular.woff) format('woff');
 }
