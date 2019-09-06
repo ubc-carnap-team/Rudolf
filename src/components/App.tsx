@@ -20,12 +20,10 @@ const App: React.FC = (): JSX.Element => {
     selectNode(null)
   }
 
-
   const getNextNodeId = (() => {
     let count = 0
     return () => `${count++}`
   })()
-
 
   const closeBranch = (selectedNode: LeafNode) => {
     setTree((oldTree) => {
