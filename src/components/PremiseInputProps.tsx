@@ -1,3 +1,5 @@
+import './PremisesInputProps.css'
+
 import React, { FormEventHandler } from 'react'
 
 type Props = {
