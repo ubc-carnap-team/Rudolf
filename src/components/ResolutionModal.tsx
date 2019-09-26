@@ -62,16 +62,18 @@ export const ResolutionModal = ({
           >
             Resolve Selected Node
           </button>
+          <button
+            type="button"
+            disabled={
+              selectedNode == null ||
+              selectedNode.closed ||
+              !isLeaf(selectedNode)
+            }
+            onClick={() => isLeaf(selectedNode) && closeBranch(selectedNode)}
+          >
+            Close Branch
+          </button>
         </form>
-        <button
-          type="button"
-          disabled={
-            selectedNode == null || selectedNode.closed || !isLeaf(selectedNode)
-          }
-          onClick={() => isLeaf(selectedNode) && closeBranch(selectedNode)}
-        >
-          Close Branch
-        </button>
       </Modal.Body>
     </Modal>
   )
