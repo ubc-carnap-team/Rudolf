@@ -9,14 +9,14 @@ import { TreeNode } from '../typings/TreeNode'
 type Props = {
   root: TreeNode
   selectedNode: TreeNode | null
-  onClick: (_: TreeNode) => void
+  selectNode: (_: TreeNode) => void
   getNextNodeId: () => string
   nodeId: string
 }
 const NodeView: FC<Props> = ({
   root,
   selectedNode,
-  onClick,
+  selectNode,
   getNextNodeId,
   nodeId,
 }) => {
@@ -26,9 +26,17 @@ const NodeView: FC<Props> = ({
     >
       <div
         className={`node ${nodeId} ${selectedNode === root ? 'selected' : ''} `}
-        onClick={() => onClick(root)}
+        onContextMenu={(event) => {
+          event.preventDefault()
+          selectNode(root)
+        }}
       >
-        {root.label}
+        <div className="label-input" contentEditable>
+          {root.label}
+        </div>
+        <div className="rule-input" contentEditable>
+          {root.rule}
+        </div>
         {root.resolved ? <Check /> : ''}
         {root.closed && <div className="closed-branch-marker">X</div>}
       </div>
@@ -39,7 +47,7 @@ const NodeView: FC<Props> = ({
               {...{
                 root: root.forest[0],
                 selectedNode,
-                onClick,
+                selectNode,
                 getNextNodeId,
                 nodeId: getNextNodeId(),
               }}
@@ -63,7 +71,7 @@ const NodeView: FC<Props> = ({
                     {...{
                       root: child,
                       selectedNode,
-                      onClick,
+                      selectNode,
                       getNextNodeId,
                       nodeId: childNodeId,
                     }}

@@ -17,10 +17,6 @@ const App: React.FC = (): JSX.Element => {
   const [tree, setTree] = useState<TreeNode | null>(exampleTree)
   const [premises, setPremises] = useState<string>(defaultPremises)
 
-  const handleClose = () => {
-    selectNode(null)
-  }
-
   const getNextNodeId = (() => {
     let count = 0
     return () => `${count++}`
@@ -39,10 +35,6 @@ const App: React.FC = (): JSX.Element => {
     selectNode(null)
   }
 
-  const handleNodeClick = (node: TreeNode): void => {
-    !node.resolved && selectNode(selectedNode === node ? null : node)
-  }
-
   const handleSubmitPremises = (premises: string) => {
     setPremises(premises)
     setTree(parseBranch(premises) || null)
@@ -53,7 +45,6 @@ const App: React.FC = (): JSX.Element => {
     nodeInput: [string, string]
   ): void => {
     // call decomposeNode inside setTree to make changes to tree State,
-
     setTree(
       (oldTree: TreeNode | null) =>
         oldTree && decomposeNode(oldTree, selectedNode, nodeInput)
@@ -75,7 +66,7 @@ const App: React.FC = (): JSX.Element => {
         {tree ? (
           <NodeView
             root={tree}
-            onClick={handleNodeClick}
+            selectNode={selectNode}
             selectedNode={selectedNode}
             getNextNodeId={getNextNodeId}
             nodeId={getNextNodeId()}
@@ -84,7 +75,12 @@ const App: React.FC = (): JSX.Element => {
           '{}'
         )}
         <ResolutionModal
-          {...{ selectedNode, resolveNode, closeBranch, handleClose }}
+          {...{
+            selectedNode,
+            resolveNode,
+            closeBranch,
+            handleClose: () => selectNode(null),
+          }}
         />
       </main>
     </div>

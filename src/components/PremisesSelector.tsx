@@ -11,7 +11,7 @@ const PremisesSelector: React.FC<Props> = ({ onChange }) => {
   }
 
   return (
-    <select onBlur={handleSelect}>
+    <select onChange={handleSelect} onBlur={handleSelect}>
       <option value="P->Q,P,~Q">Modus Ponens</option>
       <option value="~(P\/Q),~P\/~Q">De Morgen&apos;s Law</option>
     </select>

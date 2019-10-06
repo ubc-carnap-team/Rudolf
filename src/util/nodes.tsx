@@ -20,9 +20,9 @@ export const decomposeNode = (
 }
 
 export const makeNode = (
-  label: string = '',
+  label = '',
   forest: TreeNode[] = [],
-  rule: string = ''
+  rule = ''
 ): TreeNode => ({
   label,
   forest,
@@ -63,7 +63,7 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
  * @param inputString a comma-separated list of formulas, as a string.
  */
 export const parseBranch = (inputString: string): TreeNode | null => {
-  const formulas = inputString.split(',').filter((formula) => formula) // filter out empty strings
+  const formulas = inputString.split(',')
 
   if (formulas.length) {
     return formulas

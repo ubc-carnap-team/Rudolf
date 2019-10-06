@@ -29,7 +29,11 @@
   border-color: orange;
 }
 
+.node-container input {
+  min-width: 2em;
+  width: max-width;
+}
+
 .children.split {
   padding-top: 0.75em;
 }
-
