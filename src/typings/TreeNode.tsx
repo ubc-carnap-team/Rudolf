@@ -6,4 +6,6 @@ export interface TreeNode {
   rule: string
 }
 
+export type NodeUpdater = (node: TreeNode) => TreeNode
+
 export type LeafNode = TreeNode & { forest: [] }

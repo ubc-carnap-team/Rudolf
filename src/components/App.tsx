@@ -2,12 +2,11 @@ import './App.css'
 
 import React, { useState } from 'react'
 
-import { LeafNode, TreeNode } from '../typings/TreeNode'
+import { LeafNode, TreeNode, NodeUpdater } from '../typings/TreeNode'
 import { decomposeNode, updateNode, parsePremises } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
-import { ResolutionModal } from './ResolutionModal'
 
 const defaultPremises = 'P->Q,P,~Q'
 const exampleTree: TreeNode = parsePremises(defaultPremises.split(','))
@@ -81,26 +80,25 @@ const App: React.FC = (): JSX.Element => {
           onSubmit={handleSubmitPremises}
           setPremises={setPremises}
         />
-        {tree ? (
-          <NodeView
-            root={tree}
-            selectNode={selectNode}
-            selectedNode={selectedNode}
-            getNextNodeId={getNextNodeId}
-            nodeId={getNextNodeId()}
-            onChange={handleNodeChange}
-          />
-        ) : (
-          '{}'
-        )}
-        <ResolutionModal
+        <NodeView
+          node={tree}
+          selectNode={selectNode}
+          selectedNode={selectedNode}
+          getNextNodeId={getNextNodeId}
+          nodeId={getNextNodeId()}
+          onChange={handleNodeChange}
+          updateTree={(node: TreeNode, updater: NodeUpdater) =>
+            setTree(updateNode(tree, node, updater))
+          }
+        />
+        {/* <ResolutionModal
           {...{
             selectedNode,
             resolveNode,
             closeBranch,
             handleClose: () => selectNode(null),
           }}
-        />
+        /> */}
       </main>
     </div>
   )

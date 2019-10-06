@@ -1,4 +1,4 @@
-import { LeafNode, TreeNode } from '../typings/TreeNode'
+import { LeafNode, TreeNode, NodeUpdater } from '../typings/TreeNode'
 
 /**
  *
@@ -19,11 +19,11 @@ export const decomposeNode = (
   return resolveSelectedNode(root, selectedNode, createNodes)
 }
 
-export const makeNode = (
+export const makeNode = ({
   label = '',
-  forest: TreeNode[] = [],
-  rule = ''
-): TreeNode => ({
+  forest = [],
+  rule = '',
+}: Partial<TreeNode> = {}): TreeNode => ({
   label,
   forest,
   resolved: false,
@@ -36,7 +36,7 @@ export const makeNode = (
  * @param root The root of a subTree
  * @param newNodes nodes to append, as-is, to the bottom of all open branches.
  */
-const appendChildren = (
+export const appendChildren = (
   root: TreeNode,
   createNodes: () => TreeNode[]
 ): TreeNode => {
@@ -65,7 +65,7 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
 const parseBranch = (inputString: string): TreeNode => {
   const formulas = inputString.split(',')
   return formulas
-    .map((formula: string) => makeNode(formula))
+    .map((label: string) => makeNode({ label }))
     .reduceRight((prev: TreeNode, curr: TreeNode) => ({
       ...curr,
       forest: [prev],
@@ -78,7 +78,7 @@ const parseBranch = (inputString: string): TreeNode => {
  */
 export const parsePremises = (formulas: string[]): TreeNode => {
   return formulas
-    .map((formula: string) => makeNode(formula, [], 'A'))
+    .map((label: string) => makeNode({ label, rule: 'A' }))
     .reduceRight((prev: TreeNode, curr: TreeNode) => ({
       ...curr,
       forest: [prev],
@@ -105,10 +105,10 @@ const resolveSelectedNode = (
     appendChildren(markResolved(node), createNodes)
   )
 
-export const updateNode = <Updater extends (node: TreeNode) => TreeNode>(
+export const updateNode = (
   root: TreeNode,
   selectedNode: TreeNode,
-  updater: Updater
+  updater: NodeUpdater
 ): TreeNode =>
   root === selectedNode
     ? updater({ ...root })
