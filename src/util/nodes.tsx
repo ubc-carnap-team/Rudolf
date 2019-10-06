@@ -20,9 +20,9 @@ export const decomposeNode = (
 }
 
 export const makeNode = (
-  label: string = '',
+  label = '',
   forest: TreeNode[] = [],
-  rule: string = ''
+  rule = ''
 ): TreeNode => ({
   label,
   forest,
@@ -62,19 +62,27 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
  *
  * @param inputString a comma-separated list of formulas, as a string.
  */
-export const parseBranch = (inputString: string): TreeNode | null => {
-  const formulas = inputString.split(',').filter((formula) => formula) // filter out empty strings
+const parseBranch = (inputString: string): TreeNode => {
+  const formulas = inputString.split(',')
+  return formulas
+    .map((formula: string) => makeNode(formula))
+    .reduceRight((prev: TreeNode, curr: TreeNode) => ({
+      ...curr,
+      forest: [prev],
+    }))
+}
 
-  if (formulas.length) {
-    return formulas
-      .map((formula: string) => makeNode(formula))
-      .reduceRight((prev: TreeNode, curr: TreeNode) => ({
-        ...curr,
-        forest: [prev],
-      }))
-  } else {
-    return null
-  }
+/**
+ *
+ * @param formulas an array of of formulas.
+ */
+export const parsePremises = (formulas: string[]): TreeNode => {
+  return formulas
+    .map((formula: string) => makeNode(formula, [], 'A'))
+    .reduceRight((prev: TreeNode, curr: TreeNode) => ({
+      ...curr,
+      forest: [prev],
+    }))
 }
 
 const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [

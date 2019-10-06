@@ -3,23 +3,19 @@ import './App.css'
 import React, { useState } from 'react'
 
 import { LeafNode, TreeNode } from '../typings/TreeNode'
-import { decomposeNode, parseBranch, updateNode } from '../util/nodes'
+import { decomposeNode, updateNode, parsePremises } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
 import { ResolutionModal } from './ResolutionModal'
 
 const defaultPremises = 'P->Q,P,~Q'
-const exampleTree: TreeNode | null = parseBranch(defaultPremises)
+const exampleTree: TreeNode = parsePremises(defaultPremises.split(','))
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
-  const [tree, setTree] = useState<TreeNode | null>(exampleTree)
+  const [tree, setTree] = useState<TreeNode>(exampleTree)
   const [premises, setPremises] = useState<string>(defaultPremises)
-
-  const handleClose = () => {
-    selectNode(null)
-  }
 
   const getNextNodeId = (() => {
     let count = 0
@@ -39,13 +35,27 @@ const App: React.FC = (): JSX.Element => {
     selectNode(null)
   }
 
-  const handleNodeClick = (node: TreeNode): void => {
-    !node.resolved && selectNode(selectedNode === node ? null : node)
+  const handleNodeChange = ({
+    node,
+    label,
+    rule,
+  }: {
+    node: TreeNode
+    label: string
+    rule: string
+  }) => {
+    setTree((oldTree) =>
+      updateNode(oldTree, node, (oldSubTree) => ({
+        ...oldSubTree,
+        label,
+        rule,
+      }))
+    )
   }
 
   const handleSubmitPremises = (premises: string) => {
     setPremises(premises)
-    setTree(parseBranch(premises) || null)
+    setTree(parsePremises(premises.split(',')))
   }
 
   const resolveNode = (
@@ -53,9 +63,8 @@ const App: React.FC = (): JSX.Element => {
     nodeInput: [string, string]
   ): void => {
     // call decomposeNode inside setTree to make changes to tree State,
-
     setTree(
-      (oldTree: TreeNode | null) =>
+      (oldTree: TreeNode) =>
         oldTree && decomposeNode(oldTree, selectedNode, nodeInput)
     )
     // unselect current node
@@ -75,16 +84,22 @@ const App: React.FC = (): JSX.Element => {
         {tree ? (
           <NodeView
             root={tree}
-            onClick={handleNodeClick}
+            selectNode={selectNode}
             selectedNode={selectedNode}
             getNextNodeId={getNextNodeId}
             nodeId={getNextNodeId()}
+            onChange={handleNodeChange}
           />
         ) : (
           '{}'
         )}
         <ResolutionModal
-          {...{ selectedNode, resolveNode, closeBranch, handleClose }}
+          {...{
+            selectedNode,
+            resolveNode,
+            closeBranch,
+            handleClose: () => selectNode(null),
+          }}
         />
       </main>
     </div>

@@ -1,7 +1,7 @@
 import './NodeView.css'
 
 import Check from '@material-ui/icons/Check'
-import React, { FC, Fragment } from 'react'
+import React, { FC, Fragment, FormEventHandler } from 'react'
 import LineTo from 'react-lineto'
 
 import { TreeNode } from '../typings/TreeNode'
@@ -9,27 +9,59 @@ import { TreeNode } from '../typings/TreeNode'
 type Props = {
   root: TreeNode
   selectedNode: TreeNode | null
-  onClick: (_: TreeNode) => void
+  selectNode: (_: TreeNode) => void
   getNextNodeId: () => string
   nodeId: string
+  onChange: (_: { node: TreeNode; label: string; rule: string }) => void
 }
 const NodeView: FC<Props> = ({
   root,
   selectedNode,
-  onClick,
+  selectNode,
   getNextNodeId,
   nodeId,
+  onChange,
 }) => {
+  const handleLabelChange: FormEventHandler<HTMLInputElement> = (event) => {
+    onChange({
+      node: root,
+      label: event.currentTarget.value,
+      rule: root.rule,
+    })
+  }
+
+  const handleRuleChange: FormEventHandler<HTMLInputElement> = (event) => {
+    onChange({
+      node: root,
+      label: root.label,
+      rule: event.currentTarget.value,
+    })
+  }
   return (
     <div
       className={`node-container ${selectedNode === root ? 'selected' : ''}`}
     >
       <div
         className={`node ${nodeId} ${selectedNode === root ? 'selected' : ''} `}
-        onClick={() => onClick(root)}
+        onContextMenu={(event) => {
+          event.preventDefault()
+          selectNode(root)
+        }}
       >
-        {root.label}
-        {root.resolved ? <Check /> : ''}
+        <input
+          className="label"
+          onChange={handleLabelChange}
+          value={root.label}
+          placeholder="formula"
+        ></input>
+        (
+        <input
+          className="rule"
+          onChange={handleRuleChange}
+          value={root.rule}
+          placeholder="rule"
+        />
+        ){root.resolved ? <Check /> : ''}
         {root.closed && <div className="closed-branch-marker">X</div>}
       </div>
       {root.forest.length > 0 &&
@@ -39,9 +71,10 @@ const NodeView: FC<Props> = ({
               {...{
                 root: root.forest[0],
                 selectedNode,
-                onClick,
+                selectNode,
                 getNextNodeId,
                 nodeId: getNextNodeId(),
+                onChange,
               }}
             />
           </div>
@@ -63,9 +96,10 @@ const NodeView: FC<Props> = ({
                     {...{
                       root: child,
                       selectedNode,
-                      onClick,
+                      selectNode,
                       getNextNodeId,
                       nodeId: childNodeId,
+                      onChange,
                     }}
                   />
                 </Fragment>
