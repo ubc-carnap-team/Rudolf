@@ -3,13 +3,13 @@ import './ResolutionModal.css'
 import React, { useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 
-import { TreeNode } from '../typings/TreeNode'
+import { TreeNode, LeafNode } from '../typings/TreeNode'
 import { isLeaf } from '../util/nodes'
 
 type Props = {
   resolveNode: (selectedNode: TreeNode, nodeInput: [string, string]) => void
   selectedNode: TreeNode | null
-  closeBranch: (selectedNode: TreeNode & { children: [] }) => void
+  closeBranch: (selectedNode: LeafNode) => void
   handleClose: () => void
 }
 
@@ -31,7 +31,7 @@ export const ResolutionModal = ({
       dialogClassName={'modal-90w'}
     >
       <Modal.Header closeButton>
-        {selectedNode && selectedNode.formula}
+        {selectedNode && selectedNode.label}
       </Modal.Header>
       <Modal.Body>
         <form>

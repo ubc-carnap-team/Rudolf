@@ -5,16 +5,17 @@ import React, { useState } from 'react'
 import { LeafNode, TreeNode } from '../typings/TreeNode'
 import { decomposeNode, parseBranch, updateNode } from '../util/nodes'
 import NodeView from './NodeView'
-import PremiseInput from './PremiseInputProps'
+import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
 import { ResolutionModal } from './ResolutionModal'
 
-const examplePremises = 'P->Q,P,~Q'
-const exampleTree: TreeNode | null = parseBranch(examplePremises)
+const defaultPremises = 'P->Q,P,~Q'
+const exampleTree: TreeNode | null = parseBranch(defaultPremises)
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
   const [tree, setTree] = useState<TreeNode | null>(exampleTree)
+  const [premises, setPremises] = useState<string>(defaultPremises)
 
   const handleClose = () => {
     selectNode(null)
@@ -27,7 +28,6 @@ const App: React.FC = (): JSX.Element => {
 
   const closeBranch = (selectedNode: LeafNode) => {
     setTree((oldTree) => {
-      console.log(oldTree === tree)
       return (
         oldTree &&
         updateNode(oldTree, selectedNode, (node: TreeNode) => ({
@@ -44,6 +44,7 @@ const App: React.FC = (): JSX.Element => {
   }
 
   const handleSubmitPremises = (premises: string) => {
+    setPremises(premises)
     setTree(parseBranch(premises) || null)
   }
 
@@ -67,8 +68,9 @@ const App: React.FC = (): JSX.Element => {
         <PremisesSelector onChange={handleSubmitPremises} />
 
         <PremiseInput
-          defaultPremises={examplePremises}
+          premises={premises}
           onSubmit={handleSubmitPremises}
+          setPremises={setPremises}
         />
         {tree ? (
           <NodeView

@@ -20,13 +20,15 @@ export const decomposeNode = (
 }
 
 export const makeNode = (
-  formula: string,
-  children: TreeNode[] = []
+  label: string,
+  forest: TreeNode[] = [],
+  rule: string = ''
 ): TreeNode => ({
-  formula: formula,
-  children: children,
+  label,
+  forest,
   resolved: false,
   closed: false,
+  rule,
 })
 
 /**
@@ -38,12 +40,12 @@ const appendChildren = (
   root: TreeNode,
   createNodes: () => TreeNode[]
 ): TreeNode => {
-  if (root.children.length === 0) {
-    return root.closed ? root : { ...root, children: createNodes() }
+  if (root.forest.length === 0) {
+    return root.closed ? root : { ...root, forest: createNodes() }
   } else {
     return {
       ...root,
-      children: root.children.map<TreeNode>((child: TreeNode) =>
+      forest: root.forest.map<TreeNode>((child: TreeNode) =>
         appendChildren(child, createNodes)
       ),
     }
@@ -68,7 +70,7 @@ export const parseBranch = (inputString: string): TreeNode | null => {
       .map((formula: string) => makeNode(formula))
       .reduceRight((prev: TreeNode, curr: TreeNode) => ({
         ...curr,
-        children: [prev],
+        forest: [prev],
       }))
   } else {
     return null
@@ -104,10 +106,10 @@ export const updateNode = <Updater extends (node: TreeNode) => TreeNode>(
     ? updater({ ...root })
     : {
         ...root,
-        children: root.children.map((child) =>
+        forest: root.forest.map((child) =>
           updateNode(child, selectedNode, updater)
         ),
       }
 
 export const isLeaf = (node: TreeNode | null): node is LeafNode =>
-  node != null && node.children.length === 0
+  node != null && node.forest.length === 0
