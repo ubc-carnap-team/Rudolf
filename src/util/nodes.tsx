@@ -20,7 +20,7 @@ export const decomposeNode = (
 }
 
 export const makeNode = (
-  label: string,
+  label: string = '',
   forest: TreeNode[] = [],
   rule: string = ''
 ): TreeNode => ({

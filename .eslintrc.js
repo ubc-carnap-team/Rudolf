@@ -1,3 +1,4 @@
+// @ts-check
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -38,7 +39,6 @@ module.exports = {
     '@typescript-eslint/promise-function-async': ['error', { allowAny: true }],
     '@typescript-eslint/restrict-plus-operands': 'error',
     '@typescript-eslint/unbound-method': 'warn',
-    '@typescript-eslint/prefer-includes': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/no-for-in-array': 'error',
