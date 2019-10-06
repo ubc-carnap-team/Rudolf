@@ -3,19 +3,14 @@ import './App.css'
 import React, { useState } from 'react'
 
 import { LeafNode, TreeNode } from '../typings/TreeNode'
-import {
-  decomposeNode,
-  parseBranch,
-  updateNode,
-  parsePremises,
-} from '../util/nodes'
+import { decomposeNode, updateNode, parsePremises } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
 import { ResolutionModal } from './ResolutionModal'
 
 const defaultPremises = 'P->Q,P,~Q'
-const exampleTree: TreeNode = parseBranch(defaultPremises)
+const exampleTree: TreeNode = parsePremises(defaultPremises.split(','))
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)

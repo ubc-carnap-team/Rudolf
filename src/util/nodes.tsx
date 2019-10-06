@@ -62,7 +62,7 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
  *
  * @param inputString a comma-separated list of formulas, as a string.
  */
-export const parseBranch = (inputString: string): TreeNode => {
+const parseBranch = (inputString: string): TreeNode => {
   const formulas = inputString.split(',')
   return formulas
     .map((formula: string) => makeNode(formula))
