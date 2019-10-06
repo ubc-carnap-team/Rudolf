@@ -62,19 +62,14 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
  *
  * @param inputString a comma-separated list of formulas, as a string.
  */
-export const parseBranch = (inputString: string): TreeNode | null => {
+export const parseBranch = (inputString: string): TreeNode => {
   const formulas = inputString.split(',')
-
-  if (formulas.length) {
-    return formulas
-      .map((formula: string) => makeNode(formula))
-      .reduceRight((prev: TreeNode, curr: TreeNode) => ({
-        ...curr,
-        forest: [prev],
-      }))
-  } else {
-    return null
-  }
+  return formulas
+    .map((formula: string) => makeNode(formula))
+    .reduceRight((prev: TreeNode, curr: TreeNode) => ({
+      ...curr,
+      forest: [prev],
+    }))
 }
 
 const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [

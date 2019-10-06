@@ -1,7 +1,7 @@
 import './NodeView.css'
 
 import Check from '@material-ui/icons/Check'
-import React, { FC, Fragment } from 'react'
+import React, { FC, Fragment, FormEvent, FormEventHandler } from 'react'
 import LineTo from 'react-lineto'
 
 import { TreeNode } from '../typings/TreeNode'
@@ -12,6 +12,7 @@ type Props = {
   selectNode: (_: TreeNode) => void
   getNextNodeId: () => string
   nodeId: string
+  onChange: (_: { node: TreeNode; label: string; rule: string }) => void
 }
 const NodeView: FC<Props> = ({
   root,
@@ -19,7 +20,23 @@ const NodeView: FC<Props> = ({
   selectNode,
   getNextNodeId,
   nodeId,
+  onChange,
 }) => {
+  const handleLabelChange: FormEventHandler<HTMLInputElement> = (event) => {
+    onChange({
+      node: root,
+      label: event.currentTarget.value,
+      rule: root.rule,
+    })
+  }
+
+  const handleRuleChange: FormEventHandler<HTMLInputElement> = (event) => {
+    onChange({
+      node: root,
+      label: root.label,
+      rule: event.currentTarget.value,
+    })
+  }
   return (
     <div
       className={`node-container ${selectedNode === root ? 'selected' : ''}`}
@@ -31,13 +48,20 @@ const NodeView: FC<Props> = ({
           selectNode(root)
         }}
       >
-        <div className="label-input" contentEditable>
-          {root.label}
-        </div>
-        <div className="rule-input" contentEditable>
-          {root.rule}
-        </div>
-        {root.resolved ? <Check /> : ''}
+        <input
+          className="label"
+          onChange={handleLabelChange}
+          value={root.label}
+          placeholder="formula"
+        ></input>
+        (
+        <input
+          className="rule"
+          onChange={handleRuleChange}
+          value={root.rule}
+          placeholder="rule"
+        />
+        ){root.resolved ? <Check /> : ''}
         {root.closed && <div className="closed-branch-marker">X</div>}
       </div>
       {root.forest.length > 0 &&
@@ -50,6 +74,7 @@ const NodeView: FC<Props> = ({
                 selectNode,
                 getNextNodeId,
                 nodeId: getNextNodeId(),
+                onChange,
               }}
             />
           </div>
@@ -74,6 +99,7 @@ const NodeView: FC<Props> = ({
                       selectNode,
                       getNextNodeId,
                       nodeId: childNodeId,
+                      onChange,
                     }}
                   />
                 </Fragment>
