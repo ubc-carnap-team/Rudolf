@@ -9,7 +9,6 @@ type Props = {
 const PremiseInput: React.FC<Props> = ({ onSubmit, premises, setPremises }) => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
-    const premises: string = (event.currentTarget as any)[0].value
     onSubmit(premises)
   }
   return (

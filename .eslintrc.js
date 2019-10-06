@@ -23,8 +23,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'prettier/@typescript-eslint',
     'prettier/react',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'error',
+    'plugin:jsx-a11y/recommended',
   ],
   root: true,
   env: {
@@ -48,10 +47,13 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'prefer-template': 'error',
-    'jsx-a11y/label-has-associated-control': 'error',
     'react/prop-types': 'off',
     'no-useless-rename': 'error',
     'prefer-destructuring': 'error',
     'object-shorthand': 'warn',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'error',
+    'jsx-a11y/click-events-have-key-events': 'off', // TODO
+    'jsx-a11y/no-static-element-interactions': 'off', // TODO
   },
 }
