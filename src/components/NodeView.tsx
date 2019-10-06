@@ -1,7 +1,7 @@
 import './NodeView.css'
 
 import Check from '@material-ui/icons/Check'
-import React, { FC, Fragment, FormEvent, FormEventHandler } from 'react'
+import React, { FC, Fragment, FormEventHandler } from 'react'
 import LineTo from 'react-lineto'
 
 import { TreeNode } from '../typings/TreeNode'

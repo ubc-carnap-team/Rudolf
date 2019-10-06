@@ -78,7 +78,7 @@ const parseBranch = (inputString: string): TreeNode => {
  */
 export const parsePremises = (formulas: string[]): TreeNode => {
   return formulas
-    .map((formula: string) => makeNode(formula, [], 'Ass'))
+    .map((formula: string) => makeNode(formula, [], 'A'))
     .reduceRight((prev: TreeNode, curr: TreeNode) => ({
       ...curr,
       forest: [prev],
