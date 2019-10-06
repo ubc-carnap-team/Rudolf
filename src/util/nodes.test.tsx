@@ -1,4 +1,5 @@
 import { parseBranch, makeNode, decomposeNode } from './nodes'
+import { TreeNode } from '../typings/TreeNode'
 
 const conclusionNode = makeNode('Q')
 const conditionalNode = makeNode('P->Q', [conclusionNode])
@@ -6,10 +7,14 @@ const ponensTree = makeNode('P', [conditionalNode])
 
 describe(parseBranch, () => {
   it('should parse "P,Q" as two stacked nodes', () => {
-    expect(parseBranch('P,Q')).toMatchObject({
-      formula: 'P',
+    expect(parseBranch('P,Q')).toMatchObject<TreeNode>({
+      label: 'P',
+      rule: '',
       resolved: false,
-      children: [{ formula: 'Q', resolved: false, children: [] }],
+      closed: false,
+      forest: [
+        { label: 'Q', resolved: false, forest: [], rule: '', closed: false },
+      ],
     })
   })
   it('should return null when given ","', () =>
@@ -21,12 +26,7 @@ describe(decomposeNode, () => {
     expect(
       decomposeNode(
         ponensTree,
-        {
-          formula: 'Q/\\~P',
-          resolved: false,
-          children: [],
-          closed: false,
-        },
+        ponensTree,
         // @ts-ignore
         []
       )

@@ -28,16 +28,16 @@ const NodeView: FC<Props> = ({
         className={`node ${nodeId} ${selectedNode === root ? 'selected' : ''} `}
         onClick={() => onClick(root)}
       >
-        {root.formula}
+        {root.label}
         {root.resolved ? <Check /> : ''}
         {root.closed && <div className="closed-branch-marker">X</div>}
       </div>
-      {root.children.length > 0 &&
-        (root.children.length === 1 ? (
+      {root.forest.length > 0 &&
+        (root.forest.length === 1 ? (
           <div className="children stack">
             <NodeView
               {...{
-                root: root.children[0],
+                root: root.forest[0],
                 selectedNode,
                 onClick,
                 getNextNodeId,
@@ -47,7 +47,7 @@ const NodeView: FC<Props> = ({
           </div>
         ) : (
           <div className="children split">
-            {root.children.map((child) => {
+            {root.forest.map((child) => {
               const childNodeId = getNextNodeId()
               return (
                 <Fragment key={childNodeId}>

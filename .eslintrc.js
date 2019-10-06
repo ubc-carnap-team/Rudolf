@@ -15,7 +15,7 @@ module.exports = {
     },
     react: { version: 'detect' },
   },
-  plugins: ['@typescript-eslint', 'jsx-a11y', 'react'],
+  plugins: ['@typescript-eslint', 'jsx-a11y', 'react', 'react-hooks'],
   extends: [
     'plugin:promise/recommended',
     'plugin:react/recommended',
@@ -23,6 +23,8 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'prettier/@typescript-eslint',
     'prettier/react',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'error',
   ],
   root: true,
   env: {
@@ -49,5 +51,7 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 'error',
     'react/prop-types': 'off',
     'no-useless-rename': 'error',
+    'prefer-destructuring': 'error',
+    'object-shorthand': 'warn',
   },
 }
