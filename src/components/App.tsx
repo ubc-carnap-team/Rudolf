@@ -3,7 +3,12 @@ import './App.css'
 import React, { useState } from 'react'
 
 import { LeafNode, TreeNode } from '../typings/TreeNode'
-import { decomposeNode, parseBranch, updateNode } from '../util/nodes'
+import {
+  decomposeNode,
+  parseBranch,
+  updateNode,
+  parsePremises,
+} from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
@@ -55,7 +60,7 @@ const App: React.FC = (): JSX.Element => {
 
   const handleSubmitPremises = (premises: string) => {
     setPremises(premises)
-    setTree(parseBranch(premises))
+    setTree(parsePremises(premises.split(',')))
   }
 
   const resolveNode = (
