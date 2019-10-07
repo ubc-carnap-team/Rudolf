@@ -30,19 +30,28 @@ export const NodeMenu: FC<Props> = ({
     appendChildren(node, () => [makeNode(), makeNode()])
   )
 
-  const resolveNode = update((node) => ({ ...node, resolved: true }))
-
-  const closeBranch = update((node) => ({
+  const toggleResolved = update((node) => ({
     ...node,
-    closed: true,
+    resolved: !node.resolved,
+  }))
+
+  const toggleClosed = update((node) => ({
+    ...node,
+    closed: !node.closed,
   }))
 
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
-      <MenuItem onClick={continueBranch}>Continue branch</MenuItem>
-      <MenuItem onClick={splitBranch}>Split branch</MenuItem>
-      <MenuItem onClick={resolveNode}>Resolve node</MenuItem>
-      {isLeaf(node) && <MenuItem onClick={closeBranch}>Close Branch</MenuItem>}
+      <MenuItem onClick={continueBranch}>Continue Branch</MenuItem>
+      <MenuItem onClick={splitBranch}>Split Branch</MenuItem>
+      <MenuItem onClick={toggleResolved}>
+        Mark as {node.resolved ? 'Un' : ''}Resolved
+      </MenuItem>
+      {isLeaf(node) && (
+        <MenuItem onClick={toggleClosed}>
+          {node.closed ? 'Reopen' : 'Close'} Branch
+        </MenuItem>
+      )}
     </Menu>
   )
 }
