@@ -21,19 +21,6 @@ const App: React.FC = (): JSX.Element => {
     return () => `${count++}`
   })()
 
-  const closeBranch = (selectedNode: LeafNode) => {
-    setTree((oldTree) => {
-      return (
-        oldTree &&
-        updateNode(oldTree, selectedNode, (node: TreeNode) => ({
-          ...node,
-          closed: true,
-        }))
-      )
-    })
-    selectNode(null)
-  }
-
   const handleNodeChange = ({
     node,
     label,

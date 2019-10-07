@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Menu, MenuItem } from '@material-ui/core'
 import { TreeNode, NodeUpdater } from '../typings/TreeNode'
-import { appendChildren, makeNode } from '../util/nodes'
+import { appendChildren, makeNode, isLeaf } from '../util/nodes'
 
 type Props = {
   node: TreeNode
@@ -16,22 +16,33 @@ export const NodeMenu: FC<Props> = ({
   node,
   updateTree,
   anchorEl,
-  onClose,
+  onClose: close,
 }) => {
-  const continueBranch = () => {
-    updateTree(node, (node) => appendChildren(node, () => [makeNode()]))
-    onClose()
+  const update = (updater: NodeUpdater) => () => {
+    updateTree(node, updater)
+    close()
   }
-  const splitBranch = () => {
-    updateTree(node, (node) =>
-      appendChildren(node, () => [makeNode(), makeNode()])
-    )
-    onClose()
-  }
+  const continueBranch = update((node) =>
+    appendChildren(node, () => [makeNode()])
+  )
+
+  const splitBranch = update((node) =>
+    appendChildren(node, () => [makeNode(), makeNode()])
+  )
+
+  const resolveNode = update((node) => ({ ...node, resolved: true }))
+
+  const closeBranch = update((node) => ({
+    ...node,
+    closed: true,
+  }))
+
   return (
-    <Menu open={open} anchorEl={anchorEl} onClose={onClose}>
-      <MenuItem onClick={continueBranch}>Continue branch.</MenuItem>
-      <MenuItem onClick={splitBranch}>Split branch.</MenuItem>
+    <Menu open={open} anchorEl={anchorEl} onClose={close}>
+      <MenuItem onClick={continueBranch}>Continue branch</MenuItem>
+      <MenuItem onClick={splitBranch}>Split branch</MenuItem>
+      <MenuItem onClick={resolveNode}>Resolve node</MenuItem>
+      {isLeaf(node) && <MenuItem onClick={closeBranch}>Close Branch</MenuItem>}
     </Menu>
   )
 }
