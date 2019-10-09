@@ -29,7 +29,27 @@
   border-color: orange;
 }
 
+.node-container input {
+  min-width: 2em;
+  max-width: 5em;
+  width: min-content;
+  background: transparent;
+  font-size: 1em;
+  color: white;
+  border-color: transparent;
+  text-align: center;
+  resize: horizontal;
+  box-sizing: border-box;
+}
+
+.node-container input.rule {
+  max-width: 2em;
+}
+
+.node-container input:focus {
+  border: solid 2px red;
+}
+
 .children.split {
   padding-top: 0.75em;
 }
-

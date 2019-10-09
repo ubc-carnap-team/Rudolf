@@ -1,17 +1,15 @@
-import './PremiseInput.css'
-
 import React, { FormEventHandler } from 'react'
 
 type Props = {
   onSubmit: (premises: string) => void
-  defaultPremises: string
+  premises: string
+  setPremises: (premises: string) => void
 }
 
-const PremiseInput: React.FC<Props> = ({ onSubmit, defaultPremises }) => {
+const PremiseInput: React.FC<Props> = ({ onSubmit, premises, setPremises }) => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
-    console.log(event)
-    const premises: string = (event.currentTarget as any)[0].value
+
     onSubmit(premises)
   }
   return (
@@ -20,10 +18,8 @@ const PremiseInput: React.FC<Props> = ({ onSubmit, defaultPremises }) => {
         type="text"
         name="premises"
         aria-label="Enter Premises"
-        defaultValue={defaultPremises}
-        onSubmit={(event) => {
-          console.log('input submit handler', event)
-        }}
+        value={premises}
+        onChange={(event) => setPremises(event.target.value)}
       />
       <button>Declare Premises</button>
     </form>

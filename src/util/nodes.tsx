@@ -1,4 +1,4 @@
-import { LeafNode, TreeNode } from '../typings/TreeNode'
+import { LeafNode, TreeNode, NodeUpdater } from '../typings/TreeNode'
 
 /**
  *
@@ -19,14 +19,16 @@ export const decomposeNode = (
   return resolveSelectedNode(root, selectedNode, createNodes)
 }
 
-export const makeNode = (
-  formula: string,
-  children: TreeNode[] = []
-): TreeNode => ({
-  formula: formula,
-  children: children,
+export const makeNode = ({
+  label = '',
+  forest = [],
+  rule = '',
+}: Partial<TreeNode> = {}): TreeNode => ({
+  label,
+  forest,
   resolved: false,
   closed: false,
+  rule,
 })
 
 /**
@@ -34,16 +36,16 @@ export const makeNode = (
  * @param root The root of a subTree
  * @param newNodes nodes to append, as-is, to the bottom of all open branches.
  */
-const appendChildren = (
+export const appendChildren = (
   root: TreeNode,
   createNodes: () => TreeNode[]
 ): TreeNode => {
-  if (root.children.length === 0) {
-    return root.closed ? root : { ...root, children: createNodes() }
+  if (root.forest.length === 0) {
+    return root.closed ? root : { ...root, forest: createNodes() }
   } else {
     return {
       ...root,
-      children: root.children.map<TreeNode>((child: TreeNode) =>
+      forest: root.forest.map<TreeNode>((child: TreeNode) =>
         appendChildren(child, createNodes)
       ),
     }
@@ -60,19 +62,27 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
  *
  * @param inputString a comma-separated list of formulas, as a string.
  */
-export const parseBranch = (inputString: string): TreeNode | null => {
-  const formulas = inputString.split(',').filter((formula) => formula) // filter out empty strings
+const parseBranch = (inputString: string): TreeNode => {
+  const formulas = inputString.split(',')
+  return formulas
+    .map((label: string) => makeNode({ label }))
+    .reduceRight((prev: TreeNode, curr: TreeNode) => ({
+      ...curr,
+      forest: [prev],
+    }))
+}
 
-  if (formulas.length) {
-    return formulas
-      .map((formula: string) => makeNode(formula))
-      .reduceRight((prev: TreeNode, curr: TreeNode) => ({
-        ...curr,
-        children: [prev],
-      }))
-  } else {
-    return null
-  }
+/**
+ *
+ * @param formulas an array of of formulas.
+ */
+export const parsePremises = (formulas: string[]): TreeNode => {
+  return formulas
+    .map((label: string) => makeNode({ label, rule: 'A' }))
+    .reduceRight((prev: TreeNode, curr: TreeNode) => ({
+      ...curr,
+      forest: [prev],
+    }))
 }
 
 const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
@@ -95,19 +105,19 @@ const resolveSelectedNode = (
     appendChildren(markResolved(node), createNodes)
   )
 
-export const updateNode = <Updater extends (node: TreeNode) => TreeNode>(
+export const updateNode = (
   root: TreeNode,
   selectedNode: TreeNode,
-  updater: Updater
+  updater: NodeUpdater
 ): TreeNode =>
   root === selectedNode
     ? updater({ ...root })
     : {
         ...root,
-        children: root.children.map((child) =>
+        forest: root.forest.map((child) =>
           updateNode(child, selectedNode, updater)
         ),
       }
 
 export const isLeaf = (node: TreeNode | null): node is LeafNode =>
-  node != null && node.children.length === 0
+  node != null && node.forest.length === 0

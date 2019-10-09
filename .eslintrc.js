@@ -1,3 +1,4 @@
+// @ts-check
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -15,7 +16,7 @@ module.exports = {
     },
     react: { version: 'detect' },
   },
-  plugins: ['@typescript-eslint', 'jsx-a11y', 'react'],
+  plugins: ['@typescript-eslint', 'jsx-a11y', 'react', 'react-hooks'],
   extends: [
     'plugin:promise/recommended',
     'plugin:react/recommended',
@@ -23,6 +24,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'prettier/@typescript-eslint',
     'prettier/react',
+    'plugin:jsx-a11y/recommended',
   ],
   root: true,
   env: {
@@ -37,7 +39,6 @@ module.exports = {
     '@typescript-eslint/promise-function-async': ['error', { allowAny: true }],
     '@typescript-eslint/restrict-plus-operands': 'error',
     '@typescript-eslint/unbound-method': 'warn',
-    '@typescript-eslint/prefer-includes': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/no-for-in-array': 'error',
@@ -46,8 +47,13 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'prefer-template': 'error',
-    'jsx-a11y/label-has-associated-control': 'error',
     'react/prop-types': 'off',
     'no-useless-rename': 'error',
+    'prefer-destructuring': 'error',
+    'object-shorthand': 'warn',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'error',
+    'jsx-a11y/click-events-have-key-events': 'off', // TODO
+    'jsx-a11y/no-static-element-interactions': 'off', // TODO
   },
 }

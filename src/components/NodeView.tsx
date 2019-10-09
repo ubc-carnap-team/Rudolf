@@ -1,53 +1,105 @@
 import './NodeView.css'
 
 import Check from '@material-ui/icons/Check'
-import React, { FC, Fragment } from 'react'
+import React, {
+  FC,
+  Fragment,
+  FormEventHandler,
+  MouseEventHandler,
+  useState,
+  useRef,
+  Ref,
+} from 'react'
 import LineTo from 'react-lineto'
 
-import { TreeNode } from '../typings/TreeNode'
+import { TreeNode, NodeUpdater } from '../typings/TreeNode'
+import { NodeMenu } from './NodeMenu'
 
 type Props = {
-  root: TreeNode
+  node: TreeNode
   selectedNode: TreeNode | null
-  onClick: (_: TreeNode) => void
+  selectNode: (_: TreeNode) => void
   getNextNodeId: () => string
   nodeId: string
+  onChange: (_: { node: TreeNode; label: string; rule: string }) => void
+  updateTree: (node: TreeNode, updater: NodeUpdater) => void
 }
 const NodeView: FC<Props> = ({
-  root,
+  node,
   selectedNode,
-  onClick,
+  selectNode,
   getNextNodeId,
   nodeId,
+  onChange,
+  updateTree,
 }) => {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const nodeRef: Ref<HTMLDivElement> = useRef(null)
+
+  const handleLabelChange: FormEventHandler<HTMLInputElement> = (event) => {
+    onChange({
+      node,
+      label: event.currentTarget.value,
+      rule: node.rule,
+    })
+  }
+
+  const handleContextMenu: MouseEventHandler = (event) => {
+    event.preventDefault()
+    setMenuOpen(true)
+  }
+
+  const handleRuleChange: FormEventHandler<HTMLInputElement> = (event) => {
+    onChange({
+      node,
+      label: node.label,
+      rule: event.currentTarget.value,
+    })
+  }
+
   return (
     <div
-      className={`node-container ${selectedNode === root ? 'selected' : ''}`}
+      className={`node-container ${selectedNode === node ? 'selected' : ''}`}
     >
       <div
-        className={`node ${nodeId} ${selectedNode === root ? 'selected' : ''} `}
-        onClick={() => onClick(root)}
+        className={`node ${nodeId} ${selectedNode === node ? 'selected' : ''} `}
+        onContextMenu={handleContextMenu}
+        ref={nodeRef}
       >
-        {root.formula}
-        {root.resolved ? <Check /> : ''}
-        {root.closed && <div className="closed-branch-marker">X</div>}
+        <input
+          className="label"
+          onChange={handleLabelChange}
+          value={node.label}
+          placeholder="formula"
+        ></input>
+        (
+        <input
+          className="rule"
+          onChange={handleRuleChange}
+          value={node.rule}
+          placeholder="rule"
+        />
+        ){node.resolved ? <Check /> : ''}
+        {node.closed && <div className="closed-branch-marker">X</div>}
       </div>
-      {root.children.length > 0 &&
-        (root.children.length === 1 ? (
+      {node.forest.length > 0 &&
+        (node.forest.length === 1 ? (
           <div className="children stack">
             <NodeView
               {...{
-                root: root.children[0],
+                node: node.forest[0],
                 selectedNode,
-                onClick,
+                selectNode,
                 getNextNodeId,
                 nodeId: getNextNodeId(),
+                onChange,
+                updateTree,
               }}
             />
           </div>
         ) : (
           <div className="children split">
-            {root.children.map((child) => {
+            {node.forest.map((child) => {
               const childNodeId = getNextNodeId()
               return (
                 <Fragment key={childNodeId}>
@@ -61,11 +113,13 @@ const NodeView: FC<Props> = ({
                   />
                   <NodeView
                     {...{
-                      root: child,
+                      node: child,
                       selectedNode,
-                      onClick,
+                      selectNode,
                       getNextNodeId,
                       nodeId: childNodeId,
+                      onChange,
+                      updateTree,
                     }}
                   />
                 </Fragment>
@@ -73,6 +127,13 @@ const NodeView: FC<Props> = ({
             })}
           </div>
         ))}
+      <NodeMenu
+        open={menuOpen}
+        node={node}
+        onClose={() => setMenuOpen(false)}
+        updateTree={updateTree}
+        anchorEl={nodeRef.current as Element}
+      />
     </div>
   )
 }

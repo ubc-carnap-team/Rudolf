@@ -3,15 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.2.0",
+    "@babel/core": "^7.6.2",
+    "@material-ui/core": "^4.5.0",
     "@material-ui/icons": "^4.2.1",
     "@types/jest": "24.0.15",
     "@types/node": "^12.0.12",
     "@types/react": "^16.8.23",
     "@types/react-dom": "16.8.4",
-    "@typescript-eslint/eslint-plugin": "^1.11.0",
-    "@typescript-eslint/parser": "^1.11.0",
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
+    "@typescript-eslint/parser": "^2.3.2",
     "bootstrap": "^4.3.1",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.2",
@@ -20,20 +23,19 @@
     "react-bootstrap-modal": "^4.2.0",
     "react-dom": "^16.8.6",
     "react-lineto": "^3.1.3",
-    "react-scripts": "3.0.1",
-    "react-vertical-tree": "^1.1.7",
+    "react-scripts": "^3.2.0",
     "serve": "^11.0.2",
     "styled-components": "^4.3.2",
     "ts-essentials": "^3.0.0",
     "ts-optchain": "^0.1.7",
-    "typescript": "^3.5.2"
+    "typescript": "^3.6.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "yarn eslint --ext '.ts,.tsx' src",
+    "lint": "yarn eslint --ext '.ts,.tsx' src --fix",
     "eslint-check": "eslint --print-config ./src/App.tsx | eslint-config-prettier-check"
   },
   "browserslist": {
@@ -47,8 +49,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "eslint-config-prettier": "^6.0.0"
   }
 }
