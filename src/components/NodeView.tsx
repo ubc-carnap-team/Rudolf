@@ -1,5 +1,3 @@
-import './NodeView.css'
-
 import Check from '@material-ui/icons/Check'
 import React, {
   FC,

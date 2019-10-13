@@ -91,10 +91,9 @@ const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
 ]) => () => {
   const leftBranch: () => TreeNode | null = () => parseBranch(leftBranchInput)
   const rightBranch: () => TreeNode | null = () => parseBranch(rightBranchInput)
-  const newNodes = [leftBranch(), rightBranch()].filter(
+  return [leftBranch(), rightBranch()].filter(
     (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
   )
-  return newNodes
 }
 const resolveSelectedNode = (
   root: TreeNode,

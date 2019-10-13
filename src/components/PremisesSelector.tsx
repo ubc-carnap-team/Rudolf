@@ -1,5 +1,3 @@
-import './PremisesSelector.css'
-
 import React, { ChangeEventHandler } from 'react'
 
 type Props = {
