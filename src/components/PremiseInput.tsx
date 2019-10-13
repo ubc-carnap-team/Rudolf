@@ -9,6 +9,7 @@ type Props = {
 const PremiseInput: React.FC<Props> = ({ onSubmit, premises, setPremises }) => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
+
     onSubmit(premises)
   }
   return (

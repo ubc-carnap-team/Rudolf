@@ -106,7 +106,7 @@ const NodeView: FC<Props> = ({
                   <LineTo
                     from={nodeId}
                     to={childNodeId}
-                    borderColor="white"
+                    borderColor="black"
                     fromAnchor="bottom"
                     toAnchor="top"
                     delay={0}
