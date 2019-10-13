@@ -35,7 +35,7 @@
   width: min-content;
   background: transparent;
   font-size: 1em;
-  color: white;
+  color: black;
   border-color: transparent;
   text-align: center;
   resize: horizontal;
@@ -47,7 +47,7 @@
 }
 
 .node-container input:focus {
-  border: solid 2px red;
+  border: solid 2px blue;
 }
 
 .children.split {
