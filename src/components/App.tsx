@@ -14,11 +14,6 @@ const App: React.FC = (): JSX.Element => {
   const [tree, setTree] = useState<TreeNode>(exampleTree)
   const [premises, setPremises] = useState<string>(defaultPremises)
 
-  const getNextNodeId = (() => {
-    let count = 0
-    return () => `${count++}`
-  })()
-
   const handleNodeChange = ({
     node,
     label,
@@ -56,8 +51,6 @@ const App: React.FC = (): JSX.Element => {
           node={tree}
           selectNode={selectNode}
           selectedNode={selectedNode}
-          getNextNodeId={getNextNodeId}
-          nodeId={getNextNodeId()}
           onChange={handleNodeChange}
           updateTree={(node: TreeNode, updater: NodeUpdater) =>
             setTree(updateNode(tree, node, updater))
