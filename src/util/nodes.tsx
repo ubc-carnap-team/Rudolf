@@ -74,7 +74,16 @@ export const parsePremises = (formulas: string[], parentId = ''): TreeNode => {
   return makeNode({
     label: formulas[0],
     rule: 'A',
-    forest: formulas.length ? [parsePremises(formulas.slice(1), id)] : [],
+    forest: formulas.length > 1 ? [parsePremises(formulas.slice(1), id)] : [],
+    id,
+  })
+}
+
+const makeBranch = (formulas: string[], parentId: string): TreeNode => {
+  const id = `${parentId}0`
+  return makeNode({
+    label: formulas[0],
+    forest: [makeBranch(formulas.slice(1), id)],
     id,
   })
 }
