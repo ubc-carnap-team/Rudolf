@@ -1,0 +1,29 @@
+.App {
+  background-color: #fffff8;
+  text-align: center;
+  height: 100%;
+  color: black;
+}
+
+.App-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  height: 100%;
+}
+
+button.submit-premises {
+  font-family: Book Antiqua;
+  margin-left: 8px;
+}
+
+select {
+  margin-bottom: 20px;
+  font-family: Book Antiqua;
+}
+
+button {
+  margin: 5px 5px 0 0;
+}
