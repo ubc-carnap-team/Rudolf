@@ -63,14 +63,6 @@ const App: React.FC = (): JSX.Element => {
             setTree(updateNode(tree, node, updater))
           }
         />
-        {/* <ResolutionModal
-          {...{
-            selectedNode,
-            resolveNode,
-            closeBranch,
-            handleClose: () => selectNode(null),
-          }}
-        /> */}
       </main>
     </div>
   )
