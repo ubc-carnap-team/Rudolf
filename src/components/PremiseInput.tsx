@@ -21,9 +21,7 @@ const PremiseInput: React.FC<Props> = ({ onSubmit, premises, setPremises }) => {
         value={premises}
         onChange={(event) => setPremises(event.target.value)}
       />
-      <button className="submit-premises" type="submit">
-        Declare Premises
-      </button>
+      <button>Declare Premises</button>
     </form>
   )
 }

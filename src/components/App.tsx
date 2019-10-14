@@ -1,7 +1,9 @@
+import './App.css'
+
 import React, { useState } from 'react'
 
-import { TreeNode, NodeUpdater } from '../typings/TreeNode'
-import { updateNode, parsePremises } from '../util/nodes'
+import { LeafNode, TreeNode, NodeUpdater } from '../typings/TreeNode'
+import { decomposeNode, updateNode, parsePremises } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
@@ -42,6 +44,19 @@ const App: React.FC = (): JSX.Element => {
     setTree(parsePremises(premises.split(',')))
   }
 
+  const resolveNode = (
+    selectedNode: TreeNode,
+    nodeInput: [string, string]
+  ): void => {
+    // call decomposeNode inside setTree to make changes to tree State,
+    setTree(
+      (oldTree: TreeNode) =>
+        oldTree && decomposeNode(oldTree, selectedNode, nodeInput)
+    )
+    // unselect current node
+    selectNode(null)
+  }
+
   return (
     <div className="App">
       <main className="App-main">
@@ -63,6 +78,14 @@ const App: React.FC = (): JSX.Element => {
             setTree(updateNode(tree, node, updater))
           }
         />
+        {/* <ResolutionModal
+          {...{
+            selectedNode,
+            resolveNode,
+            closeBranch,
+            handleClose: () => selectNode(null),
+          }}
+        /> */}
       </main>
     </div>
   )

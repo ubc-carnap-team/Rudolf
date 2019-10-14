@@ -1,0 +1,55 @@
+.split {
+  display: flex;
+  /* flex-direction: row; */
+}
+
+.stack {
+  display: block;
+}
+
+.node {
+  display: block;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+}
+
+.node.selected {
+  border-style: solid;
+  border-color: red;
+}
+
+.node-container {
+  display: inline-block;
+  padding: 0.2em;
+  text-align: center;
+}
+
+.node-container.selected > .children {
+  border-style: solid;
+  border-color: orange;
+}
+
+.node-container input {
+  min-width: 2em;
+  max-width: 5em;
+  width: min-content;
+  background: transparent;
+  font-size: 1em;
+  color: black;
+  border-color: transparent;
+  text-align: center;
+  resize: horizontal;
+  box-sizing: border-box;
+}
+
+.node-container input.rule {
+  max-width: 2em;
+}
+
+.node-container input:focus {
+  border: solid 2px blue;
+}
+
+.children.split {
+  padding-top: 0.75em;
+}
