@@ -57,7 +57,7 @@ const NodeView: FC<Props> = ({
       className={`node-container ${selectedNode === node ? 'selected' : ''}`}
     >
       <div
-        className={`node ${node.id} ${
+        className={`node node-id=${node.id} ${
           selectedNode === node ? 'selected' : ''
         } `}
         onContextMenu={handleContextMenu}

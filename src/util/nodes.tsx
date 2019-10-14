@@ -65,19 +65,6 @@ export const appendChildren = (
  */
 const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
 
-const makeBranch = (formulas: string[], parentId: string): TreeNode => {
-  const id = `${parentId}0`
-  return makeNode({
-    label: formulas[0],
-    forest: [makeBranch(formulas.slice(1), id)],
-    id,
-  })
-}
-
-export const parseBranch = (formulas: string, parentId: string): TreeNode => {
-  return makeBranch(formulas.split(','), parentId)
-}
-
 /**
  *
  * @param formulas an array of of formulas.
