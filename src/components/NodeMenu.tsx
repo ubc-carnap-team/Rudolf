@@ -23,11 +23,14 @@ export const NodeMenu: FC<Props> = ({
     close()
   }
   const continueBranch = update((node) =>
-    appendChildren(node, () => [makeNode()])
+    appendChildren(node, (id) => [makeNode({ id: `${id}0` })])
   )
 
   const splitBranch = update((node) =>
-    appendChildren(node, () => [makeNode(), makeNode()])
+    appendChildren(node, (id) => [
+      makeNode({ id: `${id}0` }),
+      makeNode({ id: `${id}1` }),
+    ])
   )
 
   const toggleResolved = update((node) => ({

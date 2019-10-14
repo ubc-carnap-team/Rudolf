@@ -1,4 +1,9 @@
-import { LeafNode, TreeNode, NodeUpdater } from '../typings/TreeNode'
+import {
+  LeafNode,
+  TreeNode,
+  NodeUpdater,
+  NodeGenerator,
+} from '../typings/TreeNode'
 
 /**
  *
@@ -23,12 +28,14 @@ export const makeNode = ({
   label = '',
   forest = [],
   rule = '',
-}: Partial<TreeNode> = {}): TreeNode => ({
+  id,
+}: Partial<TreeNode> & { id: string }): TreeNode => ({
   label,
   forest,
   resolved: false,
   closed: false,
   rule,
+  id,
 })
 
 /**
@@ -38,10 +45,10 @@ export const makeNode = ({
  */
 export const appendChildren = (
   root: TreeNode,
-  createNodes: () => TreeNode[]
+  createNodes: NodeGenerator
 ): TreeNode => {
   if (root.forest.length === 0) {
-    return root.closed ? root : { ...root, forest: createNodes() }
+    return root.closed ? root : { ...root, forest: createNodes(root.id) }
   } else {
     return {
       ...root,
@@ -60,45 +67,41 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
 
 /**
  *
- * @param inputString a comma-separated list of formulas, as a string.
- */
-const parseBranch = (inputString: string): TreeNode => {
-  const formulas = inputString.split(',')
-  return formulas
-    .map((label: string) => makeNode({ label }))
-    .reduceRight((prev: TreeNode, curr: TreeNode) => ({
-      ...curr,
-      forest: [prev],
-    }))
-}
-
-/**
- *
  * @param formulas an array of of formulas.
  */
-export const parsePremises = (formulas: string[]): TreeNode => {
-  return formulas
-    .map((label: string) => makeNode({ label, rule: 'A' }))
-    .reduceRight((prev: TreeNode, curr: TreeNode) => ({
-      ...curr,
-      forest: [prev],
-    }))
+export const parsePremises = (formulas: string[], parentId = ''): TreeNode => {
+  const id = `${parentId}0`
+  return makeNode({
+    label: formulas[0],
+    rule: 'A',
+    forest: formulas.length > 1 ? [parsePremises(formulas.slice(1), id)] : [],
+    id,
+  })
+}
+
+const makeBranch = (formulas: string[], parentId: string): TreeNode => {
+  const id = `${parentId}0`
+  return makeNode({
+    label: formulas[0],
+    forest: [makeBranch(formulas.slice(1), id)],
+    id,
+  })
 }
 
 const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
   string,
   string
-]) => () => {
-  const leftBranch: () => TreeNode | null = () => parseBranch(leftBranchInput)
-  const rightBranch: () => TreeNode | null = () => parseBranch(rightBranchInput)
-  return [leftBranch(), rightBranch()].filter(
+]) => (parentId: string) => {
+  const leftBranch = makeBranch(leftBranchInput.split(','), parentId)
+  const rightBranch = makeBranch(rightBranchInput.split(','), parentId)
+  return [leftBranch, rightBranch].filter(
     (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
   )
 }
 const resolveSelectedNode = (
   root: TreeNode,
   selectedNode: TreeNode,
-  createNodes: () => TreeNode[]
+  createNodes: NodeGenerator
 ): TreeNode =>
   updateNode(root, selectedNode, (node) =>
     appendChildren(markResolved(node), createNodes)

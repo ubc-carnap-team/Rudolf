@@ -4,7 +4,10 @@ export interface TreeNode {
   resolved: boolean
   closed: boolean
   rule: string
+  id: string
 }
+
+export type NodeGenerator = (parentId: string) => TreeNode[]
 
 export type NodeUpdater = (node: TreeNode) => TreeNode
 

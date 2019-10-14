@@ -17,8 +17,6 @@ type Props = {
   node: TreeNode
   selectedNode: TreeNode | null
   selectNode: (_: TreeNode) => void
-  getNextNodeId: () => string
-  nodeId: string
   onChange: (_: { node: TreeNode; label: string; rule: string }) => void
   updateTree: (node: TreeNode, updater: NodeUpdater) => void
 }
@@ -26,8 +24,7 @@ const NodeView: FC<Props> = ({
   node,
   selectedNode,
   selectNode,
-  getNextNodeId,
-  nodeId,
+
   onChange,
   updateTree,
 }) => {
@@ -60,7 +57,9 @@ const NodeView: FC<Props> = ({
       className={`node-container ${selectedNode === node ? 'selected' : ''}`}
     >
       <div
-        className={`node ${nodeId} ${selectedNode === node ? 'selected' : ''} `}
+        className={`node node-id=${node.id} ${
+          selectedNode === node ? 'selected' : ''
+        } `}
         onContextMenu={handleContextMenu}
         ref={nodeRef}
       >
@@ -88,8 +87,6 @@ const NodeView: FC<Props> = ({
                 node: node.forest[0],
                 selectedNode,
                 selectNode,
-                getNextNodeId,
-                nodeId: getNextNodeId(),
                 onChange,
                 updateTree,
               }}
@@ -98,12 +95,11 @@ const NodeView: FC<Props> = ({
         ) : (
           <div className="children split">
             {node.forest.map((child) => {
-              const childNodeId = getNextNodeId()
               return (
-                <Fragment key={childNodeId}>
+                <Fragment key={child.id}>
                   <LineTo
-                    from={nodeId}
-                    to={childNodeId}
+                    from={node.id}
+                    to={child.id}
                     borderColor="black"
                     fromAnchor="bottom"
                     toAnchor="top"
@@ -114,8 +110,6 @@ const NodeView: FC<Props> = ({
                       node: child,
                       selectedNode,
                       selectNode,
-                      getNextNodeId,
-                      nodeId: childNodeId,
                       onChange,
                       updateTree,
                     }}
