@@ -27,6 +27,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: black;
+  height: 100%;
 }
 
 .App-link {
@@ -40,4 +41,22 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+button.submit-premises {
+  font-family: Book Antiqua;
+  margin-left: 8px;
+}
+
+select {
+  margin-bottom: 20px;
+  font-family: Book Antiqua;
+}
+
+.modal-90w {
+  width: 30%;
+}
+
+button {
+  margin: 5px 5px 0 0;
 }

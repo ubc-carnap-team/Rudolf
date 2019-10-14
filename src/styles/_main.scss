@@ -1,5 +1,7 @@
-@import 'App.scss';
-@import 'NodeView.scss';
-@import 'PremisesSelector.scss';
-@import 'PremiseInput.scss';
-@import 'ResolutionModal.scss';
+@import 'App', 'nodes';
+
+html,
+body,
+#root {
+  height: 100%;
+}
