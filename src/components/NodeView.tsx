@@ -98,8 +98,8 @@ const NodeView: FC<Props> = ({
               return (
                 <Fragment key={child.id}>
                   <LineTo
-                    from={node.id}
-                    to={child.id}
+                    from={`node-id=${node.id}`}
+                    to={`node-id=${child.id}`}
                     borderColor="black"
                     fromAnchor="bottom"
                     toAnchor="top"
