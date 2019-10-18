@@ -1,7 +1,8 @@
-import React, { FC } from 'react'
 import { Menu, MenuItem } from '@material-ui/core'
-import { TreeNode, NodeUpdater } from '../typings/TreeNode'
-import { appendChildren, makeNode, isLeaf } from '../util/nodes'
+import React, { FC } from 'react'
+
+import { NodeUpdater, TreeNode } from '../typings/TreeNode'
+import { appendChildren, isLeaf, makeNode } from '../util/nodes'
 
 type Props = {
   node: TreeNode
@@ -23,13 +24,15 @@ export const NodeMenu: FC<Props> = ({
     close()
   }
   const continueBranch = update((node) =>
-    appendChildren(node, (id) => [makeNode({ id: `${id}0` })])
+    appendChildren(node, (id, row) => [
+      makeNode({ id: `${id}0`, row: row + 1 }),
+    ])
   )
 
   const splitBranch = update((node) =>
-    appendChildren(node, (id) => [
-      makeNode({ id: `${id}0` }),
-      makeNode({ id: `${id}1` }),
+    appendChildren(node, (id, row) => [
+      makeNode({ id: `${id}0`, row: row + 1 }),
+      makeNode({ id: `${id}1`, row: row + 1 }),
     ])
   )
 

@@ -1,16 +1,8 @@
 import Check from '@material-ui/icons/Check'
-import React, {
-  FC,
-  Fragment,
-  FormEventHandler,
-  MouseEventHandler,
-  useState,
-  useRef,
-  Ref,
-} from 'react'
+import React, { FC, FormEventHandler, Fragment, MouseEventHandler, Ref, useRef, useState } from 'react'
 import LineTo from 'react-lineto'
 
-import { TreeNode, NodeUpdater } from '../typings/TreeNode'
+import { NodeUpdater, TreeNode } from '../typings/TreeNode'
 import { NodeMenu } from './NodeMenu'
 
 type Props = {
@@ -63,6 +55,7 @@ const NodeView: FC<Props> = ({
         onContextMenu={handleContextMenu}
         ref={nodeRef}
       >
+        <a className="node-row">{node.row}.</a>
         <input
           className="label"
           onChange={handleLabelChange}
