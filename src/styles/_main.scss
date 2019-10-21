@@ -1,7 +1,10 @@
-@import 'App', 'nodes';
+@import 'App', 'nodes', 'mixins';
 
 html,
-body,
-#root {
+#root,
+main,
+body {
+  @include logic-fonts;
   height: 100%;
+  margin: 0;
 }

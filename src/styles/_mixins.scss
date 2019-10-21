@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'FiraLogic';
+  src: local('FiraLogic'),
+    url(../assets/FiraLogic/dist/FiraLogic-Regular.woff) format('woff');
+}
+
+@mixin logic-fonts {
+  font-family: 'FiraLogic', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
