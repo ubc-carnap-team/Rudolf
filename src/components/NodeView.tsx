@@ -1,5 +1,6 @@
 import Check from '@material-ui/icons/Check'
-import React, { FC, FormEventHandler, Fragment, MouseEventHandler, Ref, useRef, useState } from 'react'
+import React, { ChangeEventHandler, FC, Fragment, MouseEventHandler, Ref, useRef, useState } from 'react'
+import AutoSizeInput from 'react-input-autosize'
 import LineTo from 'react-lineto'
 
 import { NodeUpdater, TreeNode } from '../typings/TreeNode'
@@ -26,7 +27,7 @@ const NodeView: FC<Props> = ({
   const [menuOpen, setMenuOpen] = useState(false)
   const nodeRef: Ref<HTMLDivElement> = useRef(null)
 
-  const handleLabelChange: FormEventHandler<HTMLInputElement> = (event) => {
+  const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     onChange({
       node,
       label: event.currentTarget.value,
@@ -39,7 +40,7 @@ const NodeView: FC<Props> = ({
     setMenuOpen(true)
   }
 
-  const handleRuleChange: FormEventHandler<HTMLInputElement> = (event) => {
+  const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     onChange({
       node,
       label: node.label,
@@ -64,9 +65,9 @@ const NodeView: FC<Props> = ({
           onChange={handleLabelChange}
           value={node.label}
           placeholder="formula"
-        ></input>
+        />
         (
-        <input
+        <AutoSizeInput
           className="rule"
           onChange={handleRuleChange}
           value={node.rule}

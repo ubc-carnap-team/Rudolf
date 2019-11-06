@@ -4,6 +4,11 @@ type Props = {
   onChange: (premises: string) => void
 }
 
+const examples = [
+  ['P->Q,P,~Q', 'Modus Ponens'],
+  ['~(~(P\\/Q)<->(~P/\\~Q))', "De Morgen's Law"],
+]
+
 const PremisesSelector: React.FC<Props> = ({ onChange }) => {
   const handleSelect: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const premises: string = event.currentTarget.value
@@ -12,8 +17,11 @@ const PremisesSelector: React.FC<Props> = ({ onChange }) => {
 
   return (
     <select onChange={handleSelect} onBlur={handleSelect}>
-      <option value="P->Q,P,~Q">Modus Ponens</option>
-      <option value="~(P\/Q),~P\/~Q">De Morgen&apos;s Law</option>
+      {examples.map(([value, name]) => (
+        <option value={value} key={value}>
+          {name}
+        </option>
+      ))}
     </select>
   )
 }
