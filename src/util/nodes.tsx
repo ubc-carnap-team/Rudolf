@@ -27,7 +27,10 @@ export const makeNode = ({
   rule = '',
   id,
   row,
-}: Partial<TreeNode> & { id: string; row: number }): TreeNode => ({
+}: Partial<TreeNode> & {
+  id: string
+  row: number
+}): TreeNode => ({
   label,
   forest,
   resolved: false,
@@ -35,6 +38,7 @@ export const makeNode = ({
   rule,
   id,
   row,
+  split: false,
 })
 
 /**

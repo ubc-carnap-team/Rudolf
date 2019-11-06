@@ -13,6 +13,13 @@ const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
   const [tree, setTree] = useState<TreeNode>(exampleTree)
   const [premises, setPremises] = useState<string>(defaultPremises)
+  const [currentMaxRow, setRow] = useState<number>(
+    exampleTree.forest.length + 2
+  )
+
+  const incrementRow = () => {
+    setRow(currentMaxRow + 1)
+  }
 
   const handleNodeChange = ({
     node,
@@ -35,13 +42,13 @@ const App: React.FC = (): JSX.Element => {
   const handleSubmitPremises = (premises: string) => {
     setPremises(premises)
     setTree(parsePremises(premises.split(',')))
+    setRow(tree.forest.length + 1)
   }
 
   return (
     <div className="App">
       <main className="App-main">
         <PremisesSelector onChange={handleSubmitPremises} />
-
         <PremiseInput
           premises={premises}
           onSubmit={handleSubmitPremises}
@@ -50,6 +57,8 @@ const App: React.FC = (): JSX.Element => {
         <NodeView
           node={tree}
           selectNode={selectNode}
+          currentMaxRow={currentMaxRow}
+          incrementRow={incrementRow}
           selectedNode={selectedNode}
           onChange={handleNodeChange}
           updateTree={(node: TreeNode, updater: NodeUpdater) =>

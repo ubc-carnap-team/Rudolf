@@ -11,14 +11,17 @@ type Props = {
   selectNode: (_: TreeNode) => void
   onChange: (_: { node: TreeNode; label: string; rule: string }) => void
   updateTree: (node: TreeNode, updater: NodeUpdater) => void
+  currentMaxRow: number
+  incrementRow: () => void
 }
 const NodeView: FC<Props> = ({
   node,
   selectedNode,
   selectNode,
-
   onChange,
   updateTree,
+  currentMaxRow,
+  incrementRow,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const nodeRef: Ref<HTMLDivElement> = useRef(null)
@@ -55,7 +58,7 @@ const NodeView: FC<Props> = ({
         onContextMenu={handleContextMenu}
         ref={nodeRef}
       >
-        <a className="node-row">{node.row}.</a>
+        <a>{node.row} .</a>
         <input
           className="label"
           onChange={handleLabelChange}
@@ -72,6 +75,7 @@ const NodeView: FC<Props> = ({
         ){node.resolved ? <Check /> : ''}
         {node.closed && <div className="closed-branch-marker">X</div>}
       </div>
+
       {node.forest.length > 0 &&
         (node.forest.length === 1 ? (
           <div className="children stack">
@@ -82,6 +86,8 @@ const NodeView: FC<Props> = ({
                 selectNode,
                 onChange,
                 updateTree,
+                currentMaxRow,
+                incrementRow,
               }}
             />
           </div>
@@ -105,6 +111,8 @@ const NodeView: FC<Props> = ({
                       selectNode,
                       onChange,
                       updateTree,
+                      currentMaxRow,
+                      incrementRow,
                     }}
                   />
                 </Fragment>
@@ -118,6 +126,8 @@ const NodeView: FC<Props> = ({
         onClose={() => setMenuOpen(false)}
         updateTree={updateTree}
         anchorEl={nodeRef.current as Element}
+        currentMaxRow={currentMaxRow}
+        incrementRow={incrementRow}
       />
     </div>
   )

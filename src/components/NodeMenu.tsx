@@ -10,6 +10,8 @@ type Props = {
   updateTree: (node: TreeNode, updater: NodeUpdater) => void
   open: boolean
   anchorEl: Element
+  currentMaxRow: number
+  incrementRow: () => void
 }
 
 export const NodeMenu: FC<Props> = ({
@@ -18,23 +20,36 @@ export const NodeMenu: FC<Props> = ({
   updateTree,
   anchorEl,
   onClose: close,
+  currentMaxRow,
+  incrementRow,
 }) => {
   const update = (updater: NodeUpdater) => () => {
     updateTree(node, updater)
     close()
   }
+
   const continueBranch = update((node) =>
-    appendChildren(node, (id, row) => [
-      makeNode({ id: `${id}0`, row: row + 1 }),
+    appendChildren(node, (id) => [
+      makeNode({ id: `${id}0`, row: currentMaxRow + 1 }),
     ])
   )
 
   const splitBranch = update((node) =>
-    appendChildren(node, (id, row) => [
-      makeNode({ id: `${id}0`, row: row + 1 }),
-      makeNode({ id: `${id}1`, row: row + 1 }),
+    appendChildren(node, (id) => [
+      makeNode({
+        id: `${id}0`,
+        row: currentMaxRow + 1,
+      }),
+      makeNode({
+        id: `${id}1`,
+        row: currentMaxRow + 1,
+      }),
     ])
   )
+
+  const splitBranchUpdate = () => (incrementRow(), splitBranch())
+
+  const continueBranchUpdate = () => (incrementRow(), continueBranch())
 
   const toggleResolved = update((node) => ({
     ...node,
@@ -48,8 +63,8 @@ export const NodeMenu: FC<Props> = ({
 
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
-      <MenuItem onClick={continueBranch}>Continue Branch</MenuItem>
-      <MenuItem onClick={splitBranch}>Split Branch</MenuItem>
+      <MenuItem onClick={continueBranchUpdate}>Continue Branch</MenuItem>
+      <MenuItem onClick={splitBranchUpdate}>Split Branch</MenuItem>
       <MenuItem onClick={toggleResolved}>
         Mark as {node.resolved ? 'Un' : ''}Resolved
       </MenuItem>
