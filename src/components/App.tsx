@@ -13,12 +13,10 @@ const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
   const [tree, setTree] = useState<TreeNode>(exampleTree)
   const [premises, setPremises] = useState<string>(defaultPremises)
-  const [currentMaxRow, setRow] = useState<number>(
-    exampleTree.forest.length + 2
-  )
+  const [maxRow, setRow] = useState<number>(exampleTree.forest.length + 2)
 
   const incrementRow = () => {
-    setRow(currentMaxRow + 1)
+    setRow(maxRow + 1)
   }
 
   const handleNodeChange = ({
@@ -57,7 +55,7 @@ const App: React.FC = (): JSX.Element => {
         <NodeView
           node={tree}
           selectNode={selectNode}
-          currentMaxRow={currentMaxRow}
+          maxRow={maxRow}
           incrementRow={incrementRow}
           selectedNode={selectedNode}
           onChange={handleNodeChange}

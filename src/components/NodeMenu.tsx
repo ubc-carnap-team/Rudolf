@@ -10,7 +10,7 @@ type Props = {
   updateTree: (node: TreeNode, updater: NodeUpdater) => void
   open: boolean
   anchorEl: Element
-  currentMaxRow: number
+  maxRow: number
   incrementRow: () => void
 }
 
@@ -20,7 +20,7 @@ export const NodeMenu: FC<Props> = ({
   updateTree,
   anchorEl,
   onClose: close,
-  currentMaxRow,
+  maxRow,
   incrementRow,
 }) => {
   const update = (updater: NodeUpdater) => () => {
@@ -29,20 +29,18 @@ export const NodeMenu: FC<Props> = ({
   }
 
   const continueBranch = update((node) =>
-    appendChildren(node, (id) => [
-      makeNode({ id: `${id}0`, row: currentMaxRow + 1 }),
-    ])
+    appendChildren(node, (id) => [makeNode({ id: `${id}0`, row: maxRow + 1 })])
   )
 
   const splitBranch = update((node) =>
     appendChildren(node, (id) => [
       makeNode({
         id: `${id}0`,
-        row: currentMaxRow + 1,
+        row: maxRow + 1,
       }),
       makeNode({
         id: `${id}1`,
-        row: currentMaxRow + 1,
+        row: maxRow + 1,
       }),
     ])
   )
