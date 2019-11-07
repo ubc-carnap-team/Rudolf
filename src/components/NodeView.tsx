@@ -12,7 +12,7 @@ type Props = {
   selectNode: (_: TreeNode) => void
   onChange: (_: { node: TreeNode; label: string; rule: string }) => void
   updateTree: (node: TreeNode, updater: NodeUpdater) => void
-  maxRow: number
+  nextRow: number
   incrementRow: () => void
 }
 const NodeView: FC<Props> = ({
@@ -21,7 +21,7 @@ const NodeView: FC<Props> = ({
   selectNode,
   onChange,
   updateTree,
-  maxRow,
+  nextRow,
   incrementRow,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -87,7 +87,7 @@ const NodeView: FC<Props> = ({
                 selectNode,
                 onChange,
                 updateTree,
-                maxRow,
+                nextRow,
                 incrementRow,
               }}
             />
@@ -112,7 +112,7 @@ const NodeView: FC<Props> = ({
                       selectNode,
                       onChange,
                       updateTree,
-                      maxRow,
+                      nextRow,
                       incrementRow,
                     }}
                   />
@@ -127,7 +127,7 @@ const NodeView: FC<Props> = ({
         onClose={() => setMenuOpen(false)}
         updateTree={updateTree}
         anchorEl={nodeRef.current as Element}
-        maxRow={maxRow}
+        nextRow={nextRow}
         incrementRow={incrementRow}
       />
     </div>
