@@ -6,7 +6,6 @@ export interface TreeNode {
   rule: string
   id: string
   row: number
-  split: boolean
 }
 
 export type NodeGenerator = (parentId: string, parentRow: number) => TreeNode[]

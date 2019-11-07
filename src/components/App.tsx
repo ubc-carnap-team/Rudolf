@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { NodeUpdater, TreeNode } from '../typings/TreeNode'
-import { parsePremises, updateNode } from '../util/nodes'
+import { countPremises, parsePremises, updateNode } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
@@ -40,7 +40,7 @@ const App: React.FC = (): JSX.Element => {
   const handleSubmitPremises = (premises: string) => {
     setPremises(premises)
     setTree(parsePremises(premises.split(',')))
-    setRow(tree.forest.length + 1)
+    setRow(countPremises(premises.split(',')))
   }
 
   return (

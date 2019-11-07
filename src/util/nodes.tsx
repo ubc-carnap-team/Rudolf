@@ -38,7 +38,6 @@ export const makeNode = ({
   rule,
   id,
   row,
-  split: false,
 })
 
 /**
@@ -89,6 +88,11 @@ export const parsePremises = (
     id,
     row,
   })
+}
+
+export const countPremises = (formulas: string[], count = 0): number => {
+  count = formulas.length
+  return count
 }
 
 const makeBranch = (
