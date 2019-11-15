@@ -1,5 +1,14 @@
 import Check from '@material-ui/icons/Check'
-import React, { ChangeEventHandler, FC, Fragment, MouseEventHandler, Ref, useRef, useState } from 'react'
+import React, {
+  ChangeEventHandler,
+  FC,
+  Fragment,
+  MouseEventHandler,
+  Ref,
+  useRef,
+  useState,
+  ReactNode,
+} from 'react'
 import AutoSizeInput from 'react-input-autosize'
 import LineTo from 'react-lineto'
 
@@ -15,6 +24,17 @@ type Props = {
   nextRow: number
   incrementRow: () => void
 }
+
+const Spacers = ({ diff }: { diff: number }) => {
+  const spacers: JSX.Element[] = []
+  const i = diff - 1
+  while (spacers.length < i) {
+    spacers.push(<div className="spacer" />)
+  }
+
+  return <>{spacers}</>
+}
+
 const NodeView: FC<Props> = ({
   node,
   selectedNode,
@@ -59,7 +79,7 @@ const NodeView: FC<Props> = ({
         onContextMenu={handleContextMenu}
         ref={nodeRef}
       >
-        <a>{node.row} .</a>
+        <span>{node.row} .</span>
         <input
           className="label"
           onChange={handleLabelChange}
@@ -80,6 +100,7 @@ const NodeView: FC<Props> = ({
       {node.forest.length > 0 &&
         (node.forest.length === 1 ? (
           <div className="children stack">
+            <Spacers diff={node.forest[0].row - node.row} />
             <NodeView
               {...{
                 node: node.forest[0],
@@ -97,6 +118,7 @@ const NodeView: FC<Props> = ({
             {node.forest.map((child) => {
               return (
                 <Fragment key={child.id}>
+                  <Spacers diff={child.row - node.row} />
                   <LineTo
                     from={`node-id=${node.id}`}
                     to={`node-id=${child.id}`}
