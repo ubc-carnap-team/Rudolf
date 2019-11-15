@@ -45,9 +45,15 @@ export const NodeMenu: FC<Props> = ({
     ])
   )
 
-  const splitBranchUpdate = () => (incrementRow(), splitBranch())
+  const splitBranchUpdate = () => {
+    incrementRow()
+    splitBranch()
+  }
 
-  const continueBranchUpdate = () => (incrementRow(), continueBranch())
+  const continueBranchUpdate = () => {
+    incrementRow()
+    continueBranch()
+  }
 
   const toggleResolved = update((node) => ({
     ...node,

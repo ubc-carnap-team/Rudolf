@@ -1,6 +1,9 @@
-import { node } from 'prop-types'
-
-import { LeafNode, NodeGenerator, NodeUpdater, TreeNode } from '../typings/TreeNode'
+import {
+  LeafNode,
+  NodeGenerator,
+  NodeUpdater,
+  TreeNode,
+} from '../typings/TreeNode'
 
 /**
  *
@@ -88,11 +91,6 @@ export const parsePremises = (
     id,
     row,
   })
-}
-
-export const countPremises = (formulas: string[], count = 0): number => {
-  count = formulas.length
-  return count
 }
 
 const makeBranch = (
