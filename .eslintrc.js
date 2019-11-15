@@ -55,5 +55,6 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'error',
     'jsx-a11y/click-events-have-key-events': 'off', // TODO
     'jsx-a11y/no-static-element-interactions': 'off', // TODO
+    ''
   },
 }

@@ -1,17 +1,18 @@
 import Check from '@material-ui/icons/Check'
 import React, {
+  ChangeEventHandler,
   FC,
   Fragment,
   MouseEventHandler,
-  useState,
-  useRef,
   Ref,
-  ChangeEventHandler,
+  useRef,
+  useState,
+  ReactNode,
 } from 'react'
-import LineTo from 'react-lineto'
 import AutoSizeInput from 'react-input-autosize'
+import LineTo from 'react-lineto'
 
-import { TreeNode, NodeUpdater } from '../typings/TreeNode'
+import { NodeUpdater, TreeNode } from '../typings/TreeNode'
 import { NodeMenu } from './NodeMenu'
 
 type Props = {
@@ -20,14 +21,28 @@ type Props = {
   selectNode: (_: TreeNode) => void
   onChange: (_: { node: TreeNode; label: string; rule: string }) => void
   updateTree: (node: TreeNode, updater: NodeUpdater) => void
+  nextRow: number
+  incrementRow: () => void
 }
+
+const Spacers = ({ diff }: { diff: number }) => {
+  const spacers: JSX.Element[] = []
+  const i = diff - 1
+  while (spacers.length < i) {
+    spacers.push(<div className="spacer" />)
+  }
+
+  return <>{spacers}</>
+}
+
 const NodeView: FC<Props> = ({
   node,
   selectedNode,
   selectNode,
-
   onChange,
   updateTree,
+  nextRow,
+  incrementRow,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const nodeRef: Ref<HTMLDivElement> = useRef(null)
@@ -64,7 +79,8 @@ const NodeView: FC<Props> = ({
         onContextMenu={handleContextMenu}
         ref={nodeRef}
       >
-        <AutoSizeInput
+        <span>{node.row} .</span>
+        <input
           className="label"
           onChange={handleLabelChange}
           value={node.label}
@@ -80,9 +96,11 @@ const NodeView: FC<Props> = ({
         ){node.resolved ? <Check /> : ''}
         {node.closed && <div className="closed-branch-marker">X</div>}
       </div>
+
       {node.forest.length > 0 &&
         (node.forest.length === 1 ? (
           <div className="children stack">
+            <Spacers diff={node.forest[0].row - node.row} />
             <NodeView
               {...{
                 node: node.forest[0],
@@ -90,6 +108,8 @@ const NodeView: FC<Props> = ({
                 selectNode,
                 onChange,
                 updateTree,
+                nextRow,
+                incrementRow,
               }}
             />
           </div>
@@ -98,6 +118,7 @@ const NodeView: FC<Props> = ({
             {node.forest.map((child) => {
               return (
                 <Fragment key={child.id}>
+                  <Spacers diff={child.row - node.row} />
                   <LineTo
                     from={`node-id=${node.id}`}
                     to={`node-id=${child.id}`}
@@ -113,6 +134,8 @@ const NodeView: FC<Props> = ({
                       selectNode,
                       onChange,
                       updateTree,
+                      nextRow,
+                      incrementRow,
                     }}
                   />
                 </Fragment>
@@ -126,6 +149,8 @@ const NodeView: FC<Props> = ({
         onClose={() => setMenuOpen(false)}
         updateTree={updateTree}
         anchorEl={nodeRef.current as Element}
+        nextRow={nextRow}
+        incrementRow={incrementRow}
       />
     </div>
   )

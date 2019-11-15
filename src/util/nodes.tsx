@@ -1,8 +1,8 @@
 import {
   LeafNode,
-  TreeNode,
-  NodeUpdater,
   NodeGenerator,
+  NodeUpdater,
+  TreeNode,
 } from '../typings/TreeNode'
 
 /**
@@ -29,13 +29,18 @@ export const makeNode = ({
   forest = [],
   rule = '',
   id,
-}: Partial<TreeNode> & { id: string }): TreeNode => ({
+  row,
+}: Partial<TreeNode> & {
+  id: string
+  row: number
+}): TreeNode => ({
   label,
   forest,
   resolved: false,
   closed: false,
   rule,
   id,
+  row,
 })
 
 /**
@@ -48,7 +53,9 @@ export const appendChildren = (
   createNodes: NodeGenerator
 ): TreeNode => {
   if (root.forest.length === 0) {
-    return root.closed ? root : { ...root, forest: createNodes(root.id) }
+    return root.closed
+      ? root
+      : { ...root, forest: createNodes(root.id, root.row) }
   } else {
     return {
       ...root,
@@ -69,31 +76,49 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
  *
  * @param formulas an array of of formulas.
  */
-export const parsePremises = (formulas: string[], parentId = ''): TreeNode => {
+export const parsePremises = (
+  formulas: string[],
+  parentId: string,
+  row: number
+): TreeNode => {
   const id = `${parentId}0`
   return makeNode({
     label: formulas[0],
     rule: 'A',
-    forest: formulas.length > 1 ? [parsePremises(formulas.slice(1), id)] : [],
+    forest:
+      formulas.length > 1
+        ? [parsePremises(formulas.slice(1), id, row + 1)]
+        : [],
     id,
+    row,
   })
 }
 
-const makeBranch = (formulas: string[], parentId: string): TreeNode => {
+const makeBranch = (
+  formulas: string[],
+  parentId: string,
+  parentRow: number
+): TreeNode => {
   const id = `${parentId}0`
+  const row = parentRow + 1
   return makeNode({
     label: formulas[0],
-    forest: [makeBranch(formulas.slice(1), id)],
+    forest: [makeBranch(formulas.slice(1), id, row)],
     id,
+    row,
   })
 }
 
 const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
   string,
   string
-]) => (parentId: string) => {
-  const leftBranch = makeBranch(leftBranchInput.split(','), parentId)
-  const rightBranch = makeBranch(rightBranchInput.split(','), parentId)
+]) => (parentId: string, parentRow: number) => {
+  const leftBranch = makeBranch(leftBranchInput.split(','), parentId, parentRow)
+  const rightBranch = makeBranch(
+    rightBranchInput.split(','),
+    parentId,
+    parentRow
+  )
   return [leftBranch, rightBranch].filter(
     (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
   )

@@ -1,18 +1,24 @@
 import React, { useState } from 'react'
 
-import { TreeNode, NodeUpdater } from '../typings/TreeNode'
-import { updateNode, parsePremises } from '../util/nodes'
+import { NodeUpdater, TreeNode } from '../typings/TreeNode'
+import { parsePremises, updateNode } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
 
-const defaultPremises = 'P->Q,P,~Q'
-const exampleTree: TreeNode = parsePremises(defaultPremises.split(','))
+const initialPremises = 'P->Q,P,~Q'
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
-  const [tree, setTree] = useState<TreeNode>(exampleTree)
-  const [premises, setPremises] = useState<string>(defaultPremises)
+  const [premises, setPremises] = useState(initialPremises)
+  const [tree, setTree] = useState(
+    parsePremises(initialPremises.split(','), '', 1)
+  )
+  const [nextRow, setRow] = useState(initialPremises.split(',').length + 1)
+
+  const incrementRow = () => {
+    setRow(nextRow + 1)
+  }
 
   const handleNodeChange = ({
     node,
@@ -32,16 +38,17 @@ const App: React.FC = (): JSX.Element => {
     )
   }
 
-  const handleSubmitPremises = (premises: string) => {
-    setPremises(premises)
-    setTree(parsePremises(premises.split(',')))
+  const handleSubmitPremises = (rawInput: string) => {
+    setPremises(rawInput)
+    const premiseArray = premises.split(',')
+    setTree(parsePremises(premiseArray, '', 1))
+    setRow(premiseArray.length)
   }
 
   return (
     <div className="App">
       <main className="App-main">
         <PremisesSelector onChange={handleSubmitPremises} />
-
         <PremiseInput
           premises={premises}
           onSubmit={handleSubmitPremises}
@@ -50,6 +57,8 @@ const App: React.FC = (): JSX.Element => {
         <NodeView
           node={tree}
           selectNode={selectNode}
+          nextRow={nextRow}
+          incrementRow={incrementRow}
           selectedNode={selectedNode}
           onChange={handleNodeChange}
           updateTree={(node: TreeNode, updater: NodeUpdater) =>
