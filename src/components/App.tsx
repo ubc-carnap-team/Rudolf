@@ -10,11 +10,11 @@ const initialPremises = 'P->Q,P,~Q'
 
 const App: React.FC = (): JSX.Element => {
   const [selectedNode, selectNode] = useState<TreeNode | null>(null)
-  const [tree, setTree] = useState<TreeNode>(
-    parsePremises(initialPremises.split(','))
+  const [premises, setPremises] = useState(initialPremises)
+  const [tree, setTree] = useState(
+    parsePremises(initialPremises.split(','), '', 1)
   )
-  const [premises, setPremises] = useState<string>(initialPremises)
-  const [nextRow, setRow] = useState<number>(premises.split(',').length)
+  const [nextRow, setRow] = useState(initialPremises.split(',').length + 1)
 
   const incrementRow = () => {
     setRow(nextRow + 1)
@@ -41,7 +41,7 @@ const App: React.FC = (): JSX.Element => {
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
     const premiseArray = premises.split(',')
-    setTree(parsePremises(premiseArray))
+    setTree(parsePremises(premiseArray, '', 1))
     setRow(premiseArray.length)
   }
 

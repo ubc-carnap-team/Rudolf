@@ -78,16 +78,17 @@ const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
  */
 export const parsePremises = (
   formulas: string[],
-  parentId = '',
-  parentRow = 0
+  parentId: string,
+  row: number
 ): TreeNode => {
   const id = `${parentId}0`
-  const row = parentRow + 1
   return makeNode({
     label: formulas[0],
     rule: 'A',
     forest:
-      formulas.length > 1 ? [parsePremises(formulas.slice(1), id, row)] : [],
+      formulas.length > 1
+        ? [parsePremises(formulas.slice(1), id, row + 1)]
+        : [],
     id,
     row,
   })

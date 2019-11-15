@@ -29,17 +29,17 @@ export const NodeMenu: FC<Props> = ({
   }
 
   const continueBranchUpdater: NodeUpdater = (node) =>
-    appendChildren(node, (id) => [makeNode({ id: `${id}0`, row: nextRow + 1 })])
+    appendChildren(node, (id) => [makeNode({ id: `${id}0`, row: nextRow })])
 
   const splitBranchUpdater: NodeUpdater = (node) =>
     appendChildren(node, (id) => [
       makeNode({
         id: `${id}0`,
-        row: nextRow + 1,
+        row: nextRow,
       }),
       makeNode({
         id: `${id}1`,
-        row: nextRow + 1,
+        row: nextRow,
       }),
     ])
 
