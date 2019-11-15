@@ -23,16 +23,15 @@ export const NodeMenu: FC<Props> = ({
   nextRow,
   incrementRow,
 }) => {
-  const update = (updater: NodeUpdater) => () => {
+  const update = (updater: NodeUpdater) => {
     updateTree(node, updater)
     close()
   }
 
-  const continueBranch = update((node) =>
+  const continueBranchUpdater: NodeUpdater = (node) =>
     appendChildren(node, (id) => [makeNode({ id: `${id}0`, row: nextRow + 1 })])
-  )
 
-  const splitBranch = update((node) =>
+  const splitBranchUpdater: NodeUpdater = (node) =>
     appendChildren(node, (id) => [
       makeNode({
         id: `${id}0`,
@@ -43,32 +42,33 @@ export const NodeMenu: FC<Props> = ({
         row: nextRow + 1,
       }),
     ])
-  )
 
-  const splitBranchUpdate = () => {
+  const handleSplit = (): void => {
     incrementRow()
-    splitBranch()
+    update(splitBranchUpdater)
   }
 
-  const continueBranchUpdate = () => {
+  const handleContinue = (): void => {
     incrementRow()
-    continueBranch()
+    update(continueBranchUpdater)
   }
 
-  const toggleResolved = update((node) => ({
-    ...node,
-    resolved: !node.resolved,
-  }))
+  const toggleResolved = (): void =>
+    update((node) => ({
+      ...node,
+      resolved: !node.resolved,
+    }))
 
-  const toggleClosed = update((node) => ({
-    ...node,
-    closed: !node.closed,
-  }))
+  const toggleClosed = (): void =>
+    update((node) => ({
+      ...node,
+      closed: !node.closed,
+    }))
 
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
-      <MenuItem onClick={continueBranchUpdate}>Continue Branch</MenuItem>
-      <MenuItem onClick={splitBranchUpdate}>Split Branch</MenuItem>
+      <MenuItem onClick={handleContinue}>Continue Branch</MenuItem>
+      <MenuItem onClick={handleSplit}>Split Branch</MenuItem>
       <MenuItem onClick={toggleResolved}>
         Mark as {node.resolved ? 'Un' : ''}Resolved
       </MenuItem>
