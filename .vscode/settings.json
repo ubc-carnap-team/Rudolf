@@ -1,4 +1,0 @@
-{
-    "eslint.packageManager": "yarn",
-    "typescript.tsdk": "node_modules/typescript/lib"
-}
