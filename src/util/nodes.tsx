@@ -1,8 +1,10 @@
 import {
-  LeafNode,
+  OpenLeafNode,
   NodeGenerator,
   NodeUpdater,
   TreeNode,
+  ClosedLeafNode,
+  FinishedLeafNode,
 } from '../typings/TreeState'
 
 /**
@@ -153,5 +155,16 @@ export const updateNode = (
   }
 }
 
-export const isLeaf = (node: TreeNode | null): node is LeafNode =>
-  node != null && node.forest.length === 0
+export const isOpenLeaf = (node: TreeNode | null): node is OpenLeafNode =>
+  node != null && Array.isArray(node.forest) && node.forest.length === 0
+
+export const isFinishedLeaf = (
+  node: TreeNode | null
+): node is FinishedLeafNode => node != null && node.forest === 'finished'
+
+export const isContradictionLeaf = (
+  node: TreeNode | null
+): node is ClosedLeafNode => node != null && node.forest === 'contradiction'
+
+export const isClosedLeaf = (node: TreeNode) =>
+  isFinishedLeaf(node) || isContradictionLeaf(node)

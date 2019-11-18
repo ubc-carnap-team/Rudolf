@@ -2,7 +2,12 @@ import { Menu, MenuItem } from '@material-ui/core'
 import React, { FC } from 'react'
 
 import { NodeUpdater, TreeNode } from '../typings/TreeState'
-import { appendChildren, isLeaf, makeNode } from '../util/nodes'
+import {
+  appendChildren,
+  isOpenLeaf,
+  makeNode,
+  isClosedLeaf,
+} from '../util/nodes'
 
 type Props = {
   node: TreeNode
@@ -59,10 +64,21 @@ export const NodeMenu: FC<Props> = ({
       resolved: !node.resolved,
     }))
 
-  const toggleClosed = (): void =>
+  const markContradiction = (): void =>
     update((node) => ({
       ...node,
-      closed: !node.closed,
+      forest: 'contradiction',
+    }))
+
+  const markFinished = (): void =>
+    update((node) => ({
+      ...node,
+      forest: 'finished',
+    }))
+  const reopenBranch = (): void =>
+    update((node) => ({
+      ...node,
+      forest: [],
     }))
 
   return (
@@ -72,10 +88,16 @@ export const NodeMenu: FC<Props> = ({
       <MenuItem onClick={toggleResolved}>
         Mark as {node.resolved ? 'Un' : ''}Resolved
       </MenuItem>
-      {isLeaf(node) && (
-        <MenuItem onClick={toggleClosed}>
-          {node.closed ? 'Reopen' : 'Close'} Branch
+      {isOpenLeaf(node) && (
+        <MenuItem onClick={markContradiction}>
+          Close Branch With Contradiction
         </MenuItem>
+      )}
+      {isOpenLeaf(node) && (
+        <MenuItem onClick={markFinished}>Mark Branch Finished</MenuItem>
+      )}
+      {isClosedLeaf(node) && (
+        <MenuItem onClick={reopenBranch}>Reopen Branch</MenuItem>
       )}
     </Menu>
   )
