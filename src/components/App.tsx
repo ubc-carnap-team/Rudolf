@@ -7,6 +7,7 @@ import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
 import { IconButton } from '@material-ui/core'
 import { Undo, Redo } from '@material-ui/icons'
+import { JSONView } from './JSONView'
 
 const initialPremises = 'P->Q,P,~Q'
 
@@ -48,35 +49,34 @@ const App: React.FC = (): JSX.Element => {
   }
 
   return (
-    <div className="App">
-      <main className="App-main">
-        <PremisesSelector onChange={handleSubmitPremises} />
-        <PremiseInput
-          premises={premises}
-          onSubmit={handleSubmitPremises}
-          setPremises={setPremises}
-        />
-        <span className="tree-buttons">
-          <IconButton className="undo-button" disabled={true}>
-            <Undo />
-          </IconButton>
-          <IconButton className="redo-button" disabled={true}>
-            <Redo />
-          </IconButton>
-        </span>
-        <NodeView
-          node={tree}
-          selectNode={selectNode}
-          nextRow={nextRow}
-          incrementRow={incrementRow}
-          selectedNode={selectedNode}
-          onChange={handleNodeChange}
-          updateTree={(node: TreeNode, updater: NodeUpdater) =>
-            setTree(updateNode(tree, node, updater))
-          }
-        />
-      </main>
-    </div>
+    <main className="App">
+      <PremisesSelector onChange={handleSubmitPremises} />
+      <PremiseInput
+        premises={premises}
+        onSubmit={handleSubmitPremises}
+        setPremises={setPremises}
+      />
+      <span className="tree-buttons">
+        <IconButton className="undo-button" disabled={true}>
+          <Undo />
+        </IconButton>
+        <IconButton className="redo-button" disabled={true}>
+          <Redo />
+        </IconButton>
+      </span>
+      <NodeView
+        node={tree}
+        selectNode={selectNode}
+        nextRow={nextRow}
+        incrementRow={incrementRow}
+        selectedNode={selectedNode}
+        onChange={handleNodeChange}
+        updateTree={(node: TreeNode, updater: NodeUpdater) =>
+          setTree(updateNode(tree, node, updater))
+        }
+      />
+      <JSONView {...{ tree }} />
+    </main>
   )
 }
 

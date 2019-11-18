@@ -1,17 +1,13 @@
-.App {
-  background-color: #fffff8;
+main.App {
+  background: #ffffff;
   text-align: center;
-  height: 100%;
   color: black;
-}
-
-.App-main {
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   font-size: calc(10px + 2vmin);
-  height: 100%;
 }
 
 button.submit-premises {
@@ -26,4 +22,9 @@ select {
 
 button {
   margin: 5px 5px 0 0;
+}
+
+.json-view {
+  font-size: 10px;
+  min-width: 100%;
 }
