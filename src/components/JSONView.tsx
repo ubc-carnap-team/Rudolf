@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { TextareaAutosize } from '@material-ui/core'
 import { TreeNode } from '../typings/TreeState'
-import { NonTerminalNode } from '../typings/CarnapAPI'
+import { FormulaNode } from '../typings/CarnapAPI'
 
 export const JSONView: FC<{ tree: TreeNode }> = ({ tree }) => (
   <TextareaAutosize
@@ -13,11 +13,11 @@ export const JSONView: FC<{ tree: TreeNode }> = ({ tree }) => (
 const transformNode = ({
   forest: _,
   ...tree
-}: TreeNode): Omit<NonTerminalNode, 'forest'> => {
+}: TreeNode): Omit<FormulaNode, 'forest'> => {
   return { ...tree, formulas: [], nodeType: 'formulas' }
 }
 
-const transformTree = <T extends TreeNode>(tree: TreeNode): NonTerminalNode => {
+const transformTree = <T extends TreeNode>(tree: TreeNode): FormulaNode => {
   if (tree.forest === 'contradiction')
     return {
       ...transformNode(tree),
