@@ -3,10 +3,10 @@ export interface FeedbackMessage {
   message: string
 }
 
-export interface InfoNode {
+export interface FeedbackNode {
   closed: boolean
   feedback: FeedbackMessage[]
-  forest: InfoNode[]
+  forest: FeedbackNode[]
 }
 
 export interface TreeForm {
