@@ -1,7 +1,7 @@
 import { Menu, MenuItem } from '@material-ui/core'
 import React, { FC } from 'react'
 
-import { NodeUpdater, TreeNode } from '../typings/TreeNode'
+import { NodeUpdater, TreeNode } from '../typings/TreeState'
 import { appendChildren, isLeaf, makeNode } from '../util/nodes'
 
 type Props = {

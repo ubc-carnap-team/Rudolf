@@ -7,12 +7,11 @@ import React, {
   Ref,
   useRef,
   useState,
-  ReactNode,
 } from 'react'
 import AutoSizeInput from 'react-input-autosize'
 import LineTo from 'react-lineto'
 
-import { NodeUpdater, TreeNode } from '../typings/TreeNode'
+import { NodeUpdater, TreeNode } from '../typings/TreeState'
 import { NodeMenu } from './NodeMenu'
 
 type Props = {

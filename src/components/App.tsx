@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { NodeUpdater, TreeNode } from '../typings/TreeNode'
+import { NodeUpdater, TreeNode } from '../typings/TreeState'
 import { parsePremises, updateNode } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'

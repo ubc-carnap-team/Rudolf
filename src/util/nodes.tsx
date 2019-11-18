@@ -3,7 +3,7 @@ import {
   NodeGenerator,
   NodeUpdater,
   TreeNode,
-} from '../typings/TreeNode'
+} from '../typings/TreeState'
 
 /**
  *
