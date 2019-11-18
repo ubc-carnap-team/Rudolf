@@ -1,6 +1,6 @@
 export interface TreeNode {
   label: string
-  forest: TreeNode[]
+  forest: TreeNode[] | 'finished' | 'contradiction'
   resolved: boolean
   closed: boolean
   rule: string

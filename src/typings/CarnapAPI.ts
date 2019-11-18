@@ -4,7 +4,6 @@ export interface FeedbackMessage {
 }
 
 export interface FeedbackNode {
-  closed: boolean
   feedback: FeedbackMessage[]
   forest: FeedbackNode[]
 }
@@ -19,23 +18,21 @@ export type OutputNode = NonTerminalNode | TerminalNode
 
 export type TerminalNode = ContradictionNode | FinishedNode
 
-export interface NonTerminalNode {
+export type NonTerminalNode = {
   nodeType: 'formulas'
-  closed: boolean
-  forest: OutputNode[]
+  forest: OutputNode[] | [FinishedNode] | [ContradictionNode]
   formulas: TreeForm[]
-  id: string
   rule: string
 }
 
-export interface FinishedNode {
+export type FinishedNode = {
   nodeType: 'finished'
   formulas: []
   rule: string // ['finished', ...number[]] // List of resolved rows? on the branch
 }
 
-export interface ContradictionNode {
+export type ContradictionNode = {
   nodeType: 'contradiction'
   formulas: []
-  rule: ['contradiction', number, number] // []
+  rule: string // ['contradiction', number, number] // []
 }

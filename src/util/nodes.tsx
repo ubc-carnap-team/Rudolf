@@ -52,7 +52,9 @@ export const appendChildren = (
   root: TreeNode,
   createNodes: NodeGenerator
 ): TreeNode => {
-  if (root.forest.length === 0) {
+  if (typeof root.forest === 'string') {
+    return root
+  } else if (root.forest.length === 0) {
     return root.closed
       ? root
       : { ...root, forest: createNodes(root.id, root.row) }
@@ -136,15 +138,20 @@ export const updateNode = (
   root: TreeNode,
   selectedNode: TreeNode,
   updater: NodeUpdater
-): TreeNode =>
-  root === selectedNode
-    ? updater({ ...root })
-    : {
-        ...root,
-        forest: root.forest.map((child) =>
-          updateNode(child, selectedNode, updater)
-        ),
-      }
+): TreeNode => {
+  if (root === selectedNode) {
+    return updater({ ...root })
+  } else if (typeof root.forest === 'string') {
+    return root
+  } else {
+    return {
+      ...root,
+      forest: root.forest.map((child) =>
+        updateNode(child, selectedNode, updater)
+      ),
+    }
+  }
+}
 
 export const isLeaf = (node: TreeNode | null): node is LeafNode =>
   node != null && node.forest.length === 0

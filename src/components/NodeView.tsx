@@ -93,10 +93,16 @@ const NodeView: FC<Props> = ({
           placeholder="rule"
         />
         ){node.resolved ? <Check /> : ''}
-        {node.closed && <div className="closed-branch-marker">X</div>}
+        {node.forest === 'contradiction' && (
+          <div className="closed-branch-marker">X</div>
+        )}
+        {node.forest === 'finished' && (
+          <div className="finished-branch-marker">O</div>
+        )}
       </div>
 
-      {node.forest.length > 0 &&
+      {Array.isArray(node.forest) &&
+        node.forest.length > 0 &&
         (node.forest.length === 1 ? (
           <div className="children stack">
             <Spacers diff={node.forest[0].row - node.row} />
