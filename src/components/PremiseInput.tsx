@@ -1,4 +1,5 @@
 import React, { FormEventHandler } from 'react'
+import AutosizeInput from 'react-input-autosize'
 
 type Props = {
   onSubmit: (premises: string) => void
@@ -9,12 +10,11 @@ type Props = {
 const PremiseInput: React.FC<Props> = ({ onSubmit, premises, setPremises }) => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
-
     onSubmit(premises)
   }
   return (
     <form onSubmit={handleSubmit}>
-      <input
+      <AutosizeInput
         type="text"
         name="premises"
         aria-label="Enter Premises"

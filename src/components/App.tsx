@@ -5,6 +5,8 @@ import { parsePremises, updateNode } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
+import { IconButton } from '@material-ui/core'
+import { Undo, Redo } from '@material-ui/icons'
 
 const initialPremises = 'P->Q,P,~Q'
 
@@ -54,6 +56,14 @@ const App: React.FC = (): JSX.Element => {
           onSubmit={handleSubmitPremises}
           setPremises={setPremises}
         />
+        <span className="tree-buttons">
+          <IconButton className="undo-button" disabled={true}>
+            <Undo />
+          </IconButton>
+          <IconButton className="redo-button" disabled={true}>
+            <Redo />
+          </IconButton>
+        </span>
         <NodeView
           node={tree}
           selectNode={selectNode}
