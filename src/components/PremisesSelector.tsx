@@ -7,6 +7,9 @@ type Props = {
 const examples = [
   ['P->Q,P,~Q', 'Modus Ponens'],
   ['~(~(P\\/Q)<->(~P/\\~Q))', "De Morgen's Law"],
+  ['~Q, P&Q', 'Complete Tree'],
+  ['A&B, ~(C\\/D), (~B\\/C)\\/E, ~E', 'Correct Tree'],
+  ['P&Q, ~P', 'Incomplete Tree'],
 ]
 
 const PremisesSelector: React.FC<Props> = ({ onChange }) => {
