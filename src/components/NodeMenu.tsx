@@ -1,7 +1,7 @@
 import { Menu, MenuItem } from '@material-ui/core'
 import React, { FC } from 'react'
 
-import { CustomDispatch, incrementRow, updateTree } from '../RudolfReducer'
+import { CustomDispatch, updateTree } from '../RudolfReducer'
 import { NodeUpdater } from '../typings/TreeState'
 import {
   appendChildren,
@@ -103,17 +103,17 @@ export const NodeMenu: FC<Props> = ({
       <MenuItem onClick={toggleResolved}>
         {/* Mark as {node.resolved ? 'Un' : ''}Resolved */}
       </MenuItem>
-      // TODO
+      {/* // TODO */}
       {/* {isOpenLeaf(node) && (
         <MenuItem onClick={markContradiction}>
           Close Branch With Contradiction
         </MenuItem>
       )} */}
-      // TODO
+      {/* // TODO */}
       {/* {isOpenLeaf(node) && (
         <MenuItem onClick={markFinished}>Mark Branch Finished</MenuItem>
       )} */}
-      // TODO
+      {/* // TODO */}
       {/* {isClosedLeaf(node) && (
         <MenuItem onClick={reopenBranch}>Reopen Branch</MenuItem>
       )} */}

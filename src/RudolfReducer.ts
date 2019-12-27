@@ -33,10 +33,6 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   //   this.draftState.nodeRules[id] = rule
   // }
 
-  incrementRow() {
-    this.draftState.nextRow += 1
-  }
-
   setRow(row: number) {
     this.draftState.nextRow = row
   }
@@ -55,7 +51,6 @@ export const rudolfReducer = createReducerFunction(RudolfReducer)
 export const {
   setRow,
   setTree,
-  incrementRow,
   updateTree,
   updateAtNode,
 } = createActionCreators(RudolfReducer)
