@@ -17,6 +17,7 @@ export interface TreeNode {
 export type NodeGenerator = (parentId: string, parentRow: number) => TreeNode[]
 
 export type NodeUpdater = (node: TreeNode) => TreeNode
+export type NodeMutater = (node: TreeNode) => void
 
 export type OpenLeafNode = TreeNode & { forest: [] }
 

@@ -1,14 +1,8 @@
 import { Menu, MenuItem } from '@material-ui/core'
 import React, { FC } from 'react'
 
-import { CustomDispatch, updateTree } from '../RudolfReducer'
-import { NodeUpdater } from '../typings/TreeState'
-import {
-  appendChildren,
-  isClosedLeaf,
-  isOpenLeaf,
-  makeNode,
-} from '../util/nodes'
+import { CustomDispatch, resolveFormula } from '../RudolfReducer'
+import { TreeForm } from '../typings/CarnapAPI'
 
 type Props = {
   onClose: () => void
@@ -17,6 +11,7 @@ type Props = {
   index: number
   anchorEl: Element
   dispatch: CustomDispatch
+  formula: TreeForm
 }
 
 export const NodeMenu: FC<Props> = ({
@@ -25,13 +20,9 @@ export const NodeMenu: FC<Props> = ({
   nodeId,
   index,
   anchorEl,
+  formula,
   onClose: close,
 }) => {
-  const update = (updater: NodeUpdater) => {
-    dispatch(updateTree(updater))
-    close()
-  }
-
   // TODO: convert to reducer action
   // const continueBranchUpdater: NodeUpdater = (node) =>
   //   appendChildren(node, (id) => [makeNode({ id: `${id}0`, row: nextRow })])
@@ -60,13 +51,6 @@ export const NodeMenu: FC<Props> = ({
   //   dispatch(incrementRow())
   //   update(continueBranchUpdater)
   // }
-
-  // TODO: convert to reducer action
-  const toggleResolved = (): void =>
-    update((node) => ({
-      ...node,
-      resolved: !(node as any).resolved,
-    }))
 
   // TODO: convert to reducer action
   // const markContradiction = (): void =>
@@ -100,8 +84,13 @@ export const NodeMenu: FC<Props> = ({
       >
         Split Branch
       </MenuItem>
-      <MenuItem onClick={toggleResolved}>
-        {/* Mark as {node.resolved ? 'Un' : ''}Resolved */}
+      <MenuItem
+        onClick={() => {
+          dispatch(resolveFormula(nodeId, index))
+          close()
+        }}
+      >
+        Mark as {formula.resolved ? 'Un' : ''}Resolved
       </MenuItem>
       {/* // TODO */}
       {/* {isOpenLeaf(node) && (

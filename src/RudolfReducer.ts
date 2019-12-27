@@ -6,7 +6,7 @@ import {
 } from 'immer-reducer'
 import { Dispatch } from 'react'
 
-import { updateNode } from './util/nodes'
+import { updateNode, mutateNode } from './util/nodes'
 import { NodeUpdater, TreeNode } from './typings/TreeState'
 
 export type RudolfStore = {
@@ -33,6 +33,12 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   //   this.draftState.nodeRules[id] = rule
   // }
 
+  resolveFormula(nodeId: string, index: number) {
+    mutateNode(this.draftState.tree, nodeId, (node) => {
+      node.formulas[index].resolved = !node.formulas[index].resolved
+    })
+  }
+
   setRow(row: number) {
     this.draftState.nextRow = row
   }
@@ -53,6 +59,7 @@ export const {
   setTree,
   updateTree,
   updateAtNode,
+  resolveFormula,
 } = createActionCreators(RudolfReducer)
 export type RudolfAction = Actions<typeof RudolfReducer>
 export type CustomDispatch = Dispatch<RudolfAction>

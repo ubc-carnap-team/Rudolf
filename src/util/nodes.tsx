@@ -5,6 +5,7 @@ import {
   TreeNode,
   ClosedLeafNode,
   FinishedLeafNode,
+  NodeMutater,
 } from '../typings/TreeState'
 import { TreeForm } from '../typings/CarnapAPI'
 
@@ -122,6 +123,22 @@ export const updateNode = (
         updateNode(child, targetNodeId, updater)
       ),
     }
+  }
+}
+
+export const mutateNode = (
+  root: TreeNode,
+  targetNodeId: string,
+  mutater: NodeMutater
+): void => {
+  if (root.id === targetNodeId) {
+    return mutater(root)
+  } else if (typeof root.forest === 'string') {
+    return
+  } else {
+    return root.forest.forEach((child) =>
+      mutateNode(child, targetNodeId, mutater)
+    )
   }
 }
 

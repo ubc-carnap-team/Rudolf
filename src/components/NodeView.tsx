@@ -1,16 +1,8 @@
 /* eslint-disable react/jsx-no-undef */
-import React, {
-  FC,
-  Fragment,
-  MouseEventHandler,
-  Ref,
-  useRef,
-  useState,
-} from 'react'
+import React, { FC, Fragment } from 'react'
 import LineTo from 'react-lineto'
 import AutoSizeInput from 'react-input-autosize'
 import { TreeNode } from '../typings/TreeState'
-import { NodeMenu } from './NodeMenu'
 import FormulaView from './FormulaView'
 import { CustomDispatch } from '../RudolfReducer'
 
@@ -21,9 +13,6 @@ type Props = {
 }
 
 const NodeView: FC<Props> = ({ node, nextRow, dispatch }) => {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const nodeRef: Ref<HTMLDivElement> = useRef(null)
-
   // TODO: move to formula
   // const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (event) => {
   //   onChange({
@@ -33,13 +22,7 @@ const NodeView: FC<Props> = ({ node, nextRow, dispatch }) => {
   //   })
   // }
 
-  // TODO move to formmula
-  const handleContextMenu: MouseEventHandler = (event) => {
-    event.preventDefault()
-    setMenuOpen(true)
-  }
-
-  // TODO nove to formula
+  // TODO
   // const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
   //   onChange({
   //     node,
@@ -53,7 +36,6 @@ const NodeView: FC<Props> = ({ node, nextRow, dispatch }) => {
       <div
         className={`node-id=${node.id}`}
         // onContextMenu={handleContextMenu}
-        ref={nodeRef}
       >
         {node.formulas.map((form, index) => {
           return (

@@ -23,12 +23,18 @@ const FormulaView: FC<Props> = ({
   const [contextMenu, setContextMenu] = useState(false)
   const ref: Ref<HTMLDivElement> = useRef(null)
   return (
-    <div className="formula node" ref={ref}>
+    <div
+      className="formula node"
+      ref={ref}
+      onContextMenu={(e) => {
+        e.preventDefault()
+        setContextMenu(true)
+      }}
+    >
       <span>{row}</span>
       <input
         className="label"
         // TODO
-        onContextMenu={() => setContextMenu(true)}
         //   onChange={handleFormulaChange}
         value={value}
         placeholder="formula"
@@ -40,6 +46,7 @@ const FormulaView: FC<Props> = ({
         anchorEl={ref.current as HTMLDivElement}
         index={index}
         nodeId={nodeId}
+        formula={{ row, value, resolved }}
       />
       {resolved ? <Check /> : ''}
     </div>
