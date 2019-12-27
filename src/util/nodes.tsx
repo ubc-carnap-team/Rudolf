@@ -9,15 +9,17 @@ import {
 import { TreeForm } from '../typings/CarnapAPI'
 
 export const makeNode = ({
-  formulas = [makeTreeForm()],
+  formulas = [],
   forest = [],
   rule = '',
   id,
-}: Partial<TreeNode> & {
+  row = 0,
+}: Omit<Partial<TreeNode>, 'formulas'> & {
   id: string
   row: number
+  formulas?: string[]
 }): TreeNode => ({
-  formulas,
+  formulas: formulas.map((form, idx) => makeTreeForm(form, idx + row)),
   forest,
   closed: false,
   rule,
@@ -58,7 +60,7 @@ export const parsePremises = (
 ): TreeNode => {
   const id = `${parentId}0`
   return makeNode({
-    formulas: formulas.map(makeTreeForm),
+    formulas,
     rule: 'A',
     forest: formulas.length > 1 ? [] : [],
     id,
@@ -66,10 +68,9 @@ export const parsePremises = (
   })
 }
 
-const makeTreeForm = (value = ''): TreeForm => ({
+const makeTreeForm = (value = '', row: number): TreeForm => ({
   value,
-  // TODO
-  row: -1,
+  row,
   resolved: false,
 })
 

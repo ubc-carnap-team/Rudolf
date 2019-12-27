@@ -32,9 +32,11 @@ export const NodeMenu: FC<Props> = ({
     close()
   }
 
+  // TODO: convert to reducer action
   const continueBranchUpdater: NodeUpdater = (node) =>
     appendChildren(node, (id) => [makeNode({ id: `${id}0`, row: nextRow })])
 
+  // TODO: convert to reducer action
   const splitBranchUpdater: NodeUpdater = (node) =>
     appendChildren(node, (id) => [
       makeNode({
@@ -47,34 +49,39 @@ export const NodeMenu: FC<Props> = ({
       }),
     ])
 
+  // TODO: convert to reducer action
   const handleSplit = (): void => {
     dispatch(incrementRow())
     update(splitBranchUpdater)
   }
 
+  // TODO: convert to reducer action
   const handleContinue = (): void => {
     dispatch(incrementRow())
     update(continueBranchUpdater)
   }
 
-  // TODO
+  // TODO: convert to reducer action
   const toggleResolved = (): void =>
     update((node) => ({
       ...node,
       resolved: !(node as any).resolved,
     }))
 
+  // TODO: convert to reducer action
   const markContradiction = (): void =>
     update((node) => ({
       ...node,
       forest: 'contradiction',
     }))
 
+  // TODO: convert to reducer action
   const markFinished = (): void =>
     update((node) => ({
       ...node,
       forest: 'finished',
     }))
+  // TODO: convert to reducer action
   const reopenBranch = (): void =>
     update((node) => ({
       ...node,
