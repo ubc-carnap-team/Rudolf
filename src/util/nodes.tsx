@@ -19,7 +19,7 @@ export const makeNode = ({
   row: number
   formulas?: string[]
 }): TreeNode => ({
-  formulas: formulas.map((form, idx) => makeTreeForm(form, idx + row)),
+  formulas: formulas.map((form, index) => makeTreeForm(form, index + row)),
   forest,
   closed: false,
   rule,

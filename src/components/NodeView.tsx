@@ -52,13 +52,20 @@ const NodeView: FC<Props> = ({ node, nextRow, dispatch }) => {
     <div className={`node-container `}>
       <div
         className={`node-id=${node.id}`}
-        onContextMenu={handleContextMenu}
+        // onContextMenu={handleContextMenu}
         ref={nodeRef}
       >
-        {node.formulas.map((form, i) => (
-          // TODO: don't use index as key
-          <FormulaView key={i} {...form} />
-        ))}
+        {node.formulas.map((form, index) => {
+          return (
+            <FormulaView
+              key={`${form}-${index}`}
+              nodeId={node.id}
+              index={index}
+              dispatch={dispatch}
+              {...form}
+            />
+          )
+        })}
         (
         <AutoSizeInput
           className="rule"
@@ -115,14 +122,6 @@ const NodeView: FC<Props> = ({ node, nextRow, dispatch }) => {
             })}
           </div>
         ))}
-      <NodeMenu
-        open={menuOpen}
-        node={node}
-        onClose={() => setMenuOpen(false)}
-        dispatch={dispatch}
-        anchorEl={nodeRef.current as Element}
-        nextRow={nextRow}
-      />
     </div>
   )
 }
