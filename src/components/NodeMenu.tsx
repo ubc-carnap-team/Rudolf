@@ -8,7 +8,7 @@ import {
   makeNode,
   isClosedLeaf,
 } from '../util/nodes'
-import { CustomDispatch, rudolfActions } from '../RudolfReducer'
+import { CustomDispatch, updateTree, incrementRow } from '../RudolfReducer'
 
 type Props = {
   node: TreeNode
@@ -28,7 +28,7 @@ export const NodeMenu: FC<Props> = ({
   nextRow,
 }) => {
   const update = (updater: NodeUpdater) => {
-    dispatch(rudolfActions.updateTree(updater))
+    dispatch(updateTree(updater))
     close()
   }
 
@@ -48,12 +48,12 @@ export const NodeMenu: FC<Props> = ({
     ])
 
   const handleSplit = (): void => {
-    dispatch(rudolfActions.incrementRow())
+    dispatch(incrementRow())
     update(splitBranchUpdater)
   }
 
   const handleContinue = (): void => {
-    dispatch(rudolfActions.incrementRow())
+    dispatch(incrementRow())
     update(continueBranchUpdater)
   }
 

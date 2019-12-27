@@ -58,6 +58,13 @@ export const initialState: RudolfStore = {
 }
 
 export const rudolfReducer = createReducerFunction(RudolfReducer)
-export const rudolfActions = createActionCreators(RudolfReducer)
+export const {
+  setRow,
+  setTree,
+  incrementRow,
+  selectNode,
+  updateTree,
+  updateAtNode,
+} = createActionCreators(RudolfReducer)
 export type RudolfAction = Actions<typeof RudolfReducer>
 export type CustomDispatch = Dispatch<RudolfAction>
