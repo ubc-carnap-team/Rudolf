@@ -8,28 +8,27 @@ import {
   makeNode,
   isClosedLeaf,
 } from '../util/nodes'
+import { CustomDispatch, rudolfActions } from '../RudolfReducer'
 
 type Props = {
   node: TreeNode
   onClose: () => void
-  updateTree: (node: TreeNode, updater: NodeUpdater) => void
   open: boolean
   anchorEl: Element
   nextRow: number
-  incrementRow: () => void
+  dispatch: CustomDispatch
 }
 
 export const NodeMenu: FC<Props> = ({
   open,
   node,
-  updateTree,
+  dispatch,
   anchorEl,
   onClose: close,
   nextRow,
-  incrementRow,
 }) => {
   const update = (updater: NodeUpdater) => {
-    updateTree(node, updater)
+    dispatch(rudolfActions.updateTree(updater))
     close()
   }
 
@@ -49,12 +48,12 @@ export const NodeMenu: FC<Props> = ({
     ])
 
   const handleSplit = (): void => {
-    incrementRow()
+    dispatch(rudolfActions.incrementRow())
     update(splitBranchUpdater)
   }
 
   const handleContinue = (): void => {
-    incrementRow()
+    dispatch(rudolfActions.incrementRow())
     update(continueBranchUpdater)
   }
 

@@ -9,29 +9,19 @@ import React, {
 } from 'react'
 import LineTo from 'react-lineto'
 import AutoSizeInput from 'react-input-autosize'
-import { NodeUpdater, TreeNode } from '../typings/TreeState'
+import { TreeNode } from '../typings/TreeState'
 import { NodeMenu } from './NodeMenu'
 import FormulaView from './FormulaView'
+import { CustomDispatch } from '../RudolfReducer'
 
 type Props = {
   node: TreeNode
-  selectedNode: TreeNode | null
-  selectNode: (_: TreeNode) => void
-  onChange: (_: { node: TreeNode; label: string; rule: string }) => void
-  updateTree: (node: TreeNode, updater: NodeUpdater) => void
+  selectedNodeId: string | null
   nextRow: number
-  incrementRow: () => void
+  dispatch: CustomDispatch
 }
 
-const NodeView: FC<Props> = ({
-  node,
-  selectedNode,
-  selectNode,
-  onChange,
-  updateTree,
-  nextRow,
-  incrementRow,
-}) => {
+const NodeView: FC<Props> = ({ node, selectedNodeId, nextRow, dispatch }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const nodeRef: Ref<HTMLDivElement> = useRef(null)
 
@@ -61,11 +51,13 @@ const NodeView: FC<Props> = ({
 
   return (
     <div
-      className={`node-container ${selectedNode === node ? 'selected' : ''}`}
+      className={`node-container ${
+        selectedNodeId === node.id ? 'selected' : ''
+      }`}
     >
       <div
         className={`node-id=${node.id} ${
-          selectedNode === node ? 'selected' : ''
+          selectedNodeId === node.id ? 'selected' : ''
         } `}
         onContextMenu={handleContextMenu}
         ref={nodeRef}
@@ -98,12 +90,10 @@ const NodeView: FC<Props> = ({
             <NodeView
               {...{
                 node: node.forest[0],
-                selectedNode,
-                selectNode,
-                onChange,
-                updateTree,
+                selectedNodeId,
+
                 nextRow,
-                incrementRow,
+                dispatch,
               }}
             />
           </div>
@@ -124,12 +114,9 @@ const NodeView: FC<Props> = ({
                   <NodeView
                     {...{
                       node: child,
-                      selectedNode,
-                      selectNode,
-                      onChange,
-                      updateTree,
+                      selectedNodeId,
                       nextRow,
-                      incrementRow,
+                      dispatch,
                     }}
                   />
                 </Fragment>
@@ -141,10 +128,9 @@ const NodeView: FC<Props> = ({
         open={menuOpen}
         node={node}
         onClose={() => setMenuOpen(false)}
-        updateTree={updateTree}
+        dispatch={dispatch}
         anchorEl={nodeRef.current as Element}
         nextRow={nextRow}
-        incrementRow={incrementRow}
       />
     </div>
   )

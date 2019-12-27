@@ -8,25 +8,6 @@ import {
 } from '../typings/TreeState'
 import { TreeForm } from '../typings/CarnapAPI'
 
-/**
- *
- * @param root
- * @param selectedNode
- * @param newNodes
- * 1. Mark the currently selected node as resolved.
- * 2. Append the new nodes to the bottom of all open branches.
- *  (For now, this can just be all branches, since we don't have
- *  a way of marking branches as open/closed yet.)
- */
-export const decomposeNode = (
-  root: TreeNode,
-  selectedNode: TreeNode,
-  nodeInput: [string, string]
-): TreeNode => {
-  const createNodes = getNodeGenerator(nodeInput)
-  return resolveSelectedNode(root, selectedNode, createNodes)
-}
-
 export const makeNode = ({
   formulas = [makeTreeForm()],
   forest = [],
@@ -65,12 +46,6 @@ export const appendChildren = (
     }
   }
 }
-/**
- *
- * @param root - The node to mark as resolved.
- * Mark the currently selected node as resolved.
- */
-const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
 
 /**
  *
@@ -98,50 +73,44 @@ const makeTreeForm = (value = ''): TreeForm => ({
   resolved: false,
 })
 
-const makeBranch = (
-  formulas: string[],
-  parentId: string,
-  parentRow: number
-): TreeNode => {
-  const id = `${parentId}0`
-  const row = parentRow + 1
-  return makeNode({
-    formulas: formulas.map(makeTreeForm),
-    forest: [],
-    id,
-    row,
-  })
-}
+// TODO: delete if unused
+// const makeBranch = (
+//   formulas: string[],
+//   parentId: string,
+//   parentRow: number
+// ): TreeNode => {
+//   const id = `${parentId}0`
+//   const row = parentRow + 1
+//   return makeNode({
+//     formulas: formulas.map(makeTreeForm),
+//     forest: [],
+//     id,
+//     row,
+//   })
+// }
 
-const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
-  string,
-  string
-]) => (parentId: string, parentRow: number) => {
-  const leftBranch = makeBranch(leftBranchInput.split(','), parentId, parentRow)
-  const rightBranch = makeBranch(
-    rightBranchInput.split(','),
-    parentId,
-    parentRow
-  )
-  return [leftBranch, rightBranch].filter(
-    (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
-  )
-}
-const resolveSelectedNode = (
-  root: TreeNode,
-  selectedNode: TreeNode,
-  createNodes: NodeGenerator
-): TreeNode =>
-  updateNode(root, selectedNode, (node) =>
-    appendChildren(markResolved(node), createNodes)
-  )
+// TODO: delete if unused.
+// const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
+//   string,
+//   string
+// ]) => (parentId: string, parentRow: number) => {
+//   const leftBranch = makeBranch(leftBranchInput.split(','), parentId, parentRow)
+//   const rightBranch = makeBranch(
+//     rightBranchInput.split(','),
+//     parentId,
+//     parentRow
+//   )
+//   return [leftBranch, rightBranch].filter(
+//     (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
+//   )
+// }
 
 export const updateNode = (
   root: TreeNode,
-  selectedNode: TreeNode,
+  selectedNodeId: string,
   updater: NodeUpdater
 ): TreeNode => {
-  if (root === selectedNode) {
+  if (root.id === selectedNodeId) {
     return updater({ ...root })
   } else if (typeof root.forest === 'string') {
     return root
@@ -149,7 +118,7 @@ export const updateNode = (
     return {
       ...root,
       forest: root.forest.map((child) =>
-        updateNode(child, selectedNode, updater)
+        updateNode(child, selectedNodeId, updater)
       ),
     }
   }

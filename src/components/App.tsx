@@ -1,51 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useReducer } from 'react'
 
-import { NodeUpdater, TreeNode } from '../typings/TreeState'
-import { parsePremises, updateNode } from '../util/nodes'
+import { parsePremises } from '../util/nodes'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
 import { IconButton } from '@material-ui/core'
 import { Undo, Redo } from '@material-ui/icons'
 import { JSONView } from './JSONView'
+import { initialState, rudolfReducer, rudolfActions } from '../RudolfReducer'
 
 const initialPremises = 'P->Q,P,~Q'
 
 const App: React.FC = (): JSX.Element => {
-  const [selectedNode, selectNode] = useState<TreeNode | null>(null)
   const [premises, setPremises] = useState(initialPremises)
-  const [tree, setTree] = useState(
-    parsePremises(initialPremises.split(','), '', 1)
-  )
-  const [nextRow, setRow] = useState(initialPremises.split(',').length + 1)
-
-  const incrementRow = () => {
-    setRow(nextRow + 1)
-  }
-
-  const handleNodeChange = ({
-    node,
-    label,
-    rule,
-  }: {
-    node: TreeNode
-    label: string
-    rule: string
-  }) => {
-    setTree((oldTree) =>
-      updateNode(oldTree, node, (oldSubTree) => ({
-        ...oldSubTree,
-        label,
-        rule,
-      }))
-    )
-  }
+  const [state, dispatch] = useReducer(rudolfReducer, initialState)
 
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
     const premiseArray = premises.split(',')
-    setTree(parsePremises(premiseArray, '', 1))
-    setRow(premiseArray.length)
+    dispatch(rudolfActions.setTree(parsePremises(premiseArray, '', 1)))
+    dispatch(rudolfActions.setRow(premiseArray.length))
   }
 
   return (
@@ -65,17 +39,12 @@ const App: React.FC = (): JSX.Element => {
         </IconButton>
       </span>
       <NodeView
-        node={tree}
-        selectNode={selectNode}
-        nextRow={nextRow}
-        incrementRow={incrementRow}
-        selectedNode={selectedNode}
-        onChange={handleNodeChange}
-        updateTree={(node: TreeNode, updater: NodeUpdater) =>
-          setTree(updateNode(tree, node, updater))
-        }
+        node={state.tree}
+        nextRow={state.nextRow}
+        selectedNodeId={state.selectedNodeId}
+        dispatch={dispatch}
       />
-      <JSONView {...{ tree }} />
+      <JSONView {...state} />
     </main>
   )
 }
