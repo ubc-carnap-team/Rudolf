@@ -108,10 +108,10 @@ const makeTreeForm = (value = '', row: number): TreeForm => ({
 
 export const updateNode = (
   root: TreeNode,
-  selectedNodeId: string,
+  targetNodeId: string,
   updater: NodeUpdater
 ): TreeNode => {
-  if (root.id === selectedNodeId) {
+  if (root.id === targetNodeId) {
     return updater({ ...root })
   } else if (typeof root.forest === 'string') {
     return root
@@ -119,7 +119,7 @@ export const updateNode = (
     return {
       ...root,
       forest: root.forest.map((child) =>
-        updateNode(child, selectedNodeId, updater)
+        updateNode(child, targetNodeId, updater)
       ),
     }
   }

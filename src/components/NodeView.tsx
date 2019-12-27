@@ -16,12 +16,11 @@ import { CustomDispatch } from '../RudolfReducer'
 
 type Props = {
   node: TreeNode
-  selectedNodeId: string | null
   nextRow: number
   dispatch: CustomDispatch
 }
 
-const NodeView: FC<Props> = ({ node, selectedNodeId, nextRow, dispatch }) => {
+const NodeView: FC<Props> = ({ node, nextRow, dispatch }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const nodeRef: Ref<HTMLDivElement> = useRef(null)
 
@@ -50,15 +49,9 @@ const NodeView: FC<Props> = ({ node, selectedNodeId, nextRow, dispatch }) => {
   // }
 
   return (
-    <div
-      className={`node-container ${
-        selectedNodeId === node.id ? 'selected' : ''
-      }`}
-    >
+    <div className={`node-container `}>
       <div
-        className={`node-id=${node.id} ${
-          selectedNodeId === node.id ? 'selected' : ''
-        } `}
+        className={`node-id=${node.id}`}
         onContextMenu={handleContextMenu}
         ref={nodeRef}
       >
@@ -90,7 +83,6 @@ const NodeView: FC<Props> = ({ node, selectedNodeId, nextRow, dispatch }) => {
             <NodeView
               {...{
                 node: node.forest[0],
-                selectedNodeId,
 
                 nextRow,
                 dispatch,
@@ -114,7 +106,6 @@ const NodeView: FC<Props> = ({ node, selectedNodeId, nextRow, dispatch }) => {
                   <NodeView
                     {...{
                       node: child,
-                      selectedNodeId,
                       nextRow,
                       dispatch,
                     }}

@@ -21,16 +21,6 @@ $nodeHeight: 50px;
     height: $nodeHeight;
   }
 
-  .node.selected {
-    border-style: solid;
-    border-color: red;
-  }
-
-  &.selected > .children {
-    border-style: solid;
-    border-color: orange;
-  }
-
   input {
     background: transparent;
     font-size: 1em;

@@ -11,7 +11,6 @@ import { NodeUpdater, TreeNode } from './typings/TreeState'
 
 export type RudolfStore = {
   tree: TreeNode
-  selectedNodeId: string | null
   nextRow: number
 }
 
@@ -22,10 +21,6 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
 
   updateAtNode(id: string, updater: NodeUpdater) {
     this.draftState.tree = updateNode(this.draftState.tree, id, updater)
-  }
-
-  selectNode(id: string | null) {
-    this.draftState.selectedNodeId = id
   }
 
   // TODO: formula updates
@@ -54,7 +49,6 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
 export const initialState: RudolfStore = {
   tree: { forest: [], formulas: [], closed: false, rule: '', id: '' },
   nextRow: 1,
-  selectedNodeId: null,
 }
 
 export const rudolfReducer = createReducerFunction(RudolfReducer)
@@ -62,7 +56,6 @@ export const {
   setRow,
   setTree,
   incrementRow,
-  selectNode,
   updateTree,
   updateAtNode,
 } = createActionCreators(RudolfReducer)

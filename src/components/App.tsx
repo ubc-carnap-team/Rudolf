@@ -13,7 +13,10 @@ const initialPremises = 'P->Q,P,~Q'
 
 const App: React.FC = (): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
-  const [state, dispatch] = useReducer(rudolfReducer, initialState)
+  const [state, dispatch] = useReducer(rudolfReducer, {
+    ...initialState,
+    tree: parsePremises(initialPremises.split(','), '', 1),
+  })
 
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
@@ -38,12 +41,7 @@ const App: React.FC = (): JSX.Element => {
           <Redo />
         </IconButton>
       </span>
-      <NodeView
-        node={state.tree}
-        nextRow={state.nextRow}
-        selectedNodeId={state.selectedNodeId}
-        dispatch={dispatch}
-      />
+      <NodeView node={state.tree} nextRow={state.nextRow} dispatch={dispatch} />
       <JSONView tree={state.tree} />
     </main>
   )
