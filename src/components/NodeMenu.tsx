@@ -58,10 +58,11 @@ export const NodeMenu: FC<Props> = ({
     update(continueBranchUpdater)
   }
 
+  // TODO
   const toggleResolved = (): void =>
     update((node) => ({
       ...node,
-      resolved: !node.resolved,
+      resolved: !(node as any).resolved,
     }))
 
   const markContradiction = (): void =>
@@ -86,7 +87,7 @@ export const NodeMenu: FC<Props> = ({
       <MenuItem onClick={handleContinue}>Continue Branch</MenuItem>
       <MenuItem onClick={handleSplit}>Split Branch</MenuItem>
       <MenuItem onClick={toggleResolved}>
-        Mark as {node.resolved ? 'Un' : ''}Resolved
+        {/* Mark as {node.resolved ? 'Un' : ''}Resolved */}
       </MenuItem>
       {isOpenLeaf(node) && (
         <MenuItem onClick={markContradiction}>

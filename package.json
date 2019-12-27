@@ -19,6 +19,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.2",
+    "immer-reducer": "^0.7.10",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.10",
@@ -39,7 +40,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "yarn eslint --ext '.ts,.tsx' src --fix",
-    "eslint-check": "eslint --print-config ./src/App.tsx | eslint-config-prettier-check"
+    "eslint-check": "eslint --print-config ./src/App.tsx | eslint-config-prettier-check",
+    "check": "yarn tsc --watch"
   },
   "browserslist": {
     "production": [

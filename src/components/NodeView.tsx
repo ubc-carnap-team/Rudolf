@@ -1,6 +1,5 @@
-import Check from '@material-ui/icons/Check'
+/* eslint-disable react/jsx-no-undef */
 import React, {
-  ChangeEventHandler,
   FC,
   Fragment,
   MouseEventHandler,
@@ -8,11 +7,11 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import AutoSizeInput from 'react-input-autosize'
 import LineTo from 'react-lineto'
-
+import AutoSizeInput from 'react-input-autosize'
 import { NodeUpdater, TreeNode } from '../typings/TreeState'
 import { NodeMenu } from './NodeMenu'
+import FormulaView from './FormulaView'
 
 type Props = {
   node: TreeNode
@@ -22,16 +21,6 @@ type Props = {
   updateTree: (node: TreeNode, updater: NodeUpdater) => void
   nextRow: number
   incrementRow: () => void
-}
-
-const Spacers = ({ diff }: { diff: number }) => {
-  const spacers: JSX.Element[] = []
-  const i = diff - 1
-  while (spacers.length < i) {
-    spacers.push(<div className="spacer" />)
-  }
-
-  return <>{spacers}</>
 }
 
 const NodeView: FC<Props> = ({
@@ -46,53 +35,53 @@ const NodeView: FC<Props> = ({
   const [menuOpen, setMenuOpen] = useState(false)
   const nodeRef: Ref<HTMLDivElement> = useRef(null)
 
-  const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    onChange({
-      node,
-      label: event.currentTarget.value,
-      rule: node.rule,
-    })
-  }
+  // TODO: move to formula
+  // const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+  //   onChange({
+  //     node,
+  //     label: event.currentTarget.value,
+  //     rule: node.rule,
+  //   })
+  // }
 
+  // TODO move to formmula
   const handleContextMenu: MouseEventHandler = (event) => {
     event.preventDefault()
     setMenuOpen(true)
   }
 
-  const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    onChange({
-      node,
-      label: node.label,
-      rule: event.currentTarget.value,
-    })
-  }
+  // TODO nove to formula
+  // const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+  //   onChange({
+  //     node,
+  //     label: node.label,
+  //     rule: event.currentTarget.value,
+  //   })
+  // }
 
   return (
     <div
       className={`node-container ${selectedNode === node ? 'selected' : ''}`}
     >
       <div
-        className={`node node-id=${node.id} ${
+        className={`node-id=${node.id} ${
           selectedNode === node ? 'selected' : ''
         } `}
         onContextMenu={handleContextMenu}
         ref={nodeRef}
       >
-        <span>{node.row} .</span>
-        <input
-          className="label"
-          onChange={handleLabelChange}
-          value={node.label}
-          placeholder="formula"
-        />
+        {node.formulas.map((form, i) => (
+          // TODO: don't use index as key
+          <FormulaView key={i} {...form} />
+        ))}
         (
         <AutoSizeInput
           className="rule"
-          onChange={handleRuleChange}
+          // onChange={handleRuleChange}
           value={node.rule}
           placeholder="rule"
         />
-        ){node.resolved ? <Check /> : ''}
+        )
         {node.forest === 'contradiction' && (
           <div className="closed-branch-marker">X</div>
         )}
@@ -105,7 +94,7 @@ const NodeView: FC<Props> = ({
         node.forest.length > 0 &&
         (node.forest.length === 1 ? (
           <div className="children stack">
-            <Spacers diff={node.forest[0].row - node.row} />
+            {/* <Spacers diff={node.forest[0].row - node.row} /> */}
             <NodeView
               {...{
                 node: node.forest[0],
@@ -123,7 +112,7 @@ const NodeView: FC<Props> = ({
             {node.forest.map((child) => {
               return (
                 <Fragment key={child.id}>
-                  <Spacers diff={child.row - node.row} />
+                  {/* <Spacers diff={child.row - node.row} /> */}
                   <LineTo
                     from={`node-id=${node.id}`}
                     to={`node-id=${child.id}`}

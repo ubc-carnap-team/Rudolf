@@ -6,6 +6,7 @@ import {
   ClosedLeafNode,
   FinishedLeafNode,
 } from '../typings/TreeState'
+import { TreeForm } from '../typings/CarnapAPI'
 
 /**
  *
@@ -27,22 +28,19 @@ export const decomposeNode = (
 }
 
 export const makeNode = ({
-  label = '',
+  formulas = [makeTreeForm()],
   forest = [],
   rule = '',
   id,
-  row,
 }: Partial<TreeNode> & {
   id: string
   row: number
 }): TreeNode => ({
-  label,
+  formulas,
   forest,
-  resolved: false,
   closed: false,
   rule,
   id,
-  row,
 })
 
 /**
@@ -57,9 +55,7 @@ export const appendChildren = (
   if (typeof root.forest === 'string') {
     return root
   } else if (root.forest.length === 0) {
-    return root.closed
-      ? root
-      : { ...root, forest: createNodes(root.id, root.row) }
+    return root.closed ? root : { ...root, forest: createNodes(root.id, -1) } // TODO
   } else {
     return {
       ...root,
@@ -87,16 +83,20 @@ export const parsePremises = (
 ): TreeNode => {
   const id = `${parentId}0`
   return makeNode({
-    label: formulas[0],
+    formulas: formulas.map(makeTreeForm),
     rule: 'A',
-    forest:
-      formulas.length > 1
-        ? [parsePremises(formulas.slice(1), id, row + 1)]
-        : [],
+    forest: formulas.length > 1 ? [] : [],
     id,
     row,
   })
 }
+
+const makeTreeForm = (value = ''): TreeForm => ({
+  value,
+  // TODO
+  row: -1,
+  resolved: false,
+})
 
 const makeBranch = (
   formulas: string[],
@@ -106,8 +106,8 @@ const makeBranch = (
   const id = `${parentId}0`
   const row = parentRow + 1
   return makeNode({
-    label: formulas[0],
-    forest: [makeBranch(formulas.slice(1), id, row)],
+    formulas: formulas.map(makeTreeForm),
+    forest: [],
     id,
     row,
   })

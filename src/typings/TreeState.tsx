@@ -1,3 +1,5 @@
+import { TreeForm } from './CarnapAPI'
+
 /**
  *  @TODO
  * 1. group formulas on single node in array.
@@ -5,13 +7,11 @@
  * 3. extract formula values to map
  *  */
 export interface TreeNode {
-  label: string
+  formulas: TreeForm[]
   forest: TreeNode[] | 'finished' | 'contradiction'
-  resolved: boolean
   closed: boolean
   rule: string
   id: string
-  row: number
 }
 
 export type NodeGenerator = (parentId: string, parentRow: number) => TreeNode[]
