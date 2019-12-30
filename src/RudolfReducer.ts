@@ -5,7 +5,7 @@ import {
   ImmerReducer,
 } from 'immer-reducer'
 import { Dispatch } from 'react'
-
+import { produce } from 'immer'
 import { updateNode, mutateNode } from './util/nodes'
 import { NodeUpdater, TreeNode } from './typings/TreeState'
 
@@ -19,19 +19,20 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     this.draftState.tree = updater(this.draftState.tree)
   }
 
-  updateAtNode(id: string, updater: NodeUpdater) {
-    this.draftState.tree = updateNode(this.draftState.tree, id, updater)
+  updateAtNode(nodeId: string, updater: NodeUpdater) {
+    this.draftState.tree = updateNode(this.draftState.tree, nodeId, updater)
   }
 
   // TODO: formula updates
-  // updateFormula(id: string, formula: string) {
-  //   this.updateNode(this.draftState.tree, id, () => formula
-  // }
+  updateFormula(id: string, index: number, newValue: string) {
+    this.draftState.tree = updateNode(this.draftState.tree, id, (node) =>
+      produce(node, (draftNode) => {
+        draftNode.formulas[index].value = newValue
+      })
+    )
+  }
 
   // TODO: rule updates
-  // updateRule(id: string, rule: string) {
-  //   this.draftState.nodeRules[id] = rule
-  // }
 
   resolveFormula(nodeId: string, index: number) {
     mutateNode(this.draftState.tree, nodeId, (node) => {
@@ -60,6 +61,7 @@ export const {
   updateTree,
   updateAtNode,
   resolveFormula,
+  updateFormula,
 } = createActionCreators(RudolfReducer)
 export type RudolfAction = Actions<typeof RudolfReducer>
 export type CustomDispatch = Dispatch<RudolfAction>

@@ -1,6 +1,6 @@
-import React, { FC, useState, useRef, Ref } from 'react'
+import React, { FC, useState, useRef, Ref, ChangeEventHandler } from 'react'
 import { Check } from '@material-ui/icons'
-import { CustomDispatch } from '../RudolfReducer'
+import { CustomDispatch, updateFormula } from '../RudolfReducer'
 import { NodeMenu } from './NodeMenu'
 
 interface Props {
@@ -22,6 +22,8 @@ const FormulaView: FC<Props> = ({
 }) => {
   const [contextMenu, setContextMenu] = useState(false)
   const ref: Ref<HTMLDivElement> = useRef(null)
+  const handleFormulaChange: ChangeEventHandler<HTMLInputElement> = (event) =>
+    dispatch(updateFormula(nodeId, index, event.currentTarget.value))
   return (
     <div
       className="formula node"
@@ -35,8 +37,9 @@ const FormulaView: FC<Props> = ({
       <input
         className="label"
         // TODO
-        //   onChange={handleFormulaChange}
+        onChange={handleFormulaChange}
         value={value}
+        defaultValue=""
         placeholder="formula"
       />
       <NodeMenu
