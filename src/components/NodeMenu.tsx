@@ -5,6 +5,7 @@ import {
   CustomDispatch,
   resolveFormula,
   continueBranch,
+  splitBranch,
 } from '../RudolfReducer'
 import { TreeForm } from '../typings/CarnapAPI'
 
@@ -28,23 +29,11 @@ export const NodeMenu: FC<Props> = ({
   onClose: close,
 }) => {
   // TODO: convert to reducer action
-  // const splitBranchUpdater: NodeUpdater = (node) =>
-  //   appendChildren(node, (id) => [
-  //     makeNode({
-  //       id: `${id}0`,
-  //       row: nextRow,
-  //     }),
-  //     makeNode({
-  //       id: `${id}1`,
-  //       row: nextRow,
-  //     }),
-  //   ])
-
-  // TODO: convert to reducer action
-  // const handleSplit = (): void => {
-  //   dispatch(incrementRow())
-  //   update(splitBranchUpdater)
-  // }
+  const handleSplit = (): void => {
+    dispatch(splitBranch(nodeId))
+    // dispatch(incrementRow())
+    // update(splitBranchUpdater)
+  }
 
   // TODO: convert to reducer action
   const handleContinue = (): void => {
@@ -74,11 +63,7 @@ export const NodeMenu: FC<Props> = ({
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
       <MenuItem onClick={handleContinue}>Continue Branch</MenuItem>
-      <MenuItem
-      // onClick={handleSplit}
-      >
-        Split Branch
-      </MenuItem>
+      <MenuItem onClick={handleSplit}>Split Branch</MenuItem>
       <MenuItem
         onClick={() => {
           dispatch(resolveFormula(nodeId, index))

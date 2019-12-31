@@ -63,7 +63,24 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
         makeNode({ id: `${id}0`, row: this.draftState.nextRow }),
       ])
     )
-    this.draftState.nextRow += 1
+    this.draftState.nextRow++
+  }
+
+  // TODO: handle multiple formulas
+  splitBranch(nodeId: string) {
+    this.draftState.tree = updateNode(this.draftState.tree, nodeId, (node) =>
+      appendChildren(node, (id) => [
+        makeNode({
+          id: `${id}0`,
+          row: this.draftState.nextRow,
+        }),
+        makeNode({
+          id: `${id}1`,
+          row: this.draftState.nextRow,
+        }),
+      ])
+    )
+    this.draftState.nextRow++
   }
 }
 
@@ -83,6 +100,7 @@ export const {
   updateFormula,
   updateRule,
   continueBranch,
+  splitBranch,
 } = createActionCreators(RudolfReducer)
 export type RudolfAction = Actions<typeof RudolfReducer>
 export type CustomDispatch = Dispatch<RudolfAction>
