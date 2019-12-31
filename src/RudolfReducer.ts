@@ -45,7 +45,7 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     })
   }
 
-  setTree(premiseArray: string[]) {
+  createTree(premiseArray: string[]) {
     this.draftState.tree = parsePremises(premiseArray, '', 1)
     this.draftState.nextRow = premiseArray.length
   }
@@ -60,7 +60,7 @@ export const initialState: RudolfStore = {
 
 export const rudolfReducer = createReducerFunction(RudolfReducer)
 export const {
-  setTree,
+  createTree,
   updateTree,
   updateAtNode,
   resolveFormula,

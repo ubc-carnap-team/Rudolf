@@ -10,7 +10,7 @@ import {
   initialPremises,
   initialState,
   rudolfReducer,
-  setTree,
+  createTree,
 } from '../RudolfReducer'
 
 const App: React.FC = (): JSX.Element => {
@@ -20,7 +20,7 @@ const App: React.FC = (): JSX.Element => {
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
     const premiseArray = premises.split(',')
-    dispatch(setTree(premiseArray))
+    dispatch(createTree(premiseArray))
   }
 
   return (
