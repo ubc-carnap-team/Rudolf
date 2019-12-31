@@ -51,8 +51,10 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   }
 }
 
+export const initialPremises = 'P->Q,P,~Q'
+
 export const initialState: RudolfStore = {
-  tree: { forest: [], formulas: [], closed: false, rule: '', id: '' },
+  tree: parsePremises(initialPremises.split(','), '', 1),
   nextRow: 1,
 }
 

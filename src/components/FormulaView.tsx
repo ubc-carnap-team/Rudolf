@@ -36,10 +36,8 @@ const FormulaView: FC<Props> = ({
       <span>{row}</span>
       <input
         className="label"
-        // TODO
         onChange={handleFormulaChange}
         value={value}
-        defaultValue=""
         placeholder="formula"
       />
       <NodeMenu
