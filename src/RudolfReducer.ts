@@ -6,7 +6,7 @@ import {
 } from 'immer-reducer'
 import { Dispatch } from 'react'
 import { produce } from 'immer'
-import { updateNode, mutateNode } from './util/nodes'
+import { updateNode, mutateNode, parsePremises } from './util/nodes'
 import { NodeUpdater, TreeNode } from './typings/TreeState'
 
 export type RudolfStore = {
@@ -45,12 +45,9 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     })
   }
 
-  setRow(row: number) {
-    this.draftState.nextRow = row
-  }
-
-  setTree(tree: TreeNode) {
-    this.draftState.tree = tree
+  setTree(premiseArray: string[]) {
+    this.draftState.tree = parsePremises(premiseArray, '', 1)
+    this.draftState.nextRow = premiseArray.length
   }
 }
 
@@ -61,7 +58,6 @@ export const initialState: RudolfStore = {
 
 export const rudolfReducer = createReducerFunction(RudolfReducer)
 export const {
-  setRow,
   setTree,
   updateTree,
   updateAtNode,

@@ -7,7 +7,7 @@ import PremisesSelector from './PremisesSelector'
 import { IconButton } from '@material-ui/core'
 import { Undo, Redo } from '@material-ui/icons'
 import { JSONView } from './JSONView'
-import { initialState, rudolfReducer, setTree, setRow } from '../RudolfReducer'
+import { initialState, rudolfReducer, setTree } from '../RudolfReducer'
 
 const initialPremises = 'P->Q,P,~Q'
 
@@ -21,8 +21,7 @@ const App: React.FC = (): JSX.Element => {
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
     const premiseArray = premises.split(',')
-    dispatch(setTree(parsePremises(premiseArray, '', 1)))
-    dispatch(setRow(premiseArray.length))
+    dispatch(setTree(premiseArray))
   }
 
   return (
