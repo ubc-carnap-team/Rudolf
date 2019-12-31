@@ -1,7 +1,11 @@
 import { Menu, MenuItem } from '@material-ui/core'
 import React, { FC } from 'react'
 
-import { CustomDispatch, resolveFormula } from '../RudolfReducer'
+import {
+  CustomDispatch,
+  resolveFormula,
+  continueBranch,
+} from '../RudolfReducer'
 import { TreeForm } from '../typings/CarnapAPI'
 
 type Props = {
@@ -24,10 +28,6 @@ export const NodeMenu: FC<Props> = ({
   onClose: close,
 }) => {
   // TODO: convert to reducer action
-  // const continueBranchUpdater: NodeUpdater = (node) =>
-  //   appendChildren(node, (id) => [makeNode({ id: `${id}0`, row: nextRow })])
-
-  // TODO: convert to reducer action
   // const splitBranchUpdater: NodeUpdater = (node) =>
   //   appendChildren(node, (id) => [
   //     makeNode({
@@ -47,10 +47,11 @@ export const NodeMenu: FC<Props> = ({
   // }
 
   // TODO: convert to reducer action
-  // const handleContinue = (): void => {
-  //   dispatch(incrementRow())
-  //   update(continueBranchUpdater)
-  // }
+  const handleContinue = (): void => {
+    dispatch(continueBranch(nodeId))
+    // dispatch(incrementRow())
+    // update(continueBranchUpdater)
+  }
 
   // TODO: convert to reducer action
   // const markContradiction = (): void =>
@@ -74,11 +75,7 @@ export const NodeMenu: FC<Props> = ({
 
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
-      <MenuItem
-      // onClick={handleContinue}
-      >
-        Continue Branch
-      </MenuItem>
+      <MenuItem onClick={handleContinue}>Continue Branch</MenuItem>
       <MenuItem
       // onClick={handleSplit}
       >

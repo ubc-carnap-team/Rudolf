@@ -30,7 +30,7 @@ export const makeNode = ({
 /**
  *
  * @param root The root of a subTree
- * @param newNodes nodes to append, as-is, to the bottom of all open branches.
+ * @param createNodes function that creates new node objects
  */
 export const appendChildren = (
   root: TreeNode,

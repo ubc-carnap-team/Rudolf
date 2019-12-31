@@ -6,7 +6,13 @@ import {
 } from 'immer-reducer'
 import { Dispatch } from 'react'
 import { produce } from 'immer'
-import { updateNode, mutateNode, parsePremises } from './util/nodes'
+import {
+  updateNode,
+  mutateNode,
+  parsePremises,
+  appendChildren,
+  makeNode,
+} from './util/nodes'
 import { NodeUpdater, TreeNode } from './typings/TreeState'
 
 export type RudolfStore = {
@@ -49,6 +55,15 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     this.draftState.tree = parsePremises(premiseArray, '', 1)
     this.draftState.nextRow = premiseArray.length
   }
+
+  // TODO: handle multiple formulas
+  continueBranch(nodeId: string) {
+    this.draftState.tree = updateNode(this.draftState.tree, nodeId, (node) =>
+      appendChildren(node, (id) => [
+        makeNode({ id: `${id}0`, row: this.draftState.nextRow }),
+      ])
+    )
+  }
 }
 
 export const initialPremises = 'P->Q,P,~Q'
@@ -66,6 +81,7 @@ export const {
   resolveFormula,
   updateFormula,
   updateRule,
+  continueBranch,
 } = createActionCreators(RudolfReducer)
 export type RudolfAction = Actions<typeof RudolfReducer>
 export type CustomDispatch = Dispatch<RudolfAction>
