@@ -28,14 +28,10 @@ export const NodeMenu: FC<Props> = ({
   formula,
   onClose: close,
 }) => {
-  // TODO: convert to reducer action
   const handleSplit = (): void => {
     dispatch(splitBranch(nodeId))
-    // dispatch(incrementRow())
-    // update(splitBranchUpdater)
   }
 
-  // TODO: convert to reducer action
   const handleContinue = (): void => {
     dispatch(continueBranch(nodeId))
   }
