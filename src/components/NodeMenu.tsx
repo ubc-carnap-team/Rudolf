@@ -49,8 +49,6 @@ export const NodeMenu: FC<Props> = ({
   // TODO: convert to reducer action
   const handleContinue = (): void => {
     dispatch(continueBranch(nodeId))
-    // dispatch(incrementRow())
-    // update(continueBranchUpdater)
   }
 
   // TODO: convert to reducer action

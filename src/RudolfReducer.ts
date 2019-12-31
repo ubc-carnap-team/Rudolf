@@ -63,6 +63,7 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
         makeNode({ id: `${id}0`, row: this.draftState.nextRow }),
       ])
     )
+    this.draftState.nextRow += 1
   }
 }
 
