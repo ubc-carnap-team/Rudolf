@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-no-undef */
-import React, { FC, Fragment } from 'react'
+import React, { FC, Fragment, ChangeEventHandler } from 'react'
 import LineTo from 'react-lineto'
 import AutoSizeInput from 'react-input-autosize'
 import { TreeNode } from '../typings/TreeState'
 import FormulaView from './FormulaView'
-import { CustomDispatch } from '../RudolfReducer'
+import { CustomDispatch, updateRule } from '../RudolfReducer'
 
 type Props = {
   node: TreeNode
@@ -12,36 +12,36 @@ type Props = {
   dispatch: CustomDispatch
 }
 
-const NodeView: FC<Props> = ({ node, nextRow, dispatch }) => {
+const NodeView: FC<Props> = ({
+  node: { rule, id, forest, formulas },
+  nextRow,
+  dispatch,
+}) => {
   // TODO: move to formula
   // const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (event) => {
   //   onChange({
   //     node,
   //     label: event.currentTarget.value,
-  //     rule: node.rule,
+  //     rule: rule,
   //   })
   // }
 
   // TODO
-  // const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-  //   onChange({
-  //     node,
-  //     label: node.label,
-  //     rule: event.currentTarget.value,
-  //   })
-  // }
+  const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    dispatch(updateRule(id, event.currentTarget.value))
+  }
 
   return (
     <div className={`node-container `}>
       <div
-        className={`node-id=${node.id}`}
+        className={`node-id=${id}`}
         // onContextMenu={handleContextMenu}
       >
-        {node.formulas.map((form, index) => {
+        {formulas.map((form, index) => {
           return (
             <FormulaView
               key={`${form}-${index}`}
-              nodeId={node.id}
+              nodeId={id}
               index={index}
               dispatch={dispatch}
               {...form}
@@ -51,27 +51,27 @@ const NodeView: FC<Props> = ({ node, nextRow, dispatch }) => {
         (
         <AutoSizeInput
           className="rule"
-          // onChange={handleRuleChange}
-          value={node.rule}
+          onChange={handleRuleChange}
+          value={rule}
           placeholder="rule"
         />
         )
-        {node.forest === 'contradiction' && (
+        {forest === 'contradiction' && (
           <div className="closed-branch-marker">X</div>
         )}
-        {node.forest === 'finished' && (
+        {forest === 'finished' && (
           <div className="finished-branch-marker">O</div>
         )}
       </div>
 
-      {Array.isArray(node.forest) &&
-        node.forest.length > 0 &&
-        (node.forest.length === 1 ? (
+      {Array.isArray(forest) &&
+        forest.length > 0 &&
+        (forest.length === 1 ? (
           <div className="children stack">
-            {/* <Spacers diff={node.forest[0].row - node.row} /> */}
+            {/* <Spacers diff={forest[0].row - row} /> */}
             <NodeView
               {...{
-                node: node.forest[0],
+                node: forest[0],
 
                 nextRow,
                 dispatch,
@@ -80,12 +80,12 @@ const NodeView: FC<Props> = ({ node, nextRow, dispatch }) => {
           </div>
         ) : (
           <div className="children split">
-            {node.forest.map((child) => {
+            {forest.map((child) => {
               return (
                 <Fragment key={child.id}>
-                  {/* <Spacers diff={child.row - node.row} /> */}
+                  {/* <Spacers diff={child.row - row} /> */}
                   <LineTo
-                    from={`node-id=${node.id}`}
+                    from={`node-id=${id}`}
                     to={`node-id=${child.id}`}
                     borderColor="black"
                     fromAnchor="bottom"

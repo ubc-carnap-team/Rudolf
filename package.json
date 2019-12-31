@@ -41,7 +41,7 @@
     "eject": "react-scripts eject",
     "lint": "yarn eslint --ext '.ts,.tsx' src --fix",
     "eslint-check": "eslint --print-config ./src/App.tsx | eslint-config-prettier-check",
-    "check": "yarn tsc --watch"
+    "ts": "yarn tsc --watch"
   },
   "browserslist": {
     "production": [

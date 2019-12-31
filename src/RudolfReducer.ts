@@ -23,16 +23,21 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     this.draftState.tree = updateNode(this.draftState.tree, nodeId, updater)
   }
 
-  // TODO: formula updates
-  updateFormula(id: string, index: number, newValue: string) {
-    this.draftState.tree = updateNode(this.draftState.tree, id, (node) =>
+  updateFormula(nodeId: string, formulaIndex: number, newValue: string) {
+    this.draftState.tree = updateNode(this.draftState.tree, nodeId, (node) =>
       produce(node, (draftNode) => {
-        draftNode.formulas[index].value = newValue
+        draftNode.formulas[formulaIndex].value = newValue
       })
     )
   }
 
-  // TODO: rule updates
+  updateRule(nodeId: string, newValue: string) {
+    this.draftState.tree = updateNode(this.draftState.tree, nodeId, (node) =>
+      produce(node, (draftNode) => {
+        draftNode.rule = newValue
+      })
+    )
+  }
 
   resolveFormula(nodeId: string, index: number) {
     mutateNode(this.draftState.tree, nodeId, (node) => {
@@ -62,6 +67,7 @@ export const {
   updateAtNode,
   resolveFormula,
   updateFormula,
+  updateRule,
 } = createActionCreators(RudolfReducer)
 export type RudolfAction = Actions<typeof RudolfReducer>
 export type CustomDispatch = Dispatch<RudolfAction>
