@@ -8,36 +8,3 @@ export const JSONView: FC<{ state: RudolfStore }> = ({ state }) => (
     value={JSON.stringify(state, null, '\t')}
   />
 )
-
-// const transformNode = ({
-//   forest: _,
-//   ...tree
-// }: TreeNode): Omit<FormulaNode, 'forest'> => {
-//   return { ...tree, formulas: [], nodeType: 'formulas' }
-// }
-
-// const transformTree = <T extends TreeNode>(tree: TreeNode): FormulaNode => {
-//   if (tree.forest === 'contradiction')
-//     return {
-//       ...transformNode(tree),
-//       forest: [
-//         { rule: 'contradiction', nodeType: 'contradiction', formulas: [] },
-//       ],
-//     }
-//   else if (tree.forest === 'finished') {
-//     return {
-//       ...transformNode(tree),
-//       forest: [
-//         {
-//           rule: 'finished',
-//           nodeType: 'finished' as const,
-//           formulas: [],
-//         },
-//       ],
-//     }
-//   } else
-//     return {
-//       ...transformNode(tree),
-//       forest: tree.forest.map(transformTree),
-//     }
-// }
