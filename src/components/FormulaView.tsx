@@ -21,7 +21,7 @@ const FormulaView: FC<Props> = ({
   dispatch,
   node,
 }) => {
-  const [contextMenu, setContextMenu] = useState(false)
+  const [contextMenu, setContextMenu] = useState(false) // Convert to reducer action/field w/ ref, node, optional index.
   const ref: Ref<HTMLDivElement> = useRef(null)
   return (
     <div
