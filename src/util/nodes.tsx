@@ -178,4 +178,4 @@ export const isClosedLeaf = (node: TreeNode) =>
 
 export const lastRow = (node: TreeNode) => lastEl(node.formulas).row
 
-export const firstRow = (node: TreeNode) => node.formulas[0]?.row
+export const firstRow = (node: TreeNode) => node.formulas[0].row
