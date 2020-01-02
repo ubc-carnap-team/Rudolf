@@ -2,28 +2,29 @@ import React, { FC, useState, useRef, Ref, ChangeEventHandler } from 'react'
 import { Check } from '@material-ui/icons'
 import { CustomDispatch, updateFormula } from '../RudolfReducer'
 import { NodeMenu } from './NodeMenu'
+import { TreeNode } from '../typings/TreeState'
 
 interface Props {
   row: number
   value: string
   resolved: boolean
-  nodeId: string
+  node: TreeNode
   index: number
   dispatch: CustomDispatch
 }
 
 const FormulaView: FC<Props> = ({
   index,
-  nodeId,
   row,
   value,
   resolved,
   dispatch,
+  node,
 }) => {
   const [contextMenu, setContextMenu] = useState(false)
   const ref: Ref<HTMLDivElement> = useRef(null)
   const handleFormulaChange: ChangeEventHandler<HTMLInputElement> = (event) =>
-    dispatch(updateFormula(nodeId, index, event.currentTarget.value))
+    dispatch(updateFormula(node.id, index, event.currentTarget.value))
   return (
     <div
       className="formula node"
@@ -46,7 +47,7 @@ const FormulaView: FC<Props> = ({
         dispatch={dispatch}
         anchorEl={ref.current as HTMLDivElement}
         index={index}
-        nodeId={nodeId}
+        node={node}
         formula={{ row, value, resolved }}
       />
       {resolved ? <Check /> : ''}

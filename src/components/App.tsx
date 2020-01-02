@@ -39,7 +39,7 @@ const App: React.FC = (): JSX.Element => {
           <Redo />
         </IconButton>
       </span>
-      <NodeView node={state.tree} nextRow={state.nextRow} dispatch={dispatch} />
+      <NodeView node={state.tree} dispatch={dispatch} />
       <JSONView tree={state.tree} />
     </main>
   )

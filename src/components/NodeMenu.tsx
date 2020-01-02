@@ -6,14 +6,19 @@ import {
   resolveFormula,
   continueBranch,
   splitBranch,
+  markContradiction,
+  markFinished,
+  reopenBranch,
 } from '../RudolfReducer'
 import { TreeForm } from '../typings/CarnapAPI'
+import { TreeNode } from '../typings/TreeState'
+import { isOpenLeaf, isClosedLeaf } from '../util/nodes'
 
 type Props = {
   onClose: () => void
   open: boolean
-  nodeId: string
   index: number
+  node: TreeNode
   anchorEl: Element
   dispatch: CustomDispatch
   formula: TreeForm
@@ -22,39 +27,19 @@ type Props = {
 export const NodeMenu: FC<Props> = ({
   open,
   dispatch,
-  nodeId,
   index,
   anchorEl,
   formula,
   onClose: close,
+  node,
 }) => {
   const handleSplit = (): void => {
-    dispatch(splitBranch(nodeId))
+    dispatch(splitBranch(node.id))
   }
 
   const handleContinue = (): void => {
-    dispatch(continueBranch(nodeId))
+    dispatch(continueBranch(node.id))
   }
-
-  // TODO: convert to reducer action
-  // const markContradiction = (): void =>
-  //   update((node) => ({
-  //     ...node,
-  //     forest: 'contradiction',
-  //   }))
-
-  // TODO: convert to reducer action
-  // const markFinished = (): void =>
-  //   update((node) => ({
-  //     ...node,
-  //     forest: 'finished',
-  //   }))
-  // TODO: convert to reducer action
-  // const reopenBranch = (): void =>
-  //   update((node) => ({
-  //     ...node,
-  //     forest: [],
-  //   }))
 
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
@@ -62,26 +47,25 @@ export const NodeMenu: FC<Props> = ({
       <MenuItem onClick={handleSplit}>Split Branch</MenuItem>
       <MenuItem
         onClick={() => {
-          dispatch(resolveFormula(nodeId, index))
+          dispatch(resolveFormula(node.id, index))
           close()
         }}
       >
         Mark as {formula.resolved ? 'Un' : ''}Resolved
       </MenuItem>
-      {/* // TODO */}
-      {/* {isOpenLeaf(node) && (
-        <MenuItem onClick={markContradiction}>
+      {isOpenLeaf(node) && (
+        <MenuItem onClick={() => dispatch(markContradiction(node.id))}>
           Close Branch With Contradiction
         </MenuItem>
-      )} */}
-      {/* // TODO */}
-      {/* {isOpenLeaf(node) && (
-        <MenuItem onClick={markFinished}>Mark Branch Finished</MenuItem>
-      )} */}
-      {/* // TODO */}
-      {/* {isClosedLeaf(node) && (
-        <MenuItem onClick={reopenBranch}>Reopen Branch</MenuItem>
-      )} */}
+      )}
+      {isOpenLeaf(node) && (
+        <MenuItem onClick={() => markFinished(node.id)}>
+          Mark Branch Finished
+        </MenuItem>
+      )}
+      {isClosedLeaf(node) && (
+        <MenuItem onClick={() => reopenBranch(node.id)}>Reopen Branch</MenuItem>
+      )}
     </Menu>
   )
 }

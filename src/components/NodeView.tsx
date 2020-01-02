@@ -8,13 +8,12 @@ import { CustomDispatch, updateRule } from '../RudolfReducer'
 
 type Props = {
   node: TreeNode
-  nextRow: number
   dispatch: CustomDispatch
 }
 
 const NodeView: FC<Props> = ({
+  node,
   node: { rule, id, forest, formulas },
-  nextRow,
   dispatch,
 }) => {
   // TODO: move to formula
@@ -41,7 +40,7 @@ const NodeView: FC<Props> = ({
           return (
             <FormulaView
               key={`${form}-${index}`}
-              nodeId={id}
+              node={node}
               index={index}
               dispatch={dispatch}
               {...form}
@@ -69,14 +68,7 @@ const NodeView: FC<Props> = ({
         (forest.length === 1 ? (
           <div className="children stack">
             {/* <Spacers diff={forest[0].row - row} /> */}
-            <NodeView
-              {...{
-                node: forest[0],
-
-                nextRow,
-                dispatch,
-              }}
-            />
+            <NodeView node={forest[0]} dispatch={dispatch} />
           </div>
         ) : (
           <div className="children split">
@@ -86,7 +78,7 @@ const NodeView: FC<Props> = ({
                   {/* <Spacers diff={child.row - row} /> */}
                   <LineTo
                     from={`node-id=${id}`}
-                    to={`node-id=${child.id}`}
+                    isemptyArray
                     borderColor="black"
                     fromAnchor="bottom"
                     toAnchor="top"
@@ -95,7 +87,6 @@ const NodeView: FC<Props> = ({
                   <NodeView
                     {...{
                       node: child,
-                      nextRow,
                       dispatch,
                     }}
                   />

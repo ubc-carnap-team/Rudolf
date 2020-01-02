@@ -59,7 +59,7 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   // TODO: handle multiple formulas
   // TODO: rows aren't updating correctly.
   continueBranch(nodeId: string) {
-    this.draftState.tree = updateNode(this.draftState.tree, nodeId, (node) =>
+    updateNode(this.draftState.tree, nodeId, (node) =>
       appendChildren(node, (id) => [
         makeNode({ id: `${id}0`, row: this.draftState.nextRow }),
       ])
@@ -83,6 +83,23 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     )
     this.draftState.nextRow++
   }
+
+  markContradiction(nodeId: string) {
+    mutateNode(this.draftState.tree, nodeId, (node) => {
+      node.forest = 'contradiction'
+    })
+  }
+  markFinished(nodeId: string) {
+    mutateNode(this.draftState.tree, nodeId, (node) => {
+      node.forest = 'finished'
+    })
+  }
+
+  reopenBranch(nodeId: string) {
+    mutateNode(this.draftState.tree, nodeId, (node) => {
+      node.forest = []
+    })
+  }
 }
 
 export const initialPremises = 'P->Q,P,~Q'
@@ -102,6 +119,9 @@ export const {
   updateRule,
   continueBranch,
   splitBranch,
+  markContradiction,
+  markFinished,
+  reopenBranch,
 } = createActionCreators(RudolfReducer)
 export type RudolfAction = Actions<typeof RudolfReducer>
 export type CustomDispatch = Dispatch<RudolfAction>
