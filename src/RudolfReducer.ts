@@ -10,7 +10,7 @@ import {
   updateNode,
   mutateNode,
   parsePremises,
-  appendChildren,
+  destructivelyAppendChildren,
   makeNode,
 } from './util/nodes'
 import { NodeUpdater, TreeNode } from './typings/TreeState'
@@ -59,18 +59,19 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   // TODO: handle multiple formulas
   // TODO: rows aren't updating correctly.
   continueBranch(nodeId: string) {
-    updateNode(this.draftState.tree, nodeId, (node) =>
-      appendChildren(node, (id) => [
+    this.draftState.nextRow++
+    mutateNode(this.draftState.tree, nodeId, (node) =>
+      destructivelyAppendChildren(node, (id) => [
         makeNode({ id: `${id}0`, row: this.draftState.nextRow }),
       ])
     )
-    this.draftState.nextRow++
   }
 
   // TODO: handle multiple formulas
   splitBranch(nodeId: string) {
-    this.draftState.tree = updateNode(this.draftState.tree, nodeId, (node) =>
-      appendChildren(node, (id) => [
+    this.draftState.nextRow++
+    mutateNode(this.draftState.tree, nodeId, (node) =>
+      destructivelyAppendChildren(node, (id) => [
         makeNode({
           id: `${id}0`,
           row: this.draftState.nextRow,
@@ -81,7 +82,6 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
         }),
       ])
     )
-    this.draftState.nextRow++
   }
 
   markContradiction(nodeId: string) {
@@ -103,10 +103,11 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
 }
 
 export const initialPremises = 'P->Q,P,~Q'
+const premiseArray = initialPremises.split(',')
 
 export const initialState: RudolfStore = {
-  tree: parsePremises(initialPremises.split(','), '', 1),
-  nextRow: 1,
+  tree: parsePremises(premiseArray, '', 1),
+  nextRow: premiseArray.length,
 }
 
 export const rudolfReducer = createReducerFunction(RudolfReducer)

@@ -33,18 +33,24 @@ export const NodeMenu: FC<Props> = ({
   onClose: close,
   node,
 }) => {
-  const handleSplit = (): void => {
-    dispatch(splitBranch(node.id))
-  }
-
-  const handleContinue = (): void => {
-    dispatch(continueBranch(node.id))
-  }
-
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
-      <MenuItem onClick={handleContinue}>Continue Branch</MenuItem>
-      <MenuItem onClick={handleSplit}>Split Branch</MenuItem>
+      <MenuItem
+        onClick={() => {
+          dispatch(continueBranch(node.id))
+          close()
+        }}
+      >
+        Continue Branch
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          dispatch(splitBranch(node.id))
+          close()
+        }}
+      >
+        Split Branch
+      </MenuItem>
       <MenuItem
         onClick={() => {
           dispatch(resolveFormula(node.id, index))
@@ -54,17 +60,34 @@ export const NodeMenu: FC<Props> = ({
         Mark as {formula.resolved ? 'Un' : ''}Resolved
       </MenuItem>
       {isOpenLeaf(node) && (
-        <MenuItem onClick={() => dispatch(markContradiction(node.id))}>
+        <MenuItem
+          onClick={() => {
+            dispatch(markContradiction(node.id))
+            close()
+          }}
+        >
           Close Branch With Contradiction
         </MenuItem>
       )}
       {isOpenLeaf(node) && (
-        <MenuItem onClick={() => markFinished(node.id)}>
+        <MenuItem
+          onClick={() => {
+            markFinished(node.id)
+            close()
+          }}
+        >
           Mark Branch Finished
         </MenuItem>
       )}
       {isClosedLeaf(node) && (
-        <MenuItem onClick={() => reopenBranch(node.id)}>Reopen Branch</MenuItem>
+        <MenuItem
+          onClick={() => {
+            reopenBranch(node.id)
+            close()
+          }}
+        >
+          Reopen Branch
+        </MenuItem>
       )}
     </Menu>
   )

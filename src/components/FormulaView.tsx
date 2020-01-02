@@ -23,8 +23,6 @@ const FormulaView: FC<Props> = ({
 }) => {
   const [contextMenu, setContextMenu] = useState(false)
   const ref: Ref<HTMLDivElement> = useRef(null)
-  const handleFormulaChange: ChangeEventHandler<HTMLInputElement> = (event) =>
-    dispatch(updateFormula(node.id, index, event.currentTarget.value))
   return (
     <div
       className="formula node"
@@ -37,7 +35,9 @@ const FormulaView: FC<Props> = ({
       <span>{row}</span>
       <input
         className="label"
-        onChange={handleFormulaChange}
+        onChange={(event) =>
+          dispatch(updateFormula(node.id, index, event.currentTarget.value))
+        }
         value={value}
         placeholder="formula"
       />

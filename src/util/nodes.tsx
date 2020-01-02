@@ -54,6 +54,27 @@ export const appendChildren = (
 
 /**
  *
+ * @param root The root of a subTree
+ * @param createNodes function that creates new node objects
+ */
+export const destructivelyAppendChildren = (
+  root: TreeNode,
+  createNodes: NodeGenerator
+): void => {
+  if (typeof root.forest === 'string') {
+  } else if (root.forest.length === 0) {
+    if (!root.closed) {
+      root.forest = createNodes(root.id, -1)
+    }
+  } else {
+    root.forest.forEach((child: TreeNode) =>
+      destructivelyAppendChildren(child, createNodes)
+    )
+  }
+}
+
+/**
+ *
  * @param formulas an array of of formulas.
  */
 export const parsePremises = (

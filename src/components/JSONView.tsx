@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 import { TextareaAutosize } from '@material-ui/core'
-import { TreeNode } from '../typings/TreeState'
+import { RudolfStore } from '../RudolfReducer'
 
-export const JSONView: FC<{ tree: TreeNode }> = ({ tree }) => (
+export const JSONView: FC<{ state: RudolfStore }> = ({ state }) => (
   <TextareaAutosize
     className="json-view"
-    value={JSON.stringify(tree, null, '\t')}
+    value={JSON.stringify(state, null, '\t')}
   />
 )
 

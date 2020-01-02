@@ -40,7 +40,7 @@ const App: React.FC = (): JSX.Element => {
         </IconButton>
       </span>
       <NodeView node={state.tree} dispatch={dispatch} />
-      <JSONView tree={state.tree} />
+      <JSONView state={state} />
     </main>
   )
 }
