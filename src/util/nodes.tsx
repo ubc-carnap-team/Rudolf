@@ -8,6 +8,7 @@ import {
   NodeMutater,
 } from '../typings/TreeState'
 import { TreeForm } from '../typings/CarnapAPI'
+import { lastEl } from './helpers'
 
 export const makeNode = ({
   formulas,
@@ -174,3 +175,7 @@ export const isContradictionLeaf = (
 
 export const isClosedLeaf = (node: TreeNode) =>
   isFinishedLeaf(node) || isContradictionLeaf(node)
+
+export const lastRow = (node: TreeNode) => lastEl(node.formulas).row
+
+export const firstRow = (node: TreeNode) => node.formulas[0]?.row
