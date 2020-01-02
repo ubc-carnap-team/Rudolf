@@ -5,7 +5,6 @@ import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
 import { IconButton } from '@material-ui/core'
 import { Undo, Redo } from '@material-ui/icons'
-import { JSONView } from './JSONView'
 import {
   initialPremises,
   initialState,

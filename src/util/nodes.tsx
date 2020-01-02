@@ -155,13 +155,9 @@ export const mutateNode = (
   mutater: NodeMutater
 ): void => {
   if (root.id === targetNodeId) {
-    return mutater(root)
-  } else if (typeof root.forest === 'string') {
-    return
-  } else {
-    return root.forest.forEach((child) =>
-      mutateNode(child, targetNodeId, mutater)
-    )
+    mutater(root)
+  } else if (Array.isArray(root.forest)) {
+    root.forest.forEach((child) => mutateNode(child, targetNodeId, mutater))
   }
 }
 

@@ -72,7 +72,7 @@ export const NodeMenu: FC<Props> = ({
       {isOpenLeaf(node) && (
         <MenuItem
           onClick={() => {
-            markFinished(node.id)
+            dispatch(markFinished(node.id))
             close()
           }}
         >
@@ -82,7 +82,7 @@ export const NodeMenu: FC<Props> = ({
       {isClosedLeaf(node) && (
         <MenuItem
           onClick={() => {
-            reopenBranch(node.id)
+            dispatch(reopenBranch(node.id))
             close()
           }}
         >

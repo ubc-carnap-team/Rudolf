@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, Ref, ChangeEventHandler } from 'react'
+import React, { FC, useState, useRef, Ref } from 'react'
 import { Check } from '@material-ui/icons'
 import { CustomDispatch, updateFormula } from '../RudolfReducer'
 import { NodeMenu } from './NodeMenu'

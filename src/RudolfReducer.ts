@@ -53,7 +53,6 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   }
 
   // TODO: handle multiple formulas
-  // TODO: rows aren't updating correctly.
   continueBranch(nodeId: string) {
     this.draftState.nextRow++
     mutateNode(this.draftState.tree, nodeId, (node) =>
