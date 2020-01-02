@@ -21,10 +21,6 @@ export type RudolfStore = {
 }
 
 export class RudolfReducer extends ImmerReducer<RudolfStore> {
-  updateTree(updater: NodeUpdater) {
-    this.draftState.tree = updater(this.draftState.tree)
-  }
-
   updateAtNode(nodeId: string, updater: NodeUpdater) {
     this.draftState.tree = updateNode(this.draftState.tree, nodeId, updater)
   }
@@ -113,7 +109,6 @@ export const initialState: RudolfStore = {
 export const rudolfReducer = createReducerFunction(RudolfReducer)
 export const {
   createTree,
-  updateTree,
   updateAtNode,
   resolveFormula,
   updateFormula,
