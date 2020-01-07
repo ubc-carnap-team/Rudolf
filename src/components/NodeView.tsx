@@ -16,16 +16,6 @@ const NodeView: FC<Props> = ({
   node: { rule, id, forest, formulas },
   dispatch,
 }) => {
-  // TODO: move to formula
-  // const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-  //   onChange({
-  //     node,
-  //     label: event.currentTarget.value,
-  //     rule: rule,
-  //   })
-  // }
-
-  // TODO
   const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     dispatch(updateRule(id, event.currentTarget.value))
   }
