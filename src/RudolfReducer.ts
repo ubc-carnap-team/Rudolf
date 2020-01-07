@@ -13,7 +13,7 @@ import {
   destructivelyAppendChildren,
   makeNode,
 } from './util/nodes'
-import { NodeUpdater, TreeNode } from './typings/TreeState'
+import { TreeNode } from './typings/TreeState'
 
 export type RudolfStore = {
   tree: TreeNode
@@ -21,10 +21,6 @@ export type RudolfStore = {
 }
 
 export class RudolfReducer extends ImmerReducer<RudolfStore> {
-  updateAtNode(nodeId: string, updater: NodeUpdater) {
-    this.draftState.tree = updateNode(this.draftState.tree, nodeId, updater)
-  }
-
   updateFormula(nodeId: string, formulaIndex: number, newValue: string) {
     this.draftState.tree = updateNode(this.draftState.tree, nodeId, (node) =>
       produce(node, (draftNode) => {
@@ -108,7 +104,6 @@ export const initialState: RudolfStore = {
 export const rudolfReducer = createReducerFunction(RudolfReducer)
 export const {
   createTree,
-  updateAtNode,
   resolveFormula,
   updateFormula,
   updateRule,
