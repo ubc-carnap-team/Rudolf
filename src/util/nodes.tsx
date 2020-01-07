@@ -99,38 +99,6 @@ const makeTreeForm = (value = '', row: number): TreeForm => ({
   resolved: false,
 })
 
-// TODO: delete if unused
-// const makeBranch = (
-//   formulas: string[],
-//   parentId: string,
-//   parentRow: number
-// ): TreeNode => {
-//   const id = `${parentId}0`
-//   const row = parentRow + 1
-//   return makeNode({
-//     formulas: formulas.map(makeTreeForm),
-//     forest: [],
-//     id,
-//     row,
-//   })
-// }
-
-// TODO: delete if unused.
-// const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
-//   string,
-//   string
-// ]) => (parentId: string, parentRow: number) => {
-//   const leftBranch = makeBranch(leftBranchInput.split(','), parentId, parentRow)
-//   const rightBranch = makeBranch(
-//     rightBranchInput.split(','),
-//     parentId,
-//     parentRow
-//   )
-//   return [leftBranch, rightBranch].filter(
-//     (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
-//   )
-// }
-
 export const updateNode = (
   root: TreeNode,
   targetNodeId: string,
