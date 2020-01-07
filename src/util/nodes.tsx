@@ -11,19 +11,15 @@ import { TreeForm } from '../typings/CarnapAPI'
 import { lastEl } from './helpers'
 
 export const makeNode = ({
-  formulas,
+  formulas = [],
   forest = [],
   rule = '',
   id,
-  row = 0,
-}: Omit<Partial<TreeNode>, 'formulas'> & {
+}: Partial<TreeNode> & {
   id: string
   row: number
-  formulas?: string[]
 }): TreeNode => ({
-  formulas: formulas
-    ? formulas.map((form, index) => makeTreeForm(form, index + row))
-    : [makeTreeForm('', row)],
+  formulas,
   forest,
   closed: false,
   rule,
@@ -87,7 +83,7 @@ export const parsePremises = (
 ): TreeNode => {
   const id = `${parentId}0`
   return makeNode({
-    formulas,
+    formulas: formulas.map((form, index) => makeTreeForm(form, index + row)),
     rule: 'A',
     forest: [],
     id,
@@ -149,3 +145,11 @@ export const isClosedLeaf = (node: TreeNode) =>
 export const lastRow = (node: TreeNode) => lastEl(node.formulas).row
 
 export const firstRow = (node: TreeNode) => node.formulas[0].row
+
+export const makeFormulas = (n: number, nextRow: number): TreeForm[] => {
+  const arr = []
+  while (n-- > 0) {
+    arr.push({ value: '', row: nextRow++, resolved: false })
+  }
+  return arr
+}

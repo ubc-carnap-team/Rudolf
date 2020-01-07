@@ -12,6 +12,7 @@ import {
   parsePremises,
   destructivelyAppendChildren,
   makeNode,
+  makeFormulas,
 } from './util/nodes'
 import { TreeNode } from './typings/TreeState'
 
@@ -48,31 +49,35 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     this.draftState.nextRow = premiseArray.length
   }
 
-  // TODO: handle multiple formulas
-  continueBranch(nodeId: string) {
-    this.draftState.nextRow++
-    mutateNode(this.draftState.tree, nodeId, (node) =>
-      destructivelyAppendChildren(node, (id) => [
-        makeNode({ id: `${id}0`, row: this.draftState.nextRow }),
-      ])
-    )
-  }
-
-  // TODO: handle multiple formulas
-  splitBranch(nodeId: string) {
-    this.draftState.nextRow++
+  continueBranch(nodeId: string, formulaCount: number) {
     mutateNode(this.draftState.tree, nodeId, (node) =>
       destructivelyAppendChildren(node, (id) => [
         makeNode({
           id: `${id}0`,
           row: this.draftState.nextRow,
+          formulas: makeFormulas(formulaCount, this.draftState.nextRow),
+        }),
+      ])
+    )
+    this.draftState.nextRow += formulaCount
+  }
+
+  splitBranch(nodeId: string, formulaCount: number) {
+    mutateNode(this.draftState.tree, nodeId, (node) =>
+      destructivelyAppendChildren(node, (id) => [
+        makeNode({
+          id: `${id}0`,
+          row: this.draftState.nextRow,
+          formulas: makeFormulas(formulaCount, this.draftState.nextRow),
         }),
         makeNode({
           id: `${id}1`,
           row: this.draftState.nextRow,
+          formulas: makeFormulas(formulaCount, this.draftState.nextRow),
         }),
       ])
     )
+    this.draftState.nextRow += formulaCount
   }
 
   markContradiction(nodeId: string) {
@@ -98,7 +103,7 @@ const premiseArray = initialPremises.split(',')
 
 export const initialState: RudolfStore = {
   tree: parsePremises(premiseArray, '', 1),
-  nextRow: premiseArray.length,
+  nextRow: premiseArray.length + 1,
 }
 
 export const rudolfReducer = createReducerFunction(RudolfReducer)

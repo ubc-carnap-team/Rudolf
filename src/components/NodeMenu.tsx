@@ -37,19 +37,35 @@ export const NodeMenu: FC<Props> = ({
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
       <MenuItem
         onClick={() => {
-          dispatch(continueBranch(node.id))
+          dispatch(continueBranch(node.id, 1))
           close()
         }}
       >
-        Continue Branch
+        Continue Branch w/ 1 formula
       </MenuItem>
       <MenuItem
         onClick={() => {
-          dispatch(splitBranch(node.id))
+          dispatch(splitBranch(node.id, 1))
           close()
         }}
       >
-        Split Branch
+        Split Branch w/ 1 formula
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          dispatch(continueBranch(node.id, 2))
+          close()
+        }}
+      >
+        Continue Branch w/ 2 formulas
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          dispatch(splitBranch(node.id, 2))
+          close()
+        }}
+      >
+        Split Branch w/ 2 formulas
       </MenuItem>
       <MenuItem
         onClick={() => {
