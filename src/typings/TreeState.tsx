@@ -2,7 +2,6 @@ import { TreeForm } from './CarnapAPI'
 
 /**
  * TODOS
- * 1. group formulas on single node in array.
  * 2. make closed nodes work more like output
  *  */
 export interface TreeNode {
