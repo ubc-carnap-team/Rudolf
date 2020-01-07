@@ -42,7 +42,9 @@ export const appendChildren = (
   if (typeof root.forest === 'string') {
     return root
   } else if (root.forest.length === 0) {
-    return root.closed ? root : { ...root, forest: createNodes(root.id, -1) } // TODO
+    return root.closed
+      ? root
+      : { ...root, forest: createNodes(root.id, lastRow(root) + 1) } // TODO
   } else {
     return {
       ...root,

@@ -11,10 +11,13 @@ import {
   rudolfReducer,
   createTree,
 } from '../RudolfReducer'
+import { makeUndoable } from '../undoableReducer'
 
 const App: React.FC = (): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
-  const [state, dispatch] = useReducer(rudolfReducer, initialState)
+  const [[pastStates, currentState, futureStates], dispatch] = useReducer(
+    ...makeUndoable(rudolfReducer, initialState)
+  )
 
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
@@ -31,14 +34,26 @@ const App: React.FC = (): JSX.Element => {
         setPremises={setPremises}
       />
       <span className="tree-buttons">
-        <IconButton className="undo-button" disabled={true}>
+        <IconButton
+          className="undo-button"
+          onClick={() => {
+            dispatch({ type: 'UNDO' })
+          }}
+          disabled={!pastStates.length}
+        >
           <Undo />
         </IconButton>
-        <IconButton className="redo-button" disabled={true}>
+        <IconButton
+          className="redo-button"
+          onClick={() => {
+            dispatch({ type: 'REDO' })
+          }}
+          disabled={!futureStates.length}
+        >
           <Redo />
         </IconButton>
       </span>
-      <NodeView node={state.tree} dispatch={dispatch} />
+      <NodeView node={currentState.tree} dispatch={dispatch} />
       {/* <JSONView state={state} /> */}
     </main>
   )

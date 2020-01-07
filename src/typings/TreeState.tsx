@@ -1,10 +1,9 @@
 import { TreeForm } from './CarnapAPI'
 
 /**
- *  @TODO
+ * TODOS
  * 1. group formulas on single node in array.
  * 2. make closed nodes work more like output
- * 3. extract formula values to map
  *  */
 export interface TreeNode {
   formulas: TreeForm[]
