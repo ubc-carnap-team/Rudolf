@@ -7,7 +7,7 @@ const Spacers = ({ diff }: { diff: number }) => {
     spacers.push(<div className="spacer" />)
   }
 
-  return <>{spacers}</>
+  return <div className={`spacers-${diff}`}>{spacers}</div>
 }
 
 export default Spacers

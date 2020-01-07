@@ -5,6 +5,8 @@ import AutoSizeInput from 'react-input-autosize'
 import { TreeNode } from '../typings/TreeState'
 import FormulaView from './FormulaView'
 import { CustomDispatch, updateRule } from '../RudolfReducer'
+import { lastRow, firstRow } from '../util/nodes'
+import Spacers from './Spacers'
 
 type Props = {
   node: TreeNode
@@ -57,7 +59,7 @@ const NodeView: FC<Props> = ({
         forest.length > 0 &&
         (forest.length === 1 ? (
           <div className="children stack">
-            {/* <Spacers diff={forest[0].row - row} /> */}
+            <Spacers diff={firstRow(forest[0]) - lastRow(node)} />
             <NodeView node={forest[0]} dispatch={dispatch} />
           </div>
         ) : (
