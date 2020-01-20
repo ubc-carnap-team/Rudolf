@@ -5,9 +5,7 @@ import {
   ImmerReducer,
 } from 'immer-reducer'
 import { Dispatch } from 'react'
-import { produce } from 'immer'
 import {
-  updateNode,
   mutateNode,
   parsePremises,
   destructivelyAppendChildren,
@@ -23,19 +21,15 @@ export type RudolfStore = {
 
 export class RudolfReducer extends ImmerReducer<RudolfStore> {
   updateFormula(nodeId: string, formulaIndex: number, newValue: string) {
-    this.draftState.tree = updateNode(this.draftState.tree, nodeId, (node) =>
-      produce(node, (draftNode) => {
-        draftNode.formulas[formulaIndex].value = newValue
-      })
-    )
+    mutateNode(this.draftState.tree, nodeId, (draftNode) => {
+      draftNode.formulas[formulaIndex].value = newValue
+    })
   }
 
   updateRule(nodeId: string, newValue: string) {
-    this.draftState.tree = updateNode(this.draftState.tree, nodeId, (node) =>
-      produce(node, (draftNode) => {
-        draftNode.rule = newValue
-      })
-    )
+    mutateNode(this.draftState.tree, nodeId, (draftNode) => {
+      draftNode.rule = newValue
+    })
   }
 
   resolveFormula(nodeId: string, index: number) {
@@ -64,18 +58,20 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
 
   splitBranch(nodeId: string, formulaCount: number) {
     mutateNode(this.draftState.tree, nodeId, (node) =>
-      destructivelyAppendChildren(node, (id) => [
-        makeNode({
-          id: `${id}0`,
-          row: this.draftState.nextRow,
-          formulas: makeFormulas(formulaCount, this.draftState.nextRow),
-        }),
-        makeNode({
-          id: `${id}1`,
-          row: this.draftState.nextRow,
-          formulas: makeFormulas(formulaCount, this.draftState.nextRow),
-        }),
-      ])
+      destructivelyAppendChildren(node, (id) => {
+        return [
+          makeNode({
+            id: `${id}0`,
+            row: this.draftState.nextRow,
+            formulas: makeFormulas(formulaCount, this.draftState.nextRow),
+          }),
+          makeNode({
+            id: `${id}1`,
+            row: this.draftState.nextRow,
+            formulas: makeFormulas(formulaCount, this.draftState.nextRow),
+          }),
+        ]
+      })
     )
     this.draftState.nextRow += formulaCount
   }
@@ -85,6 +81,7 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
       node.forest = 'contradiction'
     })
   }
+
   markFinished(nodeId: string) {
     mutateNode(this.draftState.tree, nodeId, (node) => {
       node.forest = 'finished'
