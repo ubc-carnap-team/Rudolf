@@ -1,22 +1,21 @@
+import { TreeForm } from './CarnapAPI'
+
 /**
- *  @TODO
- * 1. group formulas on single node in array.
+ * TODOS
  * 2. make closed nodes work more like output
- * 3. extract formula values to map
  *  */
 export interface TreeNode {
-  label: string
+  formulas: TreeForm[]
   forest: TreeNode[] | 'finished' | 'contradiction'
-  resolved: boolean
   closed: boolean
   rule: string
   id: string
-  row: number
 }
 
 export type NodeGenerator = (parentId: string, parentRow: number) => TreeNode[]
 
 export type NodeUpdater = (node: TreeNode) => TreeNode
+export type NodeMutater = (node: TreeNode) => void
 
 export type OpenLeafNode = TreeNode & { forest: [] }
 

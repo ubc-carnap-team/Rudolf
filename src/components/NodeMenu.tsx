@@ -1,103 +1,109 @@
 import { Menu, MenuItem } from '@material-ui/core'
 import React, { FC } from 'react'
 
-import { NodeUpdater, TreeNode } from '../typings/TreeState'
 import {
-  appendChildren,
-  isOpenLeaf,
-  makeNode,
-  isClosedLeaf,
-} from '../util/nodes'
+  CustomDispatch,
+  resolveFormula,
+  continueBranch,
+  splitBranch,
+  markContradiction,
+  markFinished,
+  reopenBranch,
+} from '../RudolfReducer'
+import { TreeForm } from '../typings/CarnapAPI'
+import { TreeNode } from '../typings/TreeState'
+import { isOpenLeaf, isClosedLeaf } from '../util/nodes'
 
 type Props = {
-  node: TreeNode
   onClose: () => void
-  updateTree: (node: TreeNode, updater: NodeUpdater) => void
   open: boolean
+  index: number
+  node: TreeNode
   anchorEl: Element
-  nextRow: number
-  incrementRow: () => void
+  dispatch: CustomDispatch
+  formula: TreeForm
 }
 
 export const NodeMenu: FC<Props> = ({
   open,
-  node,
-  updateTree,
+  dispatch,
+  index,
   anchorEl,
+  formula,
   onClose: close,
-  nextRow,
-  incrementRow,
+  node,
 }) => {
-  const update = (updater: NodeUpdater) => {
-    updateTree(node, updater)
-    close()
-  }
-
-  const continueBranchUpdater: NodeUpdater = (node) =>
-    appendChildren(node, (id) => [makeNode({ id: `${id}0`, row: nextRow })])
-
-  const splitBranchUpdater: NodeUpdater = (node) =>
-    appendChildren(node, (id) => [
-      makeNode({
-        id: `${id}0`,
-        row: nextRow,
-      }),
-      makeNode({
-        id: `${id}1`,
-        row: nextRow,
-      }),
-    ])
-
-  const handleSplit = (): void => {
-    incrementRow()
-    update(splitBranchUpdater)
-  }
-
-  const handleContinue = (): void => {
-    incrementRow()
-    update(continueBranchUpdater)
-  }
-
-  const toggleResolved = (): void =>
-    update((node) => ({
-      ...node,
-      resolved: !node.resolved,
-    }))
-
-  const markContradiction = (): void =>
-    update((node) => ({
-      ...node,
-      forest: 'contradiction',
-    }))
-
-  const markFinished = (): void =>
-    update((node) => ({
-      ...node,
-      forest: 'finished',
-    }))
-  const reopenBranch = (): void =>
-    update((node) => ({
-      ...node,
-      forest: [],
-    }))
-
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
-      <MenuItem onClick={handleContinue}>Continue Branch</MenuItem>
-      <MenuItem onClick={handleSplit}>Split Branch</MenuItem>
-      <MenuItem onClick={toggleResolved}>
-        Mark as {node.resolved ? 'Un' : ''}Resolved
+      <MenuItem
+        onClick={() => {
+          dispatch(continueBranch(node.id, 1))
+          close()
+        }}
+      >
+        Continue Branch w/ 1 formula
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          dispatch(splitBranch(node.id, 1))
+          close()
+        }}
+      >
+        Split Branch w/ 1 formula
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          dispatch(continueBranch(node.id, 2))
+          close()
+        }}
+      >
+        Continue Branch w/ 2 formulas
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          dispatch(splitBranch(node.id, 2))
+          close()
+        }}
+      >
+        Split Branch w/ 2 formulas
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          dispatch(resolveFormula(node.id, index))
+          close()
+        }}
+      >
+        Mark as {formula.resolved ? 'Un' : ''}Resolved
       </MenuItem>
       {isOpenLeaf(node) && (
-        <MenuItem onClick={markContradiction}>
+        <MenuItem
+          onClick={() => {
+            dispatch(markContradiction(node.id))
+            close()
+          }}
+        >
           Close Branch With Contradiction
         </MenuItem>
       )}
       {isOpenLeaf(node) && (
-        <MenuItem onClick={markFinished}>Mark Branch Finished</MenuItem>
+        <MenuItem
+          onClick={() => {
+            dispatch(markFinished(node.id))
+            close()
+          }}
+        >
+          Mark Branch Finished
+        </MenuItem>
       )}
       {isClosedLeaf(node) && (
-        <MenuItem onClick={reopenBranch}>Reopen Branch</MenuItem>
+        <MenuItem
+          onClick={() => {
+            dispatch(reopenBranch(node.id))
+            close()
+          }}
+        >
+          Reopen Branch
+        </MenuItem>
       )}
     </Menu>
   )

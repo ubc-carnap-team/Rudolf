@@ -57,7 +57,7 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 'off', // TODO
     '@typescript-eslint/no-unused-vars': [
       'error',
-      { argsIgnorePattern: '^_$', ignoreRestSiblings: true },
+      { argsIgnorePattern: '^_', ignoreRestSiblings: true },
     ],
   },
 }

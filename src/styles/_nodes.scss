@@ -19,16 +19,7 @@ $nodeHeight: 50px;
     padding-left: 0.2em;
     padding-right: 0.2em;
     height: $nodeHeight;
-  }
-
-  .node.selected {
-    border-style: solid;
-    border-color: red;
-  }
-
-  &.selected > .children {
-    border-style: solid;
-    border-color: orange;
+    box-sizing: border-box;
   }
 
   input {
@@ -52,6 +43,5 @@ $nodeHeight: 50px;
 
 .spacer {
   height: $nodeHeight;
-  background: lightblue;
   flex-grow: 1;
 }
