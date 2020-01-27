@@ -1,162 +1,92 @@
-import Check from '@material-ui/icons/Check'
-import React, {
-  ChangeEventHandler,
-  FC,
-  Fragment,
-  MouseEventHandler,
-  Ref,
-  useRef,
-  useState,
-} from 'react'
-import AutoSizeInput from 'react-input-autosize'
+/* eslint-disable react/jsx-no-undef */
+import React, { FC, Fragment, ChangeEventHandler } from 'react'
 import LineTo from 'react-lineto'
-
-import { NodeUpdater, TreeNode } from '../typings/TreeState'
-import { NodeMenu } from './NodeMenu'
+import AutoSizeInput from 'react-input-autosize'
+import { TreeNode } from '../typings/TreeState'
+import FormulaView from './FormulaView'
+import { CustomDispatch, updateRule } from '../RudolfReducer'
+import { lastRow, firstRow } from '../util/nodes'
+import Spacers from './Spacers'
+import { isNonEmptyArray } from '../util/util'
 
 type Props = {
   node: TreeNode
-  selectedNode: TreeNode | null
-  selectNode: (_: TreeNode) => void
-  onChange: (_: { node: TreeNode; label: string; rule: string }) => void
-  updateTree: (node: TreeNode, updater: NodeUpdater) => void
-  nextRow: number
-  incrementRow: () => void
-}
-
-const Spacers = ({ diff }: { diff: number }) => {
-  const spacers: JSX.Element[] = []
-  const i = diff - 1
-  while (spacers.length < i) {
-    spacers.push(<div className="spacer" />)
-  }
-
-  return <>{spacers}</>
+  dispatch: CustomDispatch
 }
 
 const NodeView: FC<Props> = ({
   node,
-  selectedNode,
-  selectNode,
-  onChange,
-  updateTree,
-  nextRow,
-  incrementRow,
+  node: { rule, id, forest, formulas },
+  dispatch,
 }) => {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const nodeRef: Ref<HTMLDivElement> = useRef(null)
-
-  const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    onChange({
-      node,
-      label: event.currentTarget.value,
-      rule: node.rule,
-    })
-  }
-
-  const handleContextMenu: MouseEventHandler = (event) => {
-    event.preventDefault()
-    setMenuOpen(true)
-  }
-
   const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    onChange({
-      node,
-      label: node.label,
-      rule: event.currentTarget.value,
-    })
+    dispatch(updateRule(id, event.currentTarget.value))
   }
+  const spacers = isNonEmptyArray(forest) ? (
+    <Spacers diff={firstRow(forest[0]) - lastRow(node)} />
+  ) : (
+    undefined
+  )
 
   return (
-    <div
-      className={`node-container ${selectedNode === node ? 'selected' : ''}`}
-    >
+    <div className={`node-container `}>
       <div
-        className={`node node-id=${node.id} ${
-          selectedNode === node ? 'selected' : ''
-        } `}
-        onContextMenu={handleContextMenu}
-        ref={nodeRef}
+        className={`node-id=${id}`}
+        // TODO: allow context menu on nodes?
+        // onContextMenu={handleContextMenu}
       >
-        <span>{node.row} .</span>
-        <input
-          className="label"
-          onChange={handleLabelChange}
-          value={node.label}
-          placeholder="formula"
-        />
+        {formulas.map((form, index) => {
+          return (
+            <FormulaView
+              key={`${form}-${index}`}
+              node={node}
+              index={index}
+              dispatch={dispatch}
+              {...form}
+            />
+          )
+        })}
         (
         <AutoSizeInput
           className="rule"
           onChange={handleRuleChange}
-          value={node.rule}
+          value={rule}
           placeholder="rule"
         />
-        ){node.resolved ? <Check /> : ''}
-        {node.forest === 'contradiction' && (
+        )
+        {forest === 'contradiction' && (
           <div className="closed-branch-marker">X</div>
         )}
-        {node.forest === 'finished' && (
+        {forest === 'finished' && (
           <div className="finished-branch-marker">O</div>
         )}
       </div>
 
-      {Array.isArray(node.forest) &&
-        node.forest.length > 0 &&
-        (node.forest.length === 1 ? (
-          <div className="children stack">
-            <Spacers diff={node.forest[0].row - node.row} />
-            <NodeView
-              {...{
-                node: node.forest[0],
-                selectedNode,
-                selectNode,
-                onChange,
-                updateTree,
-                nextRow,
-                incrementRow,
-              }}
-            />
-          </div>
-        ) : (
-          <div className="children split">
-            {node.forest.map((child) => {
-              return (
-                <Fragment key={child.id}>
-                  <Spacers diff={child.row - node.row} />
-                  <LineTo
-                    from={`node-id=${node.id}`}
-                    to={`node-id=${child.id}`}
-                    borderColor="black"
-                    fromAnchor="bottom"
-                    toAnchor="top"
-                    delay={0}
-                  />
-                  <NodeView
-                    {...{
-                      node: child,
-                      selectedNode,
-                      selectNode,
-                      onChange,
-                      updateTree,
-                      nextRow,
-                      incrementRow,
-                    }}
-                  />
-                </Fragment>
-              )
-            })}
-          </div>
-        ))}
-      <NodeMenu
-        open={menuOpen}
-        node={node}
-        onClose={() => setMenuOpen(false)}
-        updateTree={updateTree}
-        anchorEl={nodeRef.current as Element}
-        nextRow={nextRow}
-        incrementRow={incrementRow}
-      />
+      {Array.isArray(forest) && forest.length > 0 && (
+        <div className={`children ${forest.length > 1 ? 'split' : 'stack'}`}>
+          {forest.map((child) => {
+            return (
+              <Fragment key={child.id}>
+                {spacers}
+                <LineTo
+                  from={`node-id=${id}`}
+                  to={`node-id=${child.id}`}
+                  borderColor="black"
+                  fromAnchor="bottom"
+                  toAnchor="top"
+                  delay={0}
+                />
+                <NodeView
+                  {...{
+                    node: child,
+                    dispatch,
+                  }}
+                />
+              </Fragment>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

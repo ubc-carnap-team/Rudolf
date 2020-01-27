@@ -5,50 +5,31 @@ import {
   TreeNode,
   ClosedLeafNode,
   FinishedLeafNode,
+  NodeMutater,
 } from '../typings/TreeState'
-
-/**
- *
- * @param root
- * @param selectedNode
- * @param newNodes
- * 1. Mark the currently selected node as resolved.
- * 2. Append the new nodes to the bottom of all open branches.
- *  (For now, this can just be all branches, since we don't have
- *  a way of marking branches as open/closed yet.)
- */
-export const decomposeNode = (
-  root: TreeNode,
-  selectedNode: TreeNode,
-  nodeInput: [string, string]
-): TreeNode => {
-  const createNodes = getNodeGenerator(nodeInput)
-  return resolveSelectedNode(root, selectedNode, createNodes)
-}
+import { TreeForm } from '../typings/CarnapAPI'
+import { lastEl } from './helpers'
 
 export const makeNode = ({
-  label = '',
+  formulas = [],
   forest = [],
   rule = '',
   id,
-  row,
 }: Partial<TreeNode> & {
   id: string
   row: number
 }): TreeNode => ({
-  label,
+  formulas,
   forest,
-  resolved: false,
   closed: false,
   rule,
   id,
-  row,
 })
 
 /**
  *
  * @param root The root of a subTree
- * @param newNodes nodes to append, as-is, to the bottom of all open branches.
+ * @param createNodes function that creates new node objects
  */
 export const appendChildren = (
   root: TreeNode,
@@ -59,7 +40,7 @@ export const appendChildren = (
   } else if (root.forest.length === 0) {
     return root.closed
       ? root
-      : { ...root, forest: createNodes(root.id, root.row) }
+      : { ...root, forest: createNodes(root.id, lastRow(root) + 1) } // TODO
   } else {
     return {
       ...root,
@@ -69,12 +50,27 @@ export const appendChildren = (
     }
   }
 }
+
 /**
  *
- * @param root - The node to mark as resolved.
- * Mark the currently selected node as resolved.
+ * @param root The root of a subTree
+ * @param createNodes function that creates new node objects
  */
-const markResolved = (root: TreeNode) => ({ ...root, resolved: true })
+export const destructivelyAppendChildren = (
+  root: TreeNode,
+  createNodes: NodeGenerator
+): void => {
+  if (typeof root.forest === 'string') {
+  } else if (root.forest.length === 0) {
+    if (!root.closed) {
+      root.forest = createNodes(root.id, -1)
+    }
+  } else {
+    root.forest.forEach((child: TreeNode) =>
+      destructivelyAppendChildren(child, createNodes)
+    )
+  }
+}
 
 /**
  *
@@ -87,61 +83,26 @@ export const parsePremises = (
 ): TreeNode => {
   const id = `${parentId}0`
   return makeNode({
-    label: formulas[0],
+    formulas: formulas.map((form, index) => makeTreeForm(form, index + row)),
     rule: 'A',
-    forest:
-      formulas.length > 1
-        ? [parsePremises(formulas.slice(1), id, row + 1)]
-        : [],
+    forest: [],
     id,
     row,
   })
 }
 
-const makeBranch = (
-  formulas: string[],
-  parentId: string,
-  parentRow: number
-): TreeNode => {
-  const id = `${parentId}0`
-  const row = parentRow + 1
-  return makeNode({
-    label: formulas[0],
-    forest: [makeBranch(formulas.slice(1), id, row)],
-    id,
-    row,
-  })
-}
-
-const getNodeGenerator = ([leftBranchInput, rightBranchInput]: [
-  string,
-  string
-]) => (parentId: string, parentRow: number) => {
-  const leftBranch = makeBranch(leftBranchInput.split(','), parentId, parentRow)
-  const rightBranch = makeBranch(
-    rightBranchInput.split(','),
-    parentId,
-    parentRow
-  )
-  return [leftBranch, rightBranch].filter(
-    (maybeNode: TreeNode | null): maybeNode is TreeNode => maybeNode != null
-  )
-}
-const resolveSelectedNode = (
-  root: TreeNode,
-  selectedNode: TreeNode,
-  createNodes: NodeGenerator
-): TreeNode =>
-  updateNode(root, selectedNode, (node) =>
-    appendChildren(markResolved(node), createNodes)
-  )
+const makeTreeForm = (value = '', row: number): TreeForm => ({
+  value,
+  row,
+  resolved: false,
+})
 
 export const updateNode = (
   root: TreeNode,
-  selectedNode: TreeNode,
+  targetNodeId: string,
   updater: NodeUpdater
 ): TreeNode => {
-  if (root === selectedNode) {
+  if (root.id === targetNodeId) {
     return updater({ ...root })
   } else if (typeof root.forest === 'string') {
     return root
@@ -149,9 +110,21 @@ export const updateNode = (
     return {
       ...root,
       forest: root.forest.map((child) =>
-        updateNode(child, selectedNode, updater)
+        updateNode(child, targetNodeId, updater)
       ),
     }
+  }
+}
+
+export const mutateNode = (
+  root: TreeNode,
+  targetNodeId: string,
+  mutater: NodeMutater
+): void => {
+  if (root.id === targetNodeId) {
+    mutater(root)
+  } else if (Array.isArray(root.forest)) {
+    root.forest.forEach((child) => mutateNode(child, targetNodeId, mutater))
   }
 }
 
@@ -168,3 +141,15 @@ export const isContradictionLeaf = (
 
 export const isClosedLeaf = (node: TreeNode) =>
   isFinishedLeaf(node) || isContradictionLeaf(node)
+
+export const lastRow = (node: TreeNode) => lastEl(node.formulas).row
+
+export const firstRow = (node: TreeNode) => node.formulas[0].row
+
+export const makeFormulas = (n: number, nextRow: number): TreeForm[] => {
+  const arr = []
+  while (n-- > 0) {
+    arr.push({ value: '', row: nextRow++, resolved: false })
+  }
+  return arr
+}
