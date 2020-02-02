@@ -12,6 +12,7 @@ import {
   createTree,
 } from '../RudolfReducer'
 import { makeUndoable } from '../undoableReducer'
+import { JSONView } from './JSONView'
 
 const App: React.FC = (): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
@@ -54,7 +55,7 @@ const App: React.FC = (): JSX.Element => {
         </IconButton>
       </span>
       <NodeView node={currentState.tree} dispatch={dispatch} />
-      {/* <JSONView state={state} /> */}
+      <JSONView tree={currentState.tree} />
     </main>
   )
 }

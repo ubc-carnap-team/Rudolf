@@ -3,16 +3,16 @@ import React, { FC } from 'react'
 
 import {
   CustomDispatch,
-  resolveFormula,
+  toggleResolved,
   continueBranch,
   splitBranch,
   markContradiction,
   markFinished,
   reopenBranch,
 } from '../RudolfReducer'
-import { TreeForm } from '../typings/CarnapAPI'
+import { TreeForm } from '../typings/TreeState'
 import { TreeNode } from '../typings/TreeState'
-import { isOpenLeaf, isClosedLeaf } from '../util/nodes'
+import { isOpenLeaf } from '../util/nodes'
 
 type Props = {
   onClose: () => void
@@ -23,6 +23,19 @@ type Props = {
   dispatch: CustomDispatch
   formula: TreeForm
 }
+
+/**
+ * @TODO make context menu work for each of
+ * - Formula Node:
+ *   - branch commands
+ *
+ * - Contradiction/Finished node:
+ *   - Reopen.
+ * - Formula:
+ *   - branch commands
+ *   - (un)resolve
+ *   - close branch.
+ */
 
 export const NodeMenu: FC<Props> = ({
   open,
@@ -69,7 +82,7 @@ export const NodeMenu: FC<Props> = ({
       </MenuItem>
       <MenuItem
         onClick={() => {
-          dispatch(resolveFormula(node.id, index))
+          dispatch(toggleResolved(node.id, index))
           close()
         }}
       >
@@ -95,7 +108,7 @@ export const NodeMenu: FC<Props> = ({
           Mark Branch Finished
         </MenuItem>
       )}
-      {isClosedLeaf(node) && (
+      {node.nodeType === 'contradiction' && (
         <MenuItem
           onClick={() => {
             dispatch(reopenBranch(node.id))

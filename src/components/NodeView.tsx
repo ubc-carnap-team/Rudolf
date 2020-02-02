@@ -7,7 +7,6 @@ import FormulaView from './FormulaView'
 import { CustomDispatch, updateRule } from '../RudolfReducer'
 import { lastRow, firstRow } from '../util/nodes'
 import Spacers from './Spacers'
-import { isNonEmptyArray } from '../util/util'
 
 type Props = {
   node: TreeNode
@@ -16,53 +15,49 @@ type Props = {
 
 const NodeView: FC<Props> = ({
   node,
-  node: { rule, id, forest, formulas },
+
   dispatch,
 }) => {
-  const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    dispatch(updateRule(id, event.currentTarget.value))
-  }
-  const spacers = isNonEmptyArray(forest) ? (
-    <Spacers diff={firstRow(forest[0]) - lastRow(node)} />
-  ) : (
-    undefined
-  )
+  if (node.nodeType === 'formulas') {
+    const { rule, id, formulas, forest } = node
+    const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+      dispatch(updateRule(id, event.currentTarget.value))
+    }
+    const spacers =
+      forest[0]?.nodeType === 'formulas' ? (
+        <Spacers diff={firstRow(forest[0]) - lastRow(node)} />
+      ) : (
+        undefined
+      )
 
-  return (
-    <div className={`node-container `}>
-      <div
-        className={`node-id=${id}`}
-        // TODO: allow context menu on nodes?
-        // onContextMenu={handleContextMenu}
-      >
-        {formulas.map((form, index) => {
-          return (
-            <FormulaView
-              key={`${form}-${index}`}
-              node={node}
-              index={index}
-              dispatch={dispatch}
-              {...form}
-            />
+    return (
+      <div className={`node-container `}>
+        <div
+          className={`node-id=${id}`}
+          // TODO: allow context menu on nodes?
+          // onContextMenu={handleContextMenu}
+        >
+          {formulas.map((form, index) => {
+            return (
+              <FormulaView
+                key={`${form}-${index}`}
+                node={node}
+                index={index}
+                dispatch={dispatch}
+                {...form}
+              />
+            )
+          })}
+          (
+          <AutoSizeInput
+            className="rule"
+            onChange={handleRuleChange}
+            value={rule}
+            placeholder="rule"
+          />
           )
-        })}
-        (
-        <AutoSizeInput
-          className="rule"
-          onChange={handleRuleChange}
-          value={rule}
-          placeholder="rule"
-        />
-        )
-        {forest === 'contradiction' && (
-          <div className="closed-branch-marker">X</div>
-        )}
-        {forest === 'finished' && (
-          <div className="finished-branch-marker">O</div>
-        )}
-      </div>
+        </div>
 
-      {Array.isArray(forest) && forest.length > 0 && (
         <div className={`children ${forest.length > 1 ? 'split' : 'stack'}`}>
           {forest.map((child) => {
             return (
@@ -86,9 +81,17 @@ const NodeView: FC<Props> = ({
             )
           })}
         </div>
-      )}
-    </div>
-  )
+      </div>
+    )
+  } else if (node.nodeType === 'contradiction') {
+    return <div className="closed-branch-marker">X</div>
+  } else if (node.nodeType === 'finished') {
+    return <div className="finished-branch-marker">O</div>
+  } else {
+    throw new Error(
+      `Invariant violation: Invalid nodeType on node: ${JSON.stringify(node)}`
+    )
+  }
 }
 
 export default NodeView

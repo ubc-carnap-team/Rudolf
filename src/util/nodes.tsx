@@ -1,13 +1,10 @@
+import { OpenLeafNode, NodeGenerator, TreeNode } from '../typings/TreeState'
 import {
-  OpenLeafNode,
-  NodeGenerator,
-  NodeUpdater,
-  TreeNode,
-  ClosedLeafNode,
-  FinishedLeafNode,
-  NodeMutater,
+  TreeForm,
+  FormulaNode,
+  ContradictionNode,
+  FinishedNode,
 } from '../typings/TreeState'
-import { TreeForm } from '../typings/CarnapAPI'
 import { lastEl } from './helpers'
 
 export const makeNode = ({
@@ -15,15 +12,29 @@ export const makeNode = ({
   forest = [],
   rule = '',
   id,
-}: Partial<TreeNode> & {
+}: Partial<FormulaNode> & {
   id: string
   row: number
-}): TreeNode => ({
+}): FormulaNode => ({
+  nodeType: 'formulas',
   formulas,
   forest,
-  closed: false,
   rule,
   id,
+})
+
+export const makeContradictionNode = (parentId: string): ContradictionNode => ({
+  nodeType: 'contradiction',
+  formulas: [],
+  rule: 'X-PLACEHOLDER',
+  id: `${parentId}0`,
+})
+
+export const makeFinishedNode = (parentId: string): FinishedNode => ({
+  nodeType: 'finished',
+  formulas: [],
+  rule: 'X-PLACEHOLDER',
+  id: `${parentId}0`,
 })
 
 /**
@@ -35,16 +46,18 @@ export const appendChildren = (
   root: TreeNode,
   createNodes: NodeGenerator
 ): TreeNode => {
-  if (typeof root.forest === 'string') {
+  if (root.nodeType === 'contradiction') {
     return root
-  } else if (root.forest.length === 0) {
-    return root.closed
-      ? root
-      : { ...root, forest: createNodes(root.id, lastRow(root) + 1) } // TODO
+  } else if (root.nodeType === 'finished') {
+    console.error("shouldn't try to append to finished branches.")
+    // TODO: Special Handling for FinishedNodes?
+    return root
+  } else if (isOpenLeaf(root)) {
+    return { ...root, forest: createNodes(root.id, lastRow(root) + 1) } // TODO
   } else {
     return {
       ...root,
-      forest: root.forest.map<TreeNode>((child: TreeNode) =>
+      forest: root.forest.map<TreeNode>((child) =>
         appendChildren(child, createNodes)
       ),
     }
@@ -60,13 +73,16 @@ export const destructivelyAppendChildren = (
   root: TreeNode,
   createNodes: NodeGenerator
 ): void => {
-  if (typeof root.forest === 'string') {
+  if (root.nodeType === 'contradiction') {
+    return
+  } else if (root.nodeType === 'finished') {
+    // TODO: Special Handling for FinishedNodes?
+    console.warn("shouldn't try to append to finished branch")
+    return
   } else if (root.forest.length === 0) {
-    if (!root.closed) {
-      root.forest = createNodes(root.id, -1)
-    }
+    root.forest = createNodes(root.id, -1)
   } else {
-    root.forest.forEach((child: TreeNode) =>
+    root.forest.forEach((child) =>
       destructivelyAppendChildren(child, createNodes)
     )
   }
@@ -80,7 +96,7 @@ export const parsePremises = (
   formulas: string[],
   parentId: string,
   row: number
-): TreeNode => {
+): FormulaNode => {
   const id = `${parentId}0`
   return makeNode({
     formulas: formulas.map((form, index) => makeTreeForm(form, index + row)),
@@ -97,59 +113,41 @@ const makeTreeForm = (value = '', row: number): TreeForm => ({
   resolved: false,
 })
 
-export const updateNode = (
-  root: TreeNode,
-  targetNodeId: string,
-  updater: NodeUpdater
-): TreeNode => {
-  if (root.id === targetNodeId) {
-    return updater({ ...root })
-  } else if (typeof root.forest === 'string') {
-    return root
-  } else {
-    return {
-      ...root,
-      forest: root.forest.map((child) =>
-        updateNode(child, targetNodeId, updater)
-      ),
-    }
-  }
-}
-
-export const mutateNode = (
-  root: TreeNode,
-  targetNodeId: string,
-  mutater: NodeMutater
-): void => {
-  if (root.id === targetNodeId) {
-    mutater(root)
-  } else if (Array.isArray(root.forest)) {
-    root.forest.forEach((child) => mutateNode(child, targetNodeId, mutater))
-  }
-}
-
 export const isOpenLeaf = (node: TreeNode | null): node is OpenLeafNode =>
-  node != null && Array.isArray(node.forest) && node.forest.length === 0
+  node != null && node.nodeType === 'formulas' && node.forest.length === 0
 
-export const isFinishedLeaf = (
-  node: TreeNode | null
-): node is FinishedLeafNode => node != null && node.forest === 'finished'
+export const lastRow = (node: FormulaNode) => lastEl(node.formulas).row
 
-export const isContradictionLeaf = (
-  node: TreeNode | null
-): node is ClosedLeafNode => node != null && node.forest === 'contradiction'
+export const firstRow = (node: FormulaNode) => node.formulas[0].row
 
-export const isClosedLeaf = (node: TreeNode) =>
-  isFinishedLeaf(node) || isContradictionLeaf(node)
-
-export const lastRow = (node: TreeNode) => lastEl(node.formulas).row
-
-export const firstRow = (node: TreeNode) => node.formulas[0].row
-
-export const makeFormulas = (n: number, nextRow: number): TreeForm[] => {
+export const makeEmptyFormulas = (n: number, nextRow: number): TreeForm[] => {
   const arr = []
   while (n-- > 0) {
     arr.push({ value: '', row: nextRow++, resolved: false })
   }
   return arr
+}
+
+export const convertIdToPath = (id: string): (0 | 1)[] =>
+  id
+    .split('')
+    .splice(1)
+    .map((char: string) => {
+      if (char === '0' || char === '1') {
+        return Number(char) as 0 | 1
+      } else {
+        throw new Error(`invalid character in node id: ${char}`)
+      }
+    })
+
+export const getNode = (root: FormulaNode, id: string): TreeNode => {
+  const nodePath: (0 | 1)[] = convertIdToPath(id)
+  let currentNode: TreeNode = root
+  for (const idx of nodePath) {
+    if (currentNode.nodeType !== 'formulas') {
+      throw new Error('Failed to get node path')
+    }
+    currentNode = currentNode.forest[idx]
+  }
+  return currentNode
 }
