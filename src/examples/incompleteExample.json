@@ -10,6 +10,11 @@
       "value": " ~P",
       "row": 2,
       "resolved": false
+    },
+    {
+      "nodeType": "finished",
+      "formulas": [],
+      "rule": ["O"]
     }
   ],
   "forest": [],

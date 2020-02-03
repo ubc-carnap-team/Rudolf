@@ -20,6 +20,11 @@
       "value": " ~E",
       "row": 4,
       "resolved": false
+    },
+    {
+      "nodeType": "finished",
+      "formulas": [],
+      "rule": ["O"]
     }
   ],
   "forest": [],
