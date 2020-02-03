@@ -22,7 +22,19 @@
       "resolved": false
     }
   ],
-  "forest": [],
+  "forest": [
+    {
+      "nodeType": "finished",
+      "formulas": [
+        {
+          "value": "F->B",
+          "row": 5,
+          "resolved": true
+        }
+      ],
+      "rule": "[O]"
+    }
+  ],
   "rule": "A",
   "id": 0
 }
