@@ -1,0 +1,28 @@
+{
+  "nodeType": "formulas",
+  "formulas": [
+    {
+      "value": "(A&B)",
+      "row": 1,
+      "resolved": false
+    },
+    {
+      "value": " ~(CvD)",
+      "row": 2,
+      "resolved": false
+    },
+    {
+      "value": " (~BvC) v E",
+      "row": 3,
+      "resolved": false
+    },
+    {
+      "value": " ~E",
+      "row": 4,
+      "resolved": false
+    }
+  ],
+  "forest": [],
+  "rule": "A",
+  "id": "0"
+}

@@ -1,0 +1,28 @@
+{
+  "nodeType": "formulas",
+  "formulas": [
+    {
+      "value": "(A/B)->(C->~D)",
+      "row": 1,
+      "resolved": false
+    },
+    {
+      "value": "~C<->(E&~D)",
+      "row": 2,
+      "resolved": false
+    },
+    {
+      "value": "~(E/~H)",
+      "row": 3,
+      "resolved": false
+    },
+    {
+      "value": "D/(F&H)",
+      "row": 4,
+      "resolved": false
+    }
+  ],
+  "forest": [],
+  "rule": "A",
+  "id": 0
+}

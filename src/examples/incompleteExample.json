@@ -1,0 +1,18 @@
+{
+  "nodeType": "formulas",
+  "formulas": [
+    {
+      "value": "(P&Q)",
+      "row": 1,
+      "resolved": false
+    },
+    {
+      "value": " ~P",
+      "row": 2,
+      "resolved": false
+    }
+  ],
+  "forest": [],
+  "rule": "A",
+  "id": "0"
+}
