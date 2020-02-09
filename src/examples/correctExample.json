@@ -22,9 +22,9 @@
       "resolved": false
     },
     {
-      "nodeType": "finished",
+      "nodeType": "contradiction",
       "formulas": [],
-      "rule": ["O"]
+      "rule": ["X"]
     }
   ],
   "forest": [],

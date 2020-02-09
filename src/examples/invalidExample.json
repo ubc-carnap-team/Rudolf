@@ -2,29 +2,39 @@
   "nodeType": "formulas",
   "formulas": [
     {
-      "value": "(A/B)->(C->~D)",
+      "value": "(D / A) & ~N",
       "row": 1,
       "resolved": false
     },
     {
-      "value": "~C<->(E&~D)",
+      "value": "N / ~A",
       "row": 2,
       "resolved": false
     },
     {
-      "value": "~(E/~H)",
+      "value": "~(~N&A)",
       "row": 3,
       "resolved": false
     },
     {
-      "value": "D/(F&H)",
+      "value": "D/A",
       "row": 4,
+      "resolved": false
+    },
+    {
+      "value": "~N",
+      "row": 5,
       "resolved": false
     },
     {
       "nodeType": "finished",
       "formulas": [],
       "rule": ["O"]
+    },
+    {
+      "nodeType": "contradiction",
+      "formulas": [],
+      "rule": ["X"]
     }
   ],
   "forest": [],
