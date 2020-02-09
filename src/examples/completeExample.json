@@ -2,22 +2,17 @@
   "nodeType": "formulas",
   "formulas": [
     {
-      "value": "(P&Q)",
+      "value": "~Q",
       "row": 1,
       "resolved": false
     },
     {
-      "value": " ~P",
+      "value": " P&D",
       "row": 2,
       "resolved": false
     }
   ],
   "forest": [
-    {
-      "nodeType": "finished",
-      "formulas": [],
-      "rule": ["O"]
-    },
     {
       "nodeType": "contradiction",
       "formulas": [],

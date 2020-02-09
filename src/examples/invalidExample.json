@@ -25,7 +25,9 @@
       "value": "~N",
       "row": 5,
       "resolved": false
-    },
+    }
+  ],
+  "forest": [
     {
       "nodeType": "finished",
       "formulas": [],
@@ -37,7 +39,6 @@
       "rule": ["X"]
     }
   ],
-  "forest": [],
   "rule": "A",
   "id": 0
 }

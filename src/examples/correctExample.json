@@ -20,14 +20,15 @@
       "value": " ~E",
       "row": 4,
       "resolved": false
-    },
+    }
+  ],
+  "forest": [
     {
       "nodeType": "contradiction",
       "formulas": [],
       "rule": ["X"]
     }
   ],
-  "forest": [],
   "rule": "A",
   "id": "0"
 }
