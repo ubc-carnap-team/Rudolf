@@ -7,16 +7,36 @@
       "resolved": false
     },
     {
-      "value": " P&D",
+      "value": " P&Q",
       "row": 2,
       "resolved": false
     }
   ],
   "forest": [
     {
-      "nodeType": "contradiction",
-      "formulas": [],
-      "rule": ["X"]
+      "nodeType": "formulas",
+      "formulas": [
+        {
+          "value": "P",
+          "row": 2,
+          "resolved": false
+        },
+        {
+          "value": "Q",
+          "row": 3,
+          "resolved": false
+        }
+      ],
+      "forest": [
+        {
+          "nodeType": "contradiction",
+          "formulas": [],
+          "rule": "X-PLACEHOLDER",
+          "id": "000"
+        }
+      ],
+      "rule": "2 &",
+      "id": "00"
     }
   ],
   "rule": "A",
