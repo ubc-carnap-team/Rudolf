@@ -1,0 +1,137 @@
+{
+  "nodeType": "formulas",
+  "formulas": [
+    {
+      "value": "(DvA)&~N",
+      "row": 1,
+      "resolved": false
+    },
+    {
+      "value": " Nv~A",
+      "row": 2,
+      "resolved": false
+    },
+    {
+      "value": " ~(~N&A)",
+      "row": 3,
+      "resolved": false
+    }
+  ],
+  "forest": [
+    {
+      "nodeType": "formulas",
+      "formulas": [
+        {
+          "value": "DvA",
+          "row": 4,
+          "resolved": false
+        },
+        {
+          "value": "~N",
+          "row": 4,
+          "resolved": false
+        }
+      ],
+      "forest": [
+        {
+          "nodeType": "formulas",
+          "formulas": [
+            {
+              "value": "N",
+              "row": 5,
+              "resolved": false
+            }
+          ],
+          "forest": [
+            {
+              "nodeType": "contradiction",
+              "formulas": [],
+              "rule": "X-PLACEHOLDER",
+              "id": "0000"
+            }
+          ],
+          "rule": "2 v",
+          "id": "000"
+        },
+        {
+          "nodeType": "formulas",
+          "formulas": [
+            {
+              "value": "~A",
+              "row": 5,
+              "resolved": false
+            }
+          ],
+          "forest": [
+            {
+              "nodeType": "formulas",
+              "formulas": [
+                {
+                  "value": "~~N",
+                  "row": 6,
+                  "resolved": false
+                }
+              ],
+              "forest": [],
+              "rule": "3 ~&",
+              "id": "0010"
+            },
+            {
+              "nodeType": "formulas",
+              "formulas": [
+                {
+                  "value": "~A",
+                  "row": 6,
+                  "resolved": false
+                }
+              ],
+              "forest": [
+                {
+                  "nodeType": "formulas",
+                  "formulas": [
+                    {
+                      "value": "D",
+                      "row": 7,
+                      "resolved": false
+                    }
+                  ],
+                  "forest": [],
+                  "rule": "4 v",
+                  "id": "00110"
+                },
+                {
+                  "nodeType": "formulas",
+                  "formulas": [
+                    {
+                      "value": "A",
+                      "row": 7,
+                      "resolved": false
+                    }
+                  ],
+                  "forest": [
+                    {
+                      "nodeType": "contradiction",
+                      "formulas": [],
+                      "rule": "X-PLACEHOLDER",
+                      "id": "001110"
+                    }
+                  ],
+                  "rule": "4 v",
+                  "id": "00111"
+                }
+              ],
+              "rule": "3 ~&",
+              "id": "0011"
+            }
+          ],
+          "rule": "2 v",
+          "id": "001"
+        }
+      ],
+      "rule": "1 &",
+      "id": "00"
+    }
+  ],
+  "rule": "A",
+  "id": "0"
+}

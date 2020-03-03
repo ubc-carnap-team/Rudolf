@@ -1,0 +1,141 @@
+{
+  "nodeType": "formulas",
+  "formulas": [
+    {
+      "value": "(A&B)",
+      "row": 1,
+      "resolved": false
+    },
+    {
+      "value": " ~(CvD)",
+      "row": 2,
+      "resolved": false
+    },
+    {
+      "value": " (~BvC)vE",
+      "row": 3,
+      "resolved": false
+    },
+    {
+      "value": " ~E",
+      "row": 4,
+      "resolved": false
+    }
+  ],
+  "forest": [
+    {
+      "nodeType": "formulas",
+      "formulas": [
+        {
+          "value": "A",
+          "row": 4,
+          "resolved": false
+        },
+        {
+          "value": "B",
+          "row": 5,
+          "resolved": false
+        }
+      ],
+      "forest": [
+        {
+          "nodeType": "formulas",
+          "formulas": [
+            {
+              "value": "~C",
+              "row": 6,
+              "resolved": false
+            },
+            {
+              "value": "~D",
+              "row": 7,
+              "resolved": false
+            }
+          ],
+          "forest": [
+            {
+              "nodeType": "formulas",
+              "formulas": [
+                {
+                  "value": "~BvC",
+                  "row": 8,
+                  "resolved": false
+                }
+              ],
+              "forest": [
+                {
+                  "nodeType": "formulas",
+                  "formulas": [
+                    {
+                      "value": "~B",
+                      "row": 9,
+                      "resolved": false
+                    }
+                  ],
+                  "forest": [
+                    {
+                      "nodeType": "contradiction",
+                      "formulas": [],
+                      "rule": "X-PLACEHOLDER",
+                      "id": "000000"
+                    }
+                  ],
+                  "rule": "8 v",
+                  "id": "00000"
+                },
+                {
+                  "nodeType": "formulas",
+                  "formulas": [
+                    {
+                      "value": "C",
+                      "row": 9,
+                      "resolved": false
+                    }
+                  ],
+                  "forest": [
+                    {
+                      "nodeType": "contradiction",
+                      "formulas": [],
+                      "rule": "X-PLACEHOLDER",
+                      "id": "000010"
+                    }
+                  ],
+                  "rule": "8 v",
+                  "id": "00001"
+                }
+              ],
+              "rule": "3 v",
+              "id": "0000"
+            },
+            {
+              "nodeType": "formulas",
+              "formulas": [
+                {
+                  "value": "E",
+                  "row": 8,
+                  "resolved": false
+                }
+              ],
+              "forest": [
+                {
+                  "nodeType": "contradiction",
+                  "formulas": [],
+                  "rule": "X-PLACEHOLDER",
+                  "id": "00010"
+                }
+              ],
+              "rule": "3 v",
+              "id": "0001"
+            }
+          ],
+          "rule": " 2 ~v",
+          "id": "000"
+        }
+      ],
+      "rule": "1 &",
+      "id": "00"
+    }
+  ],
+  "rule": "A",
+  "id": "0"
+}
