@@ -4,12 +4,12 @@
     {
       "value": "~Q",
       "row": 1,
-      "resolved": false
+      "resolved": true
     },
     {
       "value": " P&Q",
       "row": 2,
-      "resolved": false
+      "resolved": true
     }
   ],
   "forest": [
