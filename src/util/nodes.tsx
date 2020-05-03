@@ -1,9 +1,11 @@
-import { OpenLeafNode, NodeGenerator, TreeNode } from '../typings/TreeState'
 import {
-  TreeForm,
-  FormulaNode,
   ContradictionNode,
   FinishedNode,
+  FormulaNode,
+  NodeGenerator,
+  OpenLeafNode,
+  TreeForm,
+  TreeNode,
 } from '../typings/TreeState'
 import { lastEl } from './helpers'
 
@@ -30,10 +32,13 @@ export const makeContradictionNode = (parentId: string): ContradictionNode => ({
   id: `${parentId}0`,
 })
 
-export const makeFinishedNode = (parentId: string): FinishedNode => ({
+export const makeFinishedNode = (
+  parentId: string,
+  resolvedNodes: string
+): FinishedNode => ({
   nodeType: 'finished',
   formulas: [],
-  rule: 'X-PLACEHOLDER',
+  rule: `${resolvedNodes}`,
   id: `${parentId}0`,
 })
 
@@ -86,6 +91,17 @@ export const destructivelyAppendChildren = (
       destructivelyAppendChildren(child, createNodes)
     )
   }
+}
+
+export const findResolvedNodes = (root: TreeNode): string => {
+  const resolvedRows = 'O('
+  root.formulas.forEach((element) => {
+    if (element.resolved == true) {
+      resolvedRows.concat(element.row.toString()).concat(',')
+    }
+  })
+  resolvedRows.concat(')')
+  return resolvedRows
 }
 
 /**

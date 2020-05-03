@@ -1,20 +1,17 @@
-import {
-  Actions,
-  createActionCreators,
-  createReducerFunction,
-  ImmerReducer,
-} from 'immer-reducer'
+import { Actions, createActionCreators, createReducerFunction, ImmerReducer } from 'immer-reducer'
 import { Dispatch } from 'react'
-import {
-  parsePremises,
-  destructivelyAppendChildren,
-  makeNode,
-  makeEmptyFormulas,
-  makeContradictionNode,
-  makeFinishedNode,
-  getNode,
-} from './util/nodes'
+
 import { FormulaNode } from './typings/TreeState'
+import {
+  destructivelyAppendChildren,
+  findResolvedNodes,
+  getNode,
+  makeContradictionNode,
+  makeEmptyFormulas,
+  makeFinishedNode,
+  makeNode,
+  parsePremises,
+} from './util/nodes'
 
 export type RudolfStore = {
   tree: FormulaNode
@@ -82,7 +79,8 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
 
   markFinished(nodeId: string) {
     const draftNode = getNode(this.draftState.tree, nodeId) as FormulaNode
-    draftNode.forest = [makeFinishedNode(draftNode.id)]
+    const resolvedNodes = findResolvedNodes(this.draftState.tree)
+    draftNode.forest = [makeFinishedNode(draftNode.id, resolvedNodes)]
     // TODO: put the list of resolved formulas in the "rule" field.
   }
 
