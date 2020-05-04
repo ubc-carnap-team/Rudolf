@@ -93,15 +93,24 @@ export const destructivelyAppendChildren = (
   }
 }
 
+/**
+ *
+ * @param root The root of a subTree
+ */
 export const findResolvedNodes = (root: TreeNode): string => {
   const resolvedRows = 'O('
   root.formulas.forEach((element) => {
-    if (element.resolved == true) {
+    if (element.resolved === true) {
       resolvedRows.concat(element.row.toString()).concat(',')
     }
   })
   resolvedRows.concat(')')
-  return resolvedRows
+
+  if (resolvedRows === 'O(') {
+    return ' '
+  } else {
+    return resolvedRows
+  }
 }
 
 /**
