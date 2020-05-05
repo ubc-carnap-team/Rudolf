@@ -38,7 +38,7 @@ export const makeFinishedNode = (
 ): FinishedNode => ({
   nodeType: 'finished',
   formulas: [],
-  rule: `${resolvedNodes}`,
+  rule: `O(${resolvedNodes})`,
   id: `${parentId}0`,
 })
 
@@ -98,19 +98,14 @@ export const destructivelyAppendChildren = (
  * @param root The root of a subTree
  */
 export const findResolvedNodes = (root: TreeNode): string => {
-  const resolvedRows = 'O('
+  const resolvedRows: number[] = []
+
   root.formulas.forEach((element) => {
-    if (element.resolved === true) {
-      resolvedRows.concat(element.row.toString()).concat(',')
+    if (element.resolved) {
+      resolvedRows.push(element.row)
     }
   })
-  resolvedRows.concat(')')
-
-  if (resolvedRows === 'O(') {
-    return ' '
-  } else {
-    return resolvedRows
-  }
+  return resolvedRows.join(',')
 }
 
 /**
