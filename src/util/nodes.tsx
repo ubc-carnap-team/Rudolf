@@ -97,14 +97,28 @@ export const destructivelyAppendChildren = (
  *
  * @param root The root of a subTree
  */
-export const findResolvedNodes = (root: TreeNode): string => {
+export const findResolvedNodes = (root: FormulaNode, id: string): string => {
   const resolvedRows: number[] = []
+  const nodePath: (0 | 1)[] = convertIdToPath(id)
+  let currentNode: TreeNode = root
 
-  root.formulas.forEach((element) => {
-    if (element.resolved) {
-      resolvedRows.push(element.row)
+  for (const idx of nodePath) {
+    if (currentNode.nodeType !== 'formulas') {
+      throw new Error('Failed to get node path')
     }
-  })
+    console.log('Inside nodePath loop')
+
+    currentNode.formulas.forEach((element) => {
+      console.log('Inside the foreach loop.')
+      console.log(currentNode.formulas)
+      if (element.resolved) {
+        resolvedRows.push(element.row)
+      }
+    })
+
+    currentNode = currentNode.forest[idx]
+  }
+
   return resolvedRows.join(',')
 }
 
