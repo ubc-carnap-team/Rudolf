@@ -1,15 +1,144 @@
+import { TreeNode } from '../typings/TreeState'
 import { findResolvedNodes } from './nodes'
 
 describe(findResolvedNodes, () => {
   it('works with no resolved formulas on branch', () => {
-    fail('TODO')
+    const root: TreeNode = {
+      nodeType: 'formulas',
+      formulas: [
+        {
+          value: 'P->Q',
+          row: 1,
+          resolved: false,
+        },
+        {
+          value: 'P',
+          row: 2,
+          resolved: false,
+        },
+        {
+          value: '~Q',
+          row: 3,
+          resolved: false,
+        },
+      ],
+      forest: [
+        {
+          nodeType: 'finished',
+          formulas: [],
+          rule: 'O()',
+          id: '00',
+        },
+      ],
+      rule: 'A',
+      id: '0',
+    }
+
+    const resolvedNodes = findResolvedNodes(root, root.id)
+    if (resolvedNodes !== 'O()') {
+      fail('Does not work with no resolved formulas')
+    }
   })
 
   it('works when tree branches', () => {
-    fail('TODO')
+    const root: TreeNode = {
+      nodeType: 'formulas',
+      formulas: [
+        {
+          value: 'P->Q',
+          row: 1,
+          resolved: false,
+        },
+        {
+          value: 'P',
+          row: 2,
+          resolved: true,
+        },
+        {
+          value: '~Q',
+          row: 3,
+          resolved: false,
+        },
+      ],
+      forest: [
+        {
+          nodeType: 'formulas',
+          formulas: [
+            {
+              value: '~P',
+              row: 4,
+              resolved: false,
+            },
+          ],
+          forest: [
+            {
+              nodeType: 'finished',
+              formulas: [],
+              rule: 'O()',
+              id: '000',
+            },
+          ],
+          rule: '-> 1',
+          id: '00',
+        },
+        {
+          nodeType: 'formulas',
+          formulas: [
+            {
+              value: 'Q',
+              row: 4,
+              resolved: false,
+            },
+          ],
+          forest: [],
+          rule: '-> 1',
+          id: '01',
+        },
+      ],
+      rule: 'A',
+      id: '0',
+    }
+    const resolvedNodes = findResolvedNodes(root, '01')
+    if (resolvedNodes != '2') {
+      fail('Does not work when tree branches.')
+    }
   })
 
   it('works when tree does not branch', () => {
-    fail('TODO')
+    const root: TreeNode = {
+      nodeType: 'formulas',
+      formulas: [
+        {
+          value: 'P->Q',
+          row: 1,
+          resolved: true,
+        },
+        {
+          value: 'P',
+          row: 2,
+          resolved: true,
+        },
+        {
+          value: '~Q',
+          row: 3,
+          resolved: false,
+        },
+      ],
+      forest: [
+        {
+          nodeType: 'finished',
+          formulas: [],
+          rule: 'O()',
+          id: '00',
+        },
+      ],
+      rule: 'A',
+      id: '0',
+    }
+
+    const resolvedNodes = findResolvedNodes(root, root.id)
+    if (resolvedNodes !== '1,2') {
+      fail('Does not work when tree does not branch')
+    }
   })
 })
