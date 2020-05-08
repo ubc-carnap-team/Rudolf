@@ -106,14 +106,13 @@ export const findResolvedNodes = (root: FormulaNode, id: string): string => {
     if (currentNode.nodeType !== 'formulas') {
       throw new Error('Failed to get node path')
     }
-    console.log('Inside nodePath loop')
 
     currentNode.formulas.forEach((element) => {
-      console.log('Inside the foreach loop.')
       console.log(currentNode.formulas)
       if (element.resolved) {
         resolvedRows.push(element.row)
       }
+      console.log(resolvedRows)
     })
 
     currentNode = currentNode.forest[idx]

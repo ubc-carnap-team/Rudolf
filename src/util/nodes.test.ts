@@ -35,7 +35,7 @@ describe(findResolvedNodes, () => {
     }
 
     const resolvedNodes = findResolvedNodes(root, root.id)
-    expect(resolvedNodes).toBe('O()')
+    expect(resolvedNodes).toBe('')
   })
 
   it('works when tree branches', () => {
@@ -97,7 +97,7 @@ describe(findResolvedNodes, () => {
       id: '0',
     }
     const resolvedNodes = findResolvedNodes(root, '01')
-    expect(resolvedNodes).toBe('O(2)')
+    expect(resolvedNodes).toBe('2')
   })
 
   it('works when tree does not branch', () => {
@@ -133,6 +133,6 @@ describe(findResolvedNodes, () => {
     }
 
     const resolvedNodes = findResolvedNodes(root, root.id)
-    expect(resolvedNodes).toBe('O(1,2)')
+    expect(resolvedNodes).toBe('1,2')
   })
 })
