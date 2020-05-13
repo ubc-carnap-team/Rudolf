@@ -101,21 +101,31 @@ export const findResolvedNodes = (root: FormulaNode, id: string): string => {
   const resolvedRows: number[] = []
   const nodePath: (0 | 1)[] = convertIdToPath(id)
   let currentNode: TreeNode = root
+  console.log(nodePath)
 
-  for (const idx of nodePath) {
-    if (currentNode.nodeType !== 'formulas') {
-      throw new Error('Failed to get node path')
-    }
-
+  if (id === '0') {
     currentNode.formulas.forEach((element) => {
-      console.log(currentNode.formulas)
       if (element.resolved) {
         resolvedRows.push(element.row)
+        console.log('Element pushed')
       }
       console.log(resolvedRows)
     })
+  } else {
+    for (const idx of nodePath) {
+      if (currentNode.nodeType !== 'formulas') {
+        throw new Error('Failed to get node path')
+      }
 
-    currentNode = currentNode.forest[idx]
+      currentNode.formulas.forEach((element) => {
+        if (element.resolved) {
+          resolvedRows.push(element.row)
+          console.log('Element pushed')
+        }
+        console.log(resolvedRows)
+      })
+      currentNode = currentNode.forest[idx]
+    }
   }
 
   return resolvedRows.join(',')
