@@ -107,9 +107,7 @@ export const findResolvedNodes = (root: FormulaNode, id: string): string => {
     currentNode.formulas.forEach((element) => {
       if (element.resolved) {
         resolvedRows.push(element.row)
-        console.log('Element pushed')
       }
-      console.log(resolvedRows)
     })
   } else {
     for (const idx of nodePath) {
@@ -120,9 +118,7 @@ export const findResolvedNodes = (root: FormulaNode, id: string): string => {
       currentNode.formulas.forEach((element) => {
         if (element.resolved) {
           resolvedRows.push(element.row)
-          console.log('Element pushed')
         }
-        console.log(resolvedRows)
       })
       currentNode = currentNode.forest[idx]
     }
