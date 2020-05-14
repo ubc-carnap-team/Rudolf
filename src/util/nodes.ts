@@ -101,7 +101,6 @@ export const findResolvedNodes = (root: FormulaNode, id: string): string => {
   const resolvedRows: number[] = []
   const nodePath: (0 | 1)[] = convertIdToPath(id)
   let currentNode: TreeNode = root
-  console.log(nodePath)
 
   if (id === '0') {
     currentNode.formulas.forEach((element) => {
