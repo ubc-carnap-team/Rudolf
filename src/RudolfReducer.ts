@@ -79,9 +79,8 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
 
   markFinished(nodeId: string) {
     const draftNode = getNode(this.draftState.tree, nodeId) as FormulaNode
-    const resolvedNodes = findResolvedNodes(draftNode, nodeId)
+    const resolvedNodes = findResolvedNodes(this.draftState.tree, nodeId)
     draftNode.forest = [makeFinishedNode(draftNode.id, resolvedNodes)]
-    // TODO: put the list of resolved formulas in the "rule" field.
   }
 
   reopenBranch(nodeId: string) {
