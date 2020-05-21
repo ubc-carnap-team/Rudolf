@@ -1,7 +1,7 @@
 import { TreeNode } from '../typings/TreeState'
-import { findResolvedNodes } from './nodes'
+import { findresolvedRows } from './nodes'
 
-describe(findResolvedNodes, () => {
+describe(findresolvedRows, () => {
   it('works with no resolved formulas on branch', () => {
     const root: TreeNode = {
       nodeType: 'formulas',
@@ -34,8 +34,8 @@ describe(findResolvedNodes, () => {
       id: '0',
     }
 
-    const resolvedNodes = findResolvedNodes(root, root.id)
-    expect(resolvedNodes).toBe('')
+    const resolvedRows = findresolvedRows(root, root.id)
+    expect(resolvedRows).toEqual([])
   })
 
   it('works when tree branches', () => {
@@ -96,8 +96,8 @@ describe(findResolvedNodes, () => {
       rule: 'A',
       id: '0',
     }
-    const resolvedNodes = findResolvedNodes(root, '01')
-    expect(resolvedNodes).toBe('2')
+    const resolvedRows = findresolvedRows(root, '01')
+    expect(resolvedRows).toEqual([2])
   })
 
   it('works when tree does not branch', () => {
@@ -132,8 +132,8 @@ describe(findResolvedNodes, () => {
       id: '0',
     }
 
-    const resolvedNodes = findResolvedNodes(root, root.id)
-    expect(resolvedNodes).toBe('1,2')
+    const resolvedRows = findresolvedRows(root, root.id)
+    expect(resolvedRows).toEqual([1, 2])
   })
 
   it('works when tree has more than one node but does not branch', () => {
@@ -182,7 +182,7 @@ describe(findResolvedNodes, () => {
       id: '0',
     }
 
-    const resolvedNodes = findResolvedNodes(root, root.id)
-    expect(resolvedNodes).toBe('3')
+    const resolvedRows = findresolvedRows(root, root.id)
+    expect(resolvedRows).toEqual([3])
   })
 })

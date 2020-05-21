@@ -34,11 +34,11 @@ export const makeContradictionNode = (parentId: string): ContradictionNode => ({
 
 export const makeFinishedNode = (
   parentId: string,
-  resolvedNodes: string
+  resolvedFormulas: number[]
 ): FinishedNode => ({
   nodeType: 'finished',
   formulas: [],
-  rule: `O(${resolvedNodes})`,
+  rule: `O(${resolvedFormulas.join(',')})`,
   id: `${parentId}0`,
 })
 
@@ -97,7 +97,7 @@ export const destructivelyAppendChildren = (
  *
  * @param root The root of a subTree
  */
-export const findResolvedNodes = (root: FormulaNode, id: string): string => {
+export const findresolvedRows = (root: FormulaNode, id: string): number[] => {
   const resolvedRows: number[] = []
   const nodePath: (0 | 1)[] = convertIdToPath(id)
   let currentNode: TreeNode = root
@@ -122,8 +122,7 @@ export const findResolvedNodes = (root: FormulaNode, id: string): string => {
       currentNode = currentNode.forest[idx]
     }
   }
-
-  return resolvedRows.join(',')
+  return resolvedRows
 }
 
 /**
