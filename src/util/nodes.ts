@@ -34,11 +34,11 @@ export const makeContradictionNode = (parentId: string): ContradictionNode => ({
 
 export const makeFinishedNode = (
   parentId: string,
-  resolvedFormulas: number[]
+  resolvedRows: number[]
 ): FinishedNode => ({
   nodeType: 'finished',
   formulas: [],
-  rule: `O(${resolvedFormulas.join(',')})`,
+  rule: `O(${resolvedRows.join(',')})`,
   id: `${parentId}0`,
 })
 
