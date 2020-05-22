@@ -22,7 +22,7 @@ const App: React.FC = (): JSX.Element => {
 
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
-    const premiseArray = premises.split(',')
+    const premiseArray = rawInput.split(',')
     dispatch(createTree(premiseArray))
   }
 
