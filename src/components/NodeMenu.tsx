@@ -2,16 +2,15 @@ import { Menu, MenuItem } from '@material-ui/core'
 import React, { FC } from 'react'
 
 import {
-  CustomDispatch,
-  toggleResolved,
   continueBranch,
-  splitBranch,
+  CustomDispatch,
   markContradiction,
   markFinished,
   reopenBranch,
+  splitBranch,
+  toggleResolved,
 } from '../RudolfReducer'
-import { TreeForm } from '../typings/TreeState'
-import { TreeNode } from '../typings/TreeState'
+import { TreeForm, TreeNode } from '../typings/TreeState'
 import { isOpenLeaf } from '../util/nodes'
 
 type Props = {
@@ -22,6 +21,7 @@ type Props = {
   anchorEl: Element
   dispatch: CustomDispatch
   formula: TreeForm
+  toggleHighlight: () => void
 }
 
 /**
@@ -45,6 +45,7 @@ export const NodeMenu: FC<Props> = ({
   formula,
   onClose: close,
   node,
+  toggleHighlight,
 }) => {
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
@@ -93,6 +94,7 @@ export const NodeMenu: FC<Props> = ({
           onClick={() => {
             dispatch(markContradiction(node.id))
             close()
+            toggleHighlight()
           }}
         >
           Close Branch With Contradiction

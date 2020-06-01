@@ -1,24 +1,42 @@
-import React, { useState, useReducer } from 'react'
+import { IconButton } from '@material-ui/core'
+import { Redo, Undo } from '@material-ui/icons'
+import React, { useReducer, useState } from 'react'
 
+import { createTree, initialPremises, initialState, rudolfReducer } from '../RudolfReducer'
+import { makeUndoable } from '../undoableReducer'
+import { JSONView } from './JSONView'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
-import { IconButton } from '@material-ui/core'
-import { Undo, Redo } from '@material-ui/icons'
-import {
-  initialPremises,
-  initialState,
-  rudolfReducer,
-  createTree,
-} from '../RudolfReducer'
-import { makeUndoable } from '../undoableReducer'
-import { JSONView } from './JSONView'
 
 const App: React.FC = (): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
   const [[pastStates, currentState, futureStates], dispatch] = useReducer(
     ...makeUndoable(rudolfReducer, initialState)
   )
+
+  const [canHighlight, setCanHighlight] = useState(false)
+  const [highlightCount, setHighlightCount] = useState(0)
+
+  const initialArray: number[] = []
+  const [rowValues, setRowValues] = useState(initialArray)
+
+  function addRow(row: number) {
+    setRowValues((prevArray) => [...prevArray, row])
+  }
+
+  function toggleHighlight() {
+    setCanHighlight(true)
+  }
+
+  function resetHighlight() {
+    setCanHighlight(false)
+    setHighlightCount(0)
+  }
+
+  function incrementHighlight() {
+    setHighlightCount(highlightCount + 1)
+  }
 
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
@@ -54,7 +72,16 @@ const App: React.FC = (): JSX.Element => {
           <Redo />
         </IconButton>
       </span>
-      <NodeView node={currentState.tree} dispatch={dispatch} />
+      <NodeView
+        node={currentState.tree}
+        dispatch={dispatch}
+        canHighlight={canHighlight}
+        toggleHighlight={toggleHighlight}
+        highlightCount={highlightCount}
+        incrementHighlight={incrementHighlight}
+        resetHighlight={resetHighlight}
+        addRow={addRow}
+      />
       <JSONView tree={currentState.tree} />
     </main>
   )

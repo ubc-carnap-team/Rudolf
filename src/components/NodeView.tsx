@@ -1,22 +1,34 @@
 /* eslint-disable react/jsx-no-undef */
-import React, { FC, Fragment, ChangeEventHandler } from 'react'
-import LineTo from 'react-lineto'
+import React, { ChangeEventHandler, FC, Fragment } from 'react'
 import AutoSizeInput from 'react-input-autosize'
-import { TreeNode } from '../typings/TreeState'
-import FormulaView from './FormulaView'
+import LineTo from 'react-lineto'
+
 import { CustomDispatch, updateRule } from '../RudolfReducer'
-import { lastRow, firstRow } from '../util/nodes'
+import { TreeNode } from '../typings/TreeState'
+import { firstRow, lastRow } from '../util/nodes'
+import FormulaView from './FormulaView'
 import Spacers from './Spacers'
 
 type Props = {
   node: TreeNode
   dispatch: CustomDispatch
+  canHighlight: boolean
+  highlightCount: number
+  toggleHighlight: () => void
+  incrementHighlight: () => void
+  resetHighlight: () => void
+  addRow: (row: number) => void
 }
 
 const NodeView: FC<Props> = ({
   node,
-
   dispatch,
+  canHighlight,
+  toggleHighlight,
+  highlightCount,
+  incrementHighlight,
+  resetHighlight,
+  addRow,
 }) => {
   if (node.nodeType === 'formulas') {
     const { rule, id, formulas, forest } = node
@@ -26,12 +38,10 @@ const NodeView: FC<Props> = ({
     const spacers =
       forest[0]?.nodeType === 'formulas' ? (
         <Spacers diff={firstRow(forest[0]) - lastRow(node)} />
-      ) : (
-        undefined
-      )
+      ) : undefined
 
     return (
-      <div className={`node-container `}>
+      <div className="node-container">
         <div
           className={`node-id=${id}`}
           // TODO: allow context menu on nodes?
@@ -45,6 +55,12 @@ const NodeView: FC<Props> = ({
                 index={index}
                 dispatch={dispatch}
                 {...form}
+                canHighlight={canHighlight}
+                toggleHighlight={toggleHighlight}
+                highlightCount={highlightCount}
+                incrementHighlight={incrementHighlight}
+                resetHighlight={resetHighlight}
+                addRow={addRow}
               />
             )
           })}
@@ -75,6 +91,12 @@ const NodeView: FC<Props> = ({
                   {...{
                     node: child,
                     dispatch,
+                    canHighlight,
+                    toggleHighlight,
+                    highlightCount,
+                    incrementHighlight,
+                    resetHighlight,
+                    addRow,
                   }}
                 />
               </Fragment>

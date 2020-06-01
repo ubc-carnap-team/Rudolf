@@ -1,9 +1,4 @@
-import {
-  Actions,
-  createActionCreators,
-  createReducerFunction,
-  ImmerReducer,
-} from 'immer-reducer'
+import { Actions, createActionCreators, createReducerFunction, ImmerReducer } from 'immer-reducer'
 import { Dispatch } from 'react'
 
 import { FormulaNode } from './typings/TreeState'
@@ -79,7 +74,7 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   markContradiction(nodeId: string) {
     const draftNode = getNode(this.draftState.tree, nodeId) as FormulaNode
     draftNode.forest = [makeContradictionNode(draftNode.id)]
-    // TODO: require that the user to select the lines that contradict
+    alert('Please select 2 contradictory formulas.')
   }
 
   markFinished(nodeId: string) {
