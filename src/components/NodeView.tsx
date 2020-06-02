@@ -17,7 +17,6 @@ type Props = {
   toggleHighlight: () => void
   incrementHighlight: () => void
   resetHighlight: () => void
-  addRow: (row: number) => void
 }
 
 const NodeView: FC<Props> = ({
@@ -28,7 +27,6 @@ const NodeView: FC<Props> = ({
   highlightCount,
   incrementHighlight,
   resetHighlight,
-  addRow,
 }) => {
   if (node.nodeType === 'formulas') {
     const { rule, id, formulas, forest } = node
@@ -60,7 +58,6 @@ const NodeView: FC<Props> = ({
                 highlightCount={highlightCount}
                 incrementHighlight={incrementHighlight}
                 resetHighlight={resetHighlight}
-                addRow={addRow}
               />
             )
           })}
@@ -96,7 +93,6 @@ const NodeView: FC<Props> = ({
                     highlightCount,
                     incrementHighlight,
                     resetHighlight,
-                    addRow,
                   }}
                 />
               </Fragment>

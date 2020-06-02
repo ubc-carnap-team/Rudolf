@@ -3,6 +3,7 @@ import React, { FC, Ref, useRef, useState } from 'react'
 
 import { CustomDispatch, updateFormula } from '../RudolfReducer'
 import { TreeNode } from '../typings/TreeState'
+import { addRows } from '../util/nodes'
 import { NodeMenu } from './NodeMenu'
 
 interface Props {
@@ -17,7 +18,6 @@ interface Props {
   toggleHighlight: () => void
   incrementHighlight: () => void
   resetHighlight: () => void
-  addRow: (row: number) => void
 }
 
 const FormulaView: FC<Props> = ({
@@ -32,7 +32,6 @@ const FormulaView: FC<Props> = ({
   highlightCount,
   incrementHighlight,
   resetHighlight,
-  addRow,
 }) => {
   const [contextMenu, setContextMenu] = useState(false) // Convert to reducer action/field w/ ref, node, optional index.
   const [showClass, setShowClass] = useState(false)
@@ -40,10 +39,11 @@ const FormulaView: FC<Props> = ({
   const ref: Ref<HTMLDivElement> = useRef(null)
 
   function nodeClick() {
-    setShowClass(true)
-    incrementHighlight()
-    addRow(row)
-    if (highlightCount === 2) {
+    if (highlightCount !== 2) {
+      setShowClass(true)
+      incrementHighlight()
+      addRows(row)
+    } else if (highlightCount === 2) {
       reset()
     }
   }

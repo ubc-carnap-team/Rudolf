@@ -25,10 +25,18 @@ export const makeNode = ({
   id,
 })
 
+export const rowValues: number[] = []
+
+export function addRows(element: number) {
+  rowValues.push(element)
+  console.log('Row added')
+  console.log(rowValues)
+}
+
 export const makeContradictionNode = (parentId: string): ContradictionNode => ({
   nodeType: 'contradiction',
   formulas: [],
-  rule: 'X-PLACEHOLDER',
+  rule: `${rowValues}`,
   id: `${parentId}0`,
 })
 

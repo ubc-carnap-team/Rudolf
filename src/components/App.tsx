@@ -18,12 +18,14 @@ const App: React.FC = (): JSX.Element => {
   const [canHighlight, setCanHighlight] = useState(false)
   const [highlightCount, setHighlightCount] = useState(0)
 
-  const initialArray: number[] = []
-  const [rowValues, setRowValues] = useState(initialArray)
+  // const rowArray: number[] = []
+  // //const [rowValues, setRowValues] = useState(rowArray)
 
-  function addRow(row: number) {
-    setRowValues((prevArray) => [...prevArray, row])
-  }
+  // const rowValues = []
+
+  // function addRow(element: number) {
+  //   setRowValues((prevArray) => [...prevArray, element])
+  // }
 
   function toggleHighlight() {
     setCanHighlight(true)
@@ -80,7 +82,6 @@ const App: React.FC = (): JSX.Element => {
         highlightCount={highlightCount}
         incrementHighlight={incrementHighlight}
         resetHighlight={resetHighlight}
-        addRow={addRow}
       />
       <JSONView tree={currentState.tree} />
     </main>
