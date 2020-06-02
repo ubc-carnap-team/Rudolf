@@ -29,8 +29,6 @@ export const rowValues: number[] = []
 
 export function addRows(element: number) {
   rowValues.push(element)
-  console.log('Row added')
-  console.log(rowValues)
 }
 
 export const makeContradictionNode = (parentId: string): ContradictionNode => ({

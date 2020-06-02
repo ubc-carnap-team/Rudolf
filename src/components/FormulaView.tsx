@@ -67,7 +67,9 @@ const FormulaView: FC<Props> = ({
         setContextMenu(true)
       }}
       id="nodeDiv"
-      onClick={() => (canHighlight ? nodeClick() : console.log('End.'))}
+      onClick={() =>
+        canHighlight ? nodeClick() : console.log('Cannot highlight.')
+      }
     >
       <span>{row}</span>
       <input
