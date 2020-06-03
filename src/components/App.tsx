@@ -18,15 +18,6 @@ const App: React.FC = (): JSX.Element => {
   const [canHighlight, setCanHighlight] = useState(false)
   const [highlightCount, setHighlightCount] = useState(0)
 
-  // const rowArray: number[] = []
-  // //const [rowValues, setRowValues] = useState(rowArray)
-
-  // const rowValues = []
-
-  // function addRow(element: number) {
-  //   setRowValues((prevArray) => [...prevArray, element])
-  // }
-
   function toggleHighlight() {
     setCanHighlight(true)
   }

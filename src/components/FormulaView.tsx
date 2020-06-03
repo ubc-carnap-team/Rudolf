@@ -37,11 +37,11 @@ const FormulaView: FC<Props> = ({
 
   const rowValues: number[] = []
 
+  const ref: Ref<HTMLDivElement> = useRef(null)
+
   function addRows(element: number) {
     rowValues.push(element)
   }
-
-  const ref: Ref<HTMLDivElement> = useRef(null)
 
   function nodeClick() {
     if (highlightCount !== 2) {
