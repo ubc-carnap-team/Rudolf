@@ -1,9 +1,8 @@
 import { Check } from '@material-ui/icons'
 import React, { FC, Ref, useRef, useState } from 'react'
 
-import { CustomDispatch, updateFormula } from '../RudolfReducer'
+import { CustomDispatch, updateFormula, updateRule } from '../RudolfReducer'
 import { TreeNode } from '../typings/TreeState'
-import { addRows } from '../util/nodes'
 import { NodeMenu } from './NodeMenu'
 
 interface Props {
@@ -36,6 +35,12 @@ const FormulaView: FC<Props> = ({
   const [contextMenu, setContextMenu] = useState(false) // Convert to reducer action/field w/ ref, node, optional index.
   const [showClass, setShowClass] = useState(false)
 
+  const rowValues: number[] = []
+
+  function addRows(element: number) {
+    rowValues.push(element)
+  }
+
   const ref: Ref<HTMLDivElement> = useRef(null)
 
   function nodeClick() {
@@ -45,6 +50,7 @@ const FormulaView: FC<Props> = ({
       addRows(row)
     } else if (highlightCount === 2) {
       reset()
+      updateRule(node.id, rowValues.toString())
     }
   }
 
@@ -55,7 +61,6 @@ const FormulaView: FC<Props> = ({
     elements.forEach((element) => {
       element.classList.remove('contradictFormula')
     })
-    resetHighlight()
   }
 
   return (
