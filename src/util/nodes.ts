@@ -13,22 +13,24 @@ export const makeNode = ({
   formulas = [],
   forest = [],
   rule = '',
+  parentRow = '',
   id,
 }: Partial<FormulaNode> & {
   id: string
-  row: number
 }): FormulaNode => ({
   nodeType: 'formulas',
   formulas,
   forest,
   rule,
+  parentRow,
   id,
 })
 
 export const makeContradictionNode = (parentId: string): ContradictionNode => ({
   nodeType: 'contradiction',
   formulas: [],
-  rule: 'X-PLACEHOLDER',
+  rule: 'X',
+  parentRow: '',
   id: `${parentId}0`,
 })
 
@@ -38,8 +40,9 @@ export const makeFinishedNode = (
 ): FinishedNode => ({
   nodeType: 'finished',
   formulas: [],
-  rule: `O(${resolvedRows.join(',')})`,
+  rule: `O`,
   id: `${parentId}0`,
+  parentRow: resolvedRows.join(','),
 })
 
 /**
@@ -102,7 +105,7 @@ export const findresolvedRows = (root: FormulaNode, id: string): number[] => {
   const nodePath: (0 | 1)[] = convertIdToPath(id)
   let currentNode: TreeNode = root
 
-  if (id === '0') {
+  if (id === '') {
     currentNode.formulas.forEach((element) => {
       if (element.resolved) {
         resolvedRows.push(element.row)
@@ -129,18 +132,12 @@ export const findresolvedRows = (root: FormulaNode, id: string): number[] => {
  *
  * @param formulas an array of of formulas.
  */
-export const parsePremises = (
-  formulas: string[],
-  parentId: string,
-  row: number
-): FormulaNode => {
-  const id = `${parentId}0`
+export const parsePremises = (formulas: string[]): FormulaNode => {
   return makeNode({
-    formulas: formulas.map((form, index) => makeTreeForm(form, index + row)),
-    rule: 'A',
+    formulas: formulas.map((form, index) => makeTreeForm(form, index + 1)),
+    rule: 'AS',
     forest: [],
-    id,
-    row,
+    id: '',
   })
 }
 
@@ -166,16 +163,13 @@ export const makeEmptyFormulas = (n: number, nextRow: number): TreeForm[] => {
 }
 
 export const convertIdToPath = (id: string): (0 | 1)[] =>
-  id
-    .split('')
-    .splice(1)
-    .map((char: string) => {
-      if (char === '0' || char === '1') {
-        return Number(char) as 0 | 1
-      } else {
-        throw new Error(`invalid character in node id: ${char}`)
-      }
-    })
+  id.split('').map((char: string) => {
+    if (char === '0' || char === '1') {
+      return Number(char) as 0 | 1
+    } else {
+      throw new Error(`invalid character in node id: ${char} in ${id}`)
+    }
+  })
 
 export const getNode = (root: FormulaNode, id: string): TreeNode => {
   const nodePath: (0 | 1)[] = convertIdToPath(id)

@@ -1,9 +1,9 @@
-import { TreeNode } from '../typings/TreeState'
+import { TreeNode, FormulaNode } from '../typings/TreeState'
 import { findresolvedRows } from './nodes'
 
 describe(findresolvedRows, () => {
   it('works with no resolved formulas on branch', () => {
-    const root: TreeNode = {
+    const root: FormulaNode = {
       nodeType: 'formulas',
       formulas: [
         {
@@ -26,11 +26,13 @@ describe(findresolvedRows, () => {
         {
           nodeType: 'finished',
           formulas: [],
-          rule: 'O()',
+          rule: 'O',
+          parentRow: '',
           id: '00',
         },
       ],
-      rule: 'A',
+      rule: 'AS',
+      parentRow: '',
       id: '0',
     }
 
@@ -72,11 +74,13 @@ describe(findresolvedRows, () => {
             {
               nodeType: 'finished',
               formulas: [],
-              rule: 'O()',
+              rule: 'O',
+              parentRow: '',
               id: '000',
             },
           ],
-          rule: '-> 1',
+          rule: '->',
+          parentRow: '1',
           id: '00',
         },
         {
@@ -89,11 +93,13 @@ describe(findresolvedRows, () => {
             },
           ],
           forest: [],
-          rule: '-> 1',
+          rule: '->',
+          parentRow: '1',
           id: '01',
         },
       ],
-      rule: 'A',
+      rule: 'AS',
+      parentRow: '',
       id: '0',
     }
     const resolvedRows = findresolvedRows(root, '01')
@@ -101,7 +107,7 @@ describe(findresolvedRows, () => {
   })
 
   it('works when tree does not branch', () => {
-    const root: TreeNode = {
+    const root: FormulaNode = {
       nodeType: 'formulas',
       formulas: [
         {
@@ -124,11 +130,13 @@ describe(findresolvedRows, () => {
         {
           nodeType: 'finished',
           formulas: [],
-          rule: 'O()',
+          rule: 'O',
+          parentRow: '',
           id: '00',
         },
       ],
-      rule: 'A',
+      rule: 'AS',
+      parentRow: '',
       id: '0',
     }
 
@@ -137,7 +145,7 @@ describe(findresolvedRows, () => {
   })
 
   it('works when tree has more than one node but does not branch', () => {
-    const root: TreeNode = {
+    const root: FormulaNode = {
       nodeType: 'formulas',
       formulas: [
         {
@@ -170,15 +178,18 @@ describe(findresolvedRows, () => {
             {
               nodeType: 'finished',
               formulas: [],
-              rule: 'O()',
+              rule: 'O',
+              parentRow: '',
               id: '000',
             },
           ],
           rule: '',
+          parentRow: '',
           id: '00',
         },
       ],
-      rule: 'A',
+      rule: 'AS',
+      parentRow: '',
       id: '0',
     }
 

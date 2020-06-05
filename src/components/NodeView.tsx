@@ -4,7 +4,7 @@ import LineTo from 'react-lineto'
 import AutoSizeInput from 'react-input-autosize'
 import { TreeNode } from '../typings/TreeState'
 import FormulaView from './FormulaView'
-import { CustomDispatch, updateRule } from '../RudolfReducer'
+import { CustomDispatch, updateRule, updateParentRow } from '../RudolfReducer'
 import { lastRow, firstRow } from '../util/nodes'
 import Spacers from './Spacers'
 
@@ -13,22 +13,23 @@ type Props = {
   dispatch: CustomDispatch
 }
 
-const NodeView: FC<Props> = ({
-  node,
-
-  dispatch,
-}) => {
+const NodeView: FC<Props> = ({ node, dispatch }) => {
+  const handleParentRowChange: ChangeEventHandler<HTMLInputElement> = ({
+    currentTarget: { value },
+  }) => {
+    dispatch(updateParentRow(node.id, value))
+  }
   if (node.nodeType === 'formulas') {
-    const { rule, id, formulas, forest } = node
-    const handleRuleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-      dispatch(updateRule(id, event.currentTarget.value))
+    const { rule, parentRow, id, formulas, forest } = node
+    const handleRuleChange: ChangeEventHandler<HTMLInputElement> = ({
+      currentTarget: { value },
+    }) => {
+      dispatch(updateRule(id, value))
     }
     const spacers =
       forest[0]?.nodeType === 'formulas' ? (
         <Spacers diff={firstRow(forest[0]) - lastRow(node)} />
-      ) : (
-        undefined
-      )
+      ) : undefined
 
     return (
       <div className={`node-container `}>
@@ -48,14 +49,24 @@ const NodeView: FC<Props> = ({
               />
             )
           })}
-          (
-          <AutoSizeInput
-            className="rule"
-            onChange={handleRuleChange}
-            value={rule}
-            placeholder="rule"
-          />
-          )
+          {node.id !== '' ? (
+            <>
+              <AutoSizeInput
+                className="rule"
+                onChange={handleRuleChange}
+                value={rule}
+                placeholder="rule"
+              />
+              <AutoSizeInput
+                className="rule"
+                onChange={handleParentRowChange}
+                value={parentRow}
+                placeholder="row"
+              />
+            </>
+          ) : (
+            'AS'
+          )}
         </div>
 
         <div className={`children ${forest.length > 1 ? 'split' : 'stack'}`}>
@@ -84,9 +95,19 @@ const NodeView: FC<Props> = ({
       </div>
     )
   } else if (node.nodeType === 'contradiction') {
-    return <div className="closed-branch-marker">X</div>
+    return (
+      <div className="closed-branch-marker">
+        X|
+        <AutoSizeInput
+          className="rule"
+          onChange={handleParentRowChange}
+          value={node.parentRow}
+          placeholder="row"
+        />
+      </div>
+    )
   } else if (node.nodeType === 'finished') {
-    return <div className="finished-branch-marker">O</div>
+    return <div className="finished-branch-marker">O| </div>
   } else {
     throw new Error(
       `Invariant violation: Invalid nodeType on node: ${JSON.stringify(node)}`
