@@ -1,3 +1,15 @@
+## Development Environment Setup
+
+* Install `yarn` 1.x [following the installation documentation](https://classic.yarnpkg.com/en/docs/install).
+
+* Ensure you have git submodules set up with `git submodule update --init`.
+
+* Install the project's dependencies with `yarn install`.
+
+You can now run a development server with `yarn start`, which will automatically start a browser and open the app. It is also accessible by going to [http://localhost:3000](http://localhost:3000).
+
+---------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

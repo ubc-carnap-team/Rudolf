@@ -1,9 +1,11 @@
-import { OpenLeafNode, NodeGenerator, TreeNode } from '../typings/TreeState'
 import {
-  TreeForm,
-  FormulaNode,
   ContradictionNode,
   FinishedNode,
+  FormulaNode,
+  NodeGenerator,
+  OpenLeafNode,
+  TreeForm,
+  TreeNode,
 } from '../typings/TreeState'
 import { lastEl } from './helpers'
 
@@ -30,10 +32,13 @@ export const makeContradictionNode = (parentId: string): ContradictionNode => ({
   id: `${parentId}0`,
 })
 
-export const makeFinishedNode = (parentId: string): FinishedNode => ({
+export const makeFinishedNode = (
+  parentId: string,
+  resolvedRows: number[]
+): FinishedNode => ({
   nodeType: 'finished',
   formulas: [],
-  rule: 'X-PLACEHOLDER',
+  rule: `O(${resolvedRows.join(',')})`,
   id: `${parentId}0`,
 })
 
@@ -86,6 +91,38 @@ export const destructivelyAppendChildren = (
       destructivelyAppendChildren(child, createNodes)
     )
   }
+}
+
+/**
+ *
+ * @param root The root of a subTree
+ */
+export const findresolvedRows = (root: FormulaNode, id: string): number[] => {
+  const resolvedRows: number[] = []
+  const nodePath: (0 | 1)[] = convertIdToPath(id)
+  let currentNode: TreeNode = root
+
+  if (id === '0') {
+    currentNode.formulas.forEach((element) => {
+      if (element.resolved) {
+        resolvedRows.push(element.row)
+      }
+    })
+  } else {
+    for (const idx of nodePath) {
+      if (currentNode.nodeType !== 'formulas') {
+        throw new Error('Failed to get node path')
+      }
+
+      currentNode.formulas.forEach((element) => {
+        if (element.resolved) {
+          resolvedRows.push(element.row)
+        }
+      })
+      currentNode = currentNode.forest[idx]
+    }
+  }
+  return resolvedRows
 }
 
 /**
