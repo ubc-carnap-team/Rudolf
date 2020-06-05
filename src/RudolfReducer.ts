@@ -81,7 +81,6 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   markContradiction(nodeId: string) {
     const draftNode = getNode(this.draftState.tree, nodeId) as FormulaNode
     draftNode.forest = [makeContradictionNode(draftNode.id)]
-    // TODO: require that the user to select the lines that contradict
   }
 
   markFinished(nodeId: string) {

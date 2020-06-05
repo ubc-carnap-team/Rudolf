@@ -10,10 +10,7 @@ interface TreeNodeProps {
 
 export type TreeNode = FormulaNode | FinishedNode | ContradictionNode
 
-export type NodeGenerator = (
-  parentId: string,
-  parentRow: number
-) => FormulaNode[]
+export type NodeGenerator = (parentId: string) => FormulaNode[]
 
 export type OpenLeafNode = FormulaNode & { forest: [] }
 

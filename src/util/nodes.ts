@@ -50,33 +50,6 @@ export const makeFinishedNode = (
  * @param root The root of a subTree
  * @param createNodes function that creates new node objects
  */
-export const appendChildren = (
-  root: TreeNode,
-  createNodes: NodeGenerator
-): TreeNode => {
-  if (root.nodeType === 'contradiction') {
-    return root
-  } else if (root.nodeType === 'finished') {
-    console.error("shouldn't try to append to finished branches.")
-    // TODO: Special Handling for FinishedNodes?
-    return root
-  } else if (isOpenLeaf(root)) {
-    return { ...root, forest: createNodes(root.id, lastRow(root) + 1) } // TODO
-  } else {
-    return {
-      ...root,
-      forest: root.forest.map<TreeNode>((child) =>
-        appendChildren(child, createNodes)
-      ),
-    }
-  }
-}
-
-/**
- *
- * @param root The root of a subTree
- * @param createNodes function that creates new node objects
- */
 export const destructivelyAppendChildren = (
   root: TreeNode,
   createNodes: NodeGenerator
@@ -88,7 +61,7 @@ export const destructivelyAppendChildren = (
     console.warn("shouldn't try to append to finished branch")
     return
   } else if (root.forest.length === 0) {
-    root.forest = createNodes(root.id, -1)
+    root.forest = createNodes(root.id)
   } else {
     root.forest.forEach((child) =>
       destructivelyAppendChildren(child, createNodes)
