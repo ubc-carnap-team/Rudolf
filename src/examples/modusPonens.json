@@ -4,7 +4,7 @@
     {
       "value": "P->Q",
       "row": 1,
-      "resolved": false
+      "resolved": true
     },
     {
       "value": "P",
@@ -31,12 +31,14 @@
         {
           "nodeType": "contradiction",
           "formulas": [],
-          "rule": "X(1,3)",
-          "id": "000"
+          "rule": "X",
+          "parentRow": "2,4",
+          "id": "00"
         }
       ],
       "rule": "->",
-      "id": "00"
+      "parentRow": "1",
+      "id": "0"
     },
     {
       "nodeType": "formulas",
@@ -51,14 +53,17 @@
         {
           "nodeType": "contradiction",
           "formulas": [],
-          "rule": "X-PLACEHOLDER",
-          "id": "010"
+          "rule": "X",
+          "parentRow": "3,4",
+          "id": "10"
         }
       ],
       "rule": "->",
-      "id": "01"
+      "parentRow": "1",
+      "id": "1"
     }
   ],
-  "rule": "A",
-  "id": "0"
+  "rule": "AS",
+  "parentRow": "",
+  "id": ""
 }
