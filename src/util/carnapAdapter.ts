@@ -1,6 +1,6 @@
 import { FormulaNode, TreeForm, TreeNode } from '../typings/TreeState'
 
-type SequentNode = {
+interface SequentNode {
   label: string
   rule: string
   forest: SequentNode[]
@@ -50,15 +50,21 @@ const convertToSequentFN = (
       if (!(form1 || form2)) {
         console.error(form1, form2)
       }
-      const contradictionSequent = formulasToSequent([
+      const contradictionSequent: string = formulasToSequent([
         form1,
         ...formulas.filter((form) => ![row1, row2].includes(form.row)),
         form2,
       ])
       return {
-        label: contradictionSequent,
-        rule: 'Ax',
-        forest: [{ label: '', rule: '', forest: [] }],
+        label: formulasToSequent(formulas),
+        rule: 'St',
+        forest: [
+          {
+            label: contradictionSequent,
+            rule: 'Ax',
+            forest: [{ label: '', rule: '', forest: [] }],
+          },
+        ],
       }
     } else if (nodeType === 'finished') {
       return {
