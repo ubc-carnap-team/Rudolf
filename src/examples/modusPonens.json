@@ -1,0 +1,64 @@
+{
+  "nodeType": "formulas",
+  "formulas": [
+    {
+      "value": "P->Q",
+      "row": 1,
+      "resolved": false
+    },
+    {
+      "value": "P",
+      "row": 2,
+      "resolved": false
+    },
+    {
+      "value": "~Q",
+      "row": 3,
+      "resolved": false
+    }
+  ],
+  "forest": [
+    {
+      "nodeType": "formulas",
+      "formulas": [
+        {
+          "value": "~P",
+          "row": 4,
+          "resolved": false
+        }
+      ],
+      "forest": [
+        {
+          "nodeType": "contradiction",
+          "formulas": [],
+          "rule": "X(1,3)",
+          "id": "000"
+        }
+      ],
+      "rule": "->",
+      "id": "00"
+    },
+    {
+      "nodeType": "formulas",
+      "formulas": [
+        {
+          "value": "Q",
+          "row": 4,
+          "resolved": false
+        }
+      ],
+      "forest": [
+        {
+          "nodeType": "contradiction",
+          "formulas": [],
+          "rule": "X-PLACEHOLDER",
+          "id": "010"
+        }
+      ],
+      "rule": "->",
+      "id": "01"
+    }
+  ],
+  "rule": "A",
+  "id": "0"
+}
