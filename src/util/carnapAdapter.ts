@@ -29,15 +29,21 @@ const convertToSequentFN = (
     const [{ nodeType, rule, parentRow }] = forest
     if (nodeType === 'formulas') {
       return {
-        // TODO Handle case where row string isn't a number
-        label: rearrangeFormulas(formulas, Number(parentRow)),
-        rule,
-        forest: forest.map((node) =>
-          convertToSequentFN(
-            node as FormulaNode,
-            formulas.filter((form) => !(form.row === Number(parentRow)))
-          )
-        ),
+        label: formulasToSequent(formulas),
+        rule: 'St',
+        forest: [
+          {
+            // TODO Handle case where row string isn't a number
+            label: rearrangeFormulas(formulas, Number(parentRow)),
+            rule,
+            forest: forest.map((node) =>
+              convertToSequentFN(
+                node as FormulaNode,
+                formulas.filter((form) => !(form.row === Number(parentRow)))
+              )
+            ),
+          },
+        ],
       }
     } else if (nodeType === 'contradiction') {
       // Expect parentRow to be "<number>,<number>"

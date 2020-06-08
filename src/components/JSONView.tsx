@@ -11,7 +11,7 @@ const safeConvertToSequent = (tree: any) => {
     console.log(e)
     res = e
   }
-  return JSON.stringify(res)
+  return JSON.stringify({ tree, sequent: res })
 }
 
 export const JSONView: FC<{ tree: FormulaNode }> = ({ tree }) => (

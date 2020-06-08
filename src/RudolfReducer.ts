@@ -46,7 +46,7 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
 
   createTree(premiseArray: string[]) {
     this.draftState.tree = parsePremises(premiseArray)
-    this.draftState.nextRow = premiseArray.length
+    this.draftState.nextRow = premiseArray.length + 1
   }
 
   continueBranch(nodeId: string, formulaCount: number) {
