@@ -2,25 +2,20 @@ import React, { FC, useState, useRef, Ref } from 'react'
 import { Check } from '@material-ui/icons'
 import { CustomDispatch, updateFormula } from '../RudolfReducer'
 import { NodeMenu } from './NodeMenu'
-import { TreeNode } from '../typings/TreeState'
+import { FormulaNode } from '../typings/TreeState'
 
 interface Props {
   row: number
   value: string
   resolved: boolean
-  node: TreeNode
+  node: FormulaNode
   index: number
   dispatch: CustomDispatch
 }
 
-const FormulaView: FC<Props> = ({
-  index,
-  row,
-  value,
-  resolved,
-  dispatch,
-  node,
-}) => {
+const FormulaView: FC<Props> = ({ index, row, dispatch, node }) => {
+  const formula = node.formulas[index]
+  const { value, resolved } = formula
   const [contextMenu, setContextMenu] = useState(false) // Convert to reducer action/field w/ ref, node, optional index.
   const ref: Ref<HTMLDivElement> = useRef(null)
   return (
@@ -48,7 +43,6 @@ const FormulaView: FC<Props> = ({
         anchorEl={ref.current as HTMLDivElement}
         index={index}
         node={node}
-        formula={{ row, value, resolved }}
       />
       {resolved ? <Check /> : ''}
     </div>

@@ -2,9 +2,6 @@
  * The shared properties of all nodes
  */
 interface TreeNodeProps {
-  formulas: TreeForm[]
-  rule: string
-  parentRow: string
   id: string
 }
 
@@ -32,12 +29,14 @@ export interface FinishedNode extends TreeNodeProps {
   nodeType: 'finished'
   formulas: []
   // rule: string // ['O', ...number[]] // List of resolved rows? on the branch
+  resolvedRows: number[]
 }
 
 export interface ContradictionNode extends TreeNodeProps {
   nodeType: 'contradiction'
   formulas: []
   // rule: string // ['X', number, number] e.g X
+  contradictoryRows: string
 }
 
 export interface FeedbackMessage {
@@ -48,4 +47,13 @@ export interface FeedbackMessage {
 export interface FeedbackNode {
   feedback: FeedbackMessage[]
   forest: FeedbackNode[]
+}
+
+export interface Justification {
+  rule: string
+  parentRow: string
+}
+
+export type JustificationMap = {
+  [firstRow: number]: Justification
 }

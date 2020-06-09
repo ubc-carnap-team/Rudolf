@@ -1,12 +1,13 @@
 import React, { FC } from 'react'
 import { TextareaAutosize } from '@material-ui/core'
-import { FormulaNode } from '../typings/TreeState'
+import { JustificationMap } from '../typings/TreeState'
 import { convertToSequent } from '../util/carnapAdapter'
+import { RudolfStore } from '../RudolfReducer'
 
-const safeConvertToSequent = (tree: any) => {
+const safeConvertToSequent = (tree: any, justifications: JustificationMap) => {
   let res
   try {
-    res = convertToSequent(tree)
+    res = convertToSequent(tree, justifications)
   } catch (e) {
     console.log(e)
     res = e
@@ -14,10 +15,10 @@ const safeConvertToSequent = (tree: any) => {
   return JSON.stringify({ tree, sequent: res })
 }
 
-export const JSONView: FC<{ tree: FormulaNode }> = ({ tree }) => (
+export const JSONView: FC<RudolfStore> = ({ tree, justifications }) => (
   <TextareaAutosize
     className="json-view"
-    value={safeConvertToSequent(tree)}
+    value={safeConvertToSequent(tree, justifications)}
     style={{
       overflow: 'hidden scroll',
       fontSize: '10px',

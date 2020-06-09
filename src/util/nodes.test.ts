@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TreeNode, FormulaNode } from '../typings/TreeState'
 import { findresolvedRows } from './nodes'
 

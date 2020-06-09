@@ -1,4 +1,10 @@
-import { FormulaNode, TreeForm, TreeNode } from '../typings/TreeState'
+import {
+  FormulaNode,
+  TreeForm,
+  TreeNode,
+  JustificationMap,
+} from '../typings/TreeState'
+import { firstRow } from './nodes'
 
 interface SequentNode {
   label: string
@@ -6,10 +12,13 @@ interface SequentNode {
   forest: SequentNode[]
 }
 
-export const convertToSequent = (node: TreeNode): SequentNode => {
+export const convertToSequent = (
+  node: TreeNode,
+  justifications: JustificationMap
+): SequentNode => {
   switch (node.nodeType) {
     case 'formulas':
-      return convertToSequentFN(node, [])
+      return convertToSequentFN(node, [], justifications)
     case 'finished':
     case 'contradiction':
       throw new Error('TODO')
@@ -20,14 +29,16 @@ export const convertToSequent = (node: TreeNode): SequentNode => {
 
 const convertToSequentFN = (
   { formulas: newFormulas, forest }: FormulaNode,
-  previousFormulas: TreeForm[]
+  previousFormulas: TreeForm[],
+  justifications: JustificationMap
 ): SequentNode => {
   const formulas = previousFormulas.concat(newFormulas)
   if (forest.length === 0) {
     return { label: formulasToSequent(formulas), rule: '', forest: [] }
   } else {
-    const [{ nodeType, rule, parentRow }] = forest
-    if (nodeType === 'formulas') {
+    const [child] = forest
+    if (child.nodeType === 'formulas') {
+      const { rule, parentRow } = justifications[firstRow(child)]
       return {
         label: formulasToSequent(formulas),
         rule: 'St',
@@ -39,16 +50,17 @@ const convertToSequentFN = (
             forest: forest.map((node) =>
               convertToSequentFN(
                 node as FormulaNode,
-                formulas.filter((form) => !(form.row === Number(parentRow)))
+                formulas.filter((form) => !(form.row === Number(parentRow))),
+                justifications
               )
             ),
           },
         ],
       }
-    } else if (nodeType === 'contradiction') {
+    } else if (child.nodeType === 'contradiction') {
       // Expect parentRow to be "<number>,<number>"
       // TODO Handle case where it isn't
-      const [row1, row2] = parentRow.split(',').map(Number)
+      const [row1, row2] = child.contradictoryRows.split(',').map(Number)
       const [form1, form2] = formulas
         .filter((form) => [row1, row2].includes(form.row))
         // this sort is a hack to avoid parsing for negation symbol, which may vary
@@ -72,11 +84,17 @@ const convertToSequentFN = (
           },
         ],
       }
-    } else if (nodeType === 'finished') {
+    } else if (child.nodeType === 'finished') {
       return {
         label: formulasToSequent(formulas),
-        rule: '',
-        forest: [],
+        rule: 'Op',
+        forest: [
+          {
+            label: '',
+            rule: '',
+            forest: [],
+          },
+        ],
       }
     } else {
       throw new Error('this was supposed to be exhaustive')
@@ -100,5 +118,3 @@ const formulasToSequent = (forms: TreeForm[]) => {
     .join(',')
     .concat(':|-:')
 }
-
-const TODO = () => new Error('TODO')

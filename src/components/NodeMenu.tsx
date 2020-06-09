@@ -10,7 +10,6 @@ import {
   markFinished,
   reopenBranch,
 } from '../RudolfReducer'
-import { TreeForm } from '../typings/TreeState'
 import { TreeNode } from '../typings/TreeState'
 import { isOpenLeaf } from '../util/nodes'
 
@@ -21,7 +20,6 @@ type Props = {
   node: TreeNode
   anchorEl: Element
   dispatch: CustomDispatch
-  formula: TreeForm
 }
 
 /**
@@ -42,10 +40,10 @@ export const NodeMenu: FC<Props> = ({
   dispatch,
   index,
   anchorEl,
-  formula,
   onClose: close,
   node,
 }) => {
+  const formula = node.formulas[index]
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={close}>
       <MenuItem

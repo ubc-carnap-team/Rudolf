@@ -6,7 +6,11 @@ import {
 } from 'immer-reducer'
 import { Dispatch } from 'react'
 
-import { FormulaNode } from './typings/TreeState'
+import {
+  FormulaNode,
+  Justification,
+  JustificationMap,
+} from './typings/TreeState'
 import {
   destructivelyAppendChildren,
   findresolvedRows,
@@ -21,6 +25,7 @@ import {
 export type RudolfStore = {
   tree: FormulaNode
   nextRow: number
+  justifications: JustificationMap
 }
 
 export class RudolfReducer extends ImmerReducer<RudolfStore> {
@@ -29,14 +34,12 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     draftNode.formulas[formulaIndex].value = newValue
   }
 
-  updateRule(nodeId: string, newValue: string) {
-    const draftNode = getNode(this.draftState.tree, nodeId)
-    draftNode.rule = newValue
+  updateJustification(nodeRow: number, justification: Partial<Justification>) {
+    Object.assign(this.draftState.justifications[nodeRow], justification)
   }
 
-  updateParentRow(nodeId: string, newValue: string) {
-    const draftNode = getNode(this.draftState.tree, nodeId)
-    draftNode.parentRow = newValue
+  updateContradiction(id: string, contradictoryRows: string) {
+    Object.assign(getNode(this.draftState.tree, id), { contradictoryRows })
   }
 
   toggleResolved(nodeId: string, index: number) {
@@ -47,6 +50,7 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   createTree(premiseArray: string[]) {
     this.draftState.tree = parsePremises(premiseArray)
     this.draftState.nextRow = premiseArray.length + 1
+    this.draftState.justifications = { 1: { rule: '', parentRow: '' } }
   }
 
   continueBranch(nodeId: string, formulaCount: number) {
@@ -58,23 +62,32 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
       }),
     ])
 
+    this.draftState.justifications[this.draftState.nextRow] = {
+      rule: '',
+      parentRow: '',
+    }
     this.draftState.nextRow += formulaCount
   }
 
   splitBranch(nodeId: string, formulaCount: number) {
     const draftNode = getNode(this.draftState.tree, nodeId)
     destructivelyAppendChildren(draftNode, (id) => {
+      const formulas = makeEmptyFormulas(formulaCount, this.draftState.nextRow)
       return [
         makeNode({
           id: `${id}0`,
-          formulas: makeEmptyFormulas(formulaCount, this.draftState.nextRow),
+          formulas,
         }),
         makeNode({
           id: `${id}1`,
-          formulas: makeEmptyFormulas(formulaCount, this.draftState.nextRow),
+          formulas,
         }),
       ]
     })
+    this.draftState.justifications[this.draftState.nextRow] = {
+      rule: '',
+      parentRow: '',
+    }
     this.draftState.nextRow += formulaCount
   }
 
@@ -101,6 +114,7 @@ const premiseArray = initialPremises.split(',')
 export const initialState: RudolfStore = {
   tree: parsePremises(premiseArray),
   nextRow: premiseArray.length + 1,
+  justifications: { 1: { rule: 'AS', parentRow: '' } },
 }
 
 export const rudolfReducer = createReducerFunction(RudolfReducer)
@@ -108,13 +122,13 @@ export const {
   createTree,
   toggleResolved,
   updateFormula,
-  updateRule,
+  updateJustification,
   continueBranch,
   splitBranch,
   markContradiction,
   markFinished,
   reopenBranch,
-  updateParentRow,
+  updateContradiction,
 } = createActionCreators(RudolfReducer)
 export type RudolfAction = Actions<typeof RudolfReducer>
 export type CustomDispatch = Dispatch<RudolfAction>

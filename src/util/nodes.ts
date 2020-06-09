@@ -7,30 +7,27 @@ import {
   TreeForm,
   TreeNode,
 } from '../typings/TreeState'
-import { lastEl } from './helpers'
+import { isNonLeafNode } from './util'
 
 export const makeNode = ({
   formulas = [],
   forest = [],
-  rule = '',
-  parentRow = '',
   id,
 }: Partial<FormulaNode> & {
   id: string
-}): FormulaNode => ({
-  nodeType: 'formulas',
-  formulas,
-  forest,
-  rule,
-  parentRow,
-  id,
-})
+}): FormulaNode => {
+  return {
+    nodeType: 'formulas',
+    formulas,
+    forest,
+    id,
+  }
+}
 
 export const makeContradictionNode = (parentId: string): ContradictionNode => ({
   nodeType: 'contradiction',
   formulas: [],
-  rule: 'X',
-  parentRow: '',
+  contradictoryRows: '',
   id: `${parentId}0`,
 })
 
@@ -40,9 +37,8 @@ export const makeFinishedNode = (
 ): FinishedNode => ({
   nodeType: 'finished',
   formulas: [],
-  rule: `O`,
   id: `${parentId}0`,
-  parentRow: resolvedRows.join(','),
+  resolvedRows,
 })
 
 /**
@@ -76,12 +72,12 @@ export const destructivelyAppendChildren = (
 export const findresolvedRows = (root: FormulaNode, id: string): number[] => {
   const resolvedRows: number[] = []
   const nodePath: (0 | 1)[] = convertIdToPath(id)
-  let currentNode: TreeNode = root
+  let currentNode: FormulaNode = root
 
   if (id === '') {
-    currentNode.formulas.forEach((element) => {
+    currentNode.formulas.forEach((element, idx) => {
       if (element.resolved) {
-        resolvedRows.push(element.row)
+        resolvedRows.push(firstRow(currentNode) + idx)
       }
     })
   } else {
@@ -92,10 +88,12 @@ export const findresolvedRows = (root: FormulaNode, id: string): number[] => {
 
       currentNode.formulas.forEach((element) => {
         if (element.resolved) {
-          resolvedRows.push(element.row)
+          resolvedRows.push(firstRow(currentNode) + idx)
         }
       })
-      currentNode = currentNode.forest[idx]
+      if (isNonLeafNode(currentNode)) {
+        currentNode = currentNode.forest[idx]
+      }
     }
   }
   return resolvedRows
@@ -107,8 +105,7 @@ export const findresolvedRows = (root: FormulaNode, id: string): number[] => {
  */
 export const parsePremises = (formulas: string[]): FormulaNode => {
   return makeNode({
-    formulas: formulas.map((form, index) => makeTreeForm(form, index + 1)),
-    rule: 'AS',
+    formulas: formulas.map((form, idx) => makeTreeForm(form, idx + 1)),
     forest: [],
     id: '',
   })
@@ -116,21 +113,22 @@ export const parsePremises = (formulas: string[]): FormulaNode => {
 
 const makeTreeForm = (value = '', row: number): TreeForm => ({
   value,
-  row,
   resolved: false,
+  row,
 })
 
 export const isOpenLeaf = (node: TreeNode | null): node is OpenLeafNode =>
   node != null && node.nodeType === 'formulas' && node.forest.length === 0
 
-export const lastRow = (node: FormulaNode) => lastEl(node.formulas).row
+export const lastRow = (node: FormulaNode) =>
+  firstRow(node) + node.formulas.length
 
 export const firstRow = (node: FormulaNode) => node.formulas[0].row
 
 export const makeEmptyFormulas = (n: number, nextRow: number): TreeForm[] => {
   const arr = []
   while (n-- > 0) {
-    arr.push({ value: '', row: nextRow++, resolved: false })
+    arr.push(makeTreeForm('', nextRow++))
   }
   return arr
 }

@@ -1,36 +1,35 @@
 /* eslint-disable react/jsx-no-undef */
-import React, { FC, Fragment, ChangeEventHandler } from 'react'
+import React, { FC, Fragment } from 'react'
 import LineTo from 'react-lineto'
 import AutoSizeInput from 'react-input-autosize'
 import { TreeNode } from '../typings/TreeState'
 import FormulaView from './FormulaView'
-import { CustomDispatch, updateRule, updateParentRow } from '../RudolfReducer'
+import {
+  CustomDispatch,
+  updateContradiction,
+  updateJustification,
+  RudolfStore,
+} from '../RudolfReducer'
 import { lastRow, firstRow } from '../util/nodes'
 import Spacers from './Spacers'
+import { isFormulaNode } from '../util/util'
 
 type Props = {
   node: TreeNode
   dispatch: CustomDispatch
+  store: RudolfStore
 }
 
-const NodeView: FC<Props> = ({ node, dispatch }) => {
-  const handleParentRowChange: ChangeEventHandler<HTMLInputElement> = ({
-    currentTarget: { value },
-  }) => {
-    dispatch(updateParentRow(node.id, value))
-  }
-  if (node.nodeType === 'formulas') {
-    const { rule, parentRow, id, formulas, forest } = node
-    const handleRuleChange: ChangeEventHandler<HTMLInputElement> = ({
-      currentTarget: { value },
-    }) => {
-      dispatch(updateRule(id, value))
-    }
+const NodeView: FC<Props> = ({ node, dispatch, store }) => {
+  if (isFormulaNode(node)) {
+    const { id, formulas, forest } = node
+
     const spacers =
       forest[0]?.nodeType === 'formulas' ? (
         <Spacers diff={firstRow(forest[0]) - lastRow(node)} />
       ) : undefined
 
+    const { rule, parentRow } = store.justifications[firstRow(node)]
     return (
       <div className={`node-container `}>
         <div
@@ -45,28 +44,27 @@ const NodeView: FC<Props> = ({ node, dispatch }) => {
                 node={node}
                 index={index}
                 dispatch={dispatch}
+                row={form.row}
                 {...form}
               />
             )
           })}
-          {node.id !== '' ? (
-            <>
-              <AutoSizeInput
-                className="rule"
-                onChange={handleRuleChange}
-                value={rule}
-                placeholder="rule"
-              />
-              <AutoSizeInput
-                className="rule"
-                onChange={handleParentRowChange}
-                value={parentRow}
-                placeholder="row"
-              />
-            </>
-          ) : (
-            'AS'
-          )}
+          <AutoSizeInput
+            className="rule"
+            onChange={({ currentTarget: { value: rule } }) =>
+              dispatch(updateJustification(firstRow(node), { rule }))
+            }
+            value={rule}
+            placeholder="rule"
+          />
+          <AutoSizeInput
+            className="rule"
+            onChange={({ currentTarget: { value: parentRow } }) =>
+              dispatch(updateJustification(firstRow(node), { parentRow }))
+            }
+            value={parentRow}
+            placeholder="row"
+          />
         </div>
 
         <div className={`children ${forest.length > 1 ? 'split' : 'stack'}`}>
@@ -86,6 +84,7 @@ const NodeView: FC<Props> = ({ node, dispatch }) => {
                   {...{
                     node: child,
                     dispatch,
+                    store,
                   }}
                 />
               </Fragment>
@@ -100,8 +99,10 @@ const NodeView: FC<Props> = ({ node, dispatch }) => {
         X|
         <AutoSizeInput
           className="rule"
-          onChange={handleParentRowChange}
-          value={node.parentRow}
+          onChange={({ currentTarget: { value } }) =>
+            updateContradiction(node.id, value)
+          }
+          value={node.contradictoryRows}
           placeholder="row"
         />
       </div>

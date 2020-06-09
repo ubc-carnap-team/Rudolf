@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable @typescript-eslint/camelcase */
 import { convertToSequent } from './carnapAdapter'
 import { FormulaNode } from '../typings/TreeState'
