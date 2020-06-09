@@ -49,22 +49,28 @@ const NodeView: FC<Props> = ({ node, dispatch, store }) => {
               />
             )
           })}
-          <AutoSizeInput
-            className="rule"
-            onChange={({ currentTarget: { value: rule } }) =>
-              dispatch(updateJustification(firstRow(node), { rule }))
-            }
-            value={rule}
-            placeholder="rule"
-          />
-          <AutoSizeInput
-            className="rule"
-            onChange={({ currentTarget: { value: parentRow } }) =>
-              dispatch(updateJustification(firstRow(node), { parentRow }))
-            }
-            value={parentRow}
-            placeholder="row"
-          />
+          {node.id !== '' ? (
+            <div className="justification">
+              <AutoSizeInput
+                className="rule"
+                onChange={({ currentTarget: { value: rule } }) =>
+                  dispatch(updateJustification(firstRow(node), { rule }))
+                }
+                value={rule}
+                placeholder="rule"
+              />
+              <AutoSizeInput
+                className="rule"
+                onChange={({ currentTarget: { value: parentRow } }) =>
+                  dispatch(updateJustification(firstRow(node), { parentRow }))
+                }
+                value={parentRow}
+                placeholder="row"
+              />
+            </div>
+          ) : (
+            'AS'
+          )}
         </div>
 
         <div className={`children ${forest.length > 1 ? 'split' : 'stack'}`}>
