@@ -5,12 +5,7 @@ import {
   JustificationMap,
 } from '../typings/TreeState'
 import { firstRow } from './nodes'
-
-interface SequentNode {
-  label: string
-  rule: string
-  forest: SequentNode[]
-}
+import { SequentNode } from '../typings/Sequent'
 
 export const convertToSequent = (
   node: TreeNode,

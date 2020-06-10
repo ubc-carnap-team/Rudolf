@@ -106,7 +106,7 @@ const NodeView: FC<Props> = ({ node, dispatch, store }) => {
         <AutoSizeInput
           className="rule"
           onChange={({ currentTarget: { value } }) =>
-            updateContradiction(node.id, value)
+            dispatch(updateContradiction(node.id, value))
           }
           value={node.contradictoryRows}
           placeholder="row"
