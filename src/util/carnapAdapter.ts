@@ -18,7 +18,7 @@ export const convertToSequent = (
     case 'contradiction':
       throw new Error('TODO')
     default:
-      throw 'invalid node'
+      throw new Error('invalid node')
   }
 }
 
@@ -82,7 +82,7 @@ const convertToSequentFN = (
     } else if (child.nodeType === 'finished') {
       return {
         label: formulasToSequent(formulas),
-        rule: 'Op',
+        rule: 'Lit',
         forest: [
           {
             label: '',
