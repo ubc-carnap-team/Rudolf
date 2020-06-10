@@ -6,11 +6,10 @@ export interface SequentNode {
 
 export type CheckerFeedback =
   | {
-      success: true
       feedbackTree: FeedbackNode
       sequent: SequentNode
     }
-  | { success: false; errorMessage: string }
+  | { errorMessage: string }
 
 export interface FeedbackMessage {
   status: 'correct' | 'incorrect' | 'parsing'

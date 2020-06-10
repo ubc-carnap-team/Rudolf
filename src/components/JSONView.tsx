@@ -2,7 +2,7 @@ import { TextareaAutosize } from '@material-ui/core'
 import React, { FC, useEffect } from 'react'
 
 import { RudolfStore, updateFeedback, CustomDispatch } from '../RudolfReducer'
-import { SequentNode, FeedbackNode, CheckerFeedback } from '../typings/Sequent'
+import { SequentNode, FeedbackNode, CheckerFeedback } from '../typings/Checker'
 import { JustificationMap } from '../typings/TreeState'
 import { convertToSequent } from '../util/carnapAdapter'
 
@@ -29,7 +29,7 @@ const checkTree = async (
 ): Promise<CheckerFeedback> => {
   const sequent = convertToSequent(tree, justifications)
   const feedbackTree: FeedbackNode = await checkSequent(sequent)
-  return { feedbackTree, sequent, success: true }
+  return { feedbackTree, sequent }
 }
 export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
   tree,
@@ -38,15 +38,15 @@ export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
   dispatch,
 }) => {
   useEffect(() => {
-    checkTree(tree, justifications)
-      .then((res: CheckerFeedback) => {
-        return dispatch(updateFeedback(res))
-      })
-      .catch(({ message }: Error) => {
-        return dispatch(
-          updateFeedback({ success: false, errorMessage: message })
-        )
-      })
+    if (window.Carnap) {
+      checkTree(tree, justifications)
+        .then((res: CheckerFeedback) => {
+          return dispatch(updateFeedback(res))
+        })
+        .catch(({ message }: Error) => {
+          return dispatch(updateFeedback({ errorMessage: message }))
+        })
+    }
   }, [dispatch, justifications, tree])
   return (
     <TextareaAutosize

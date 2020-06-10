@@ -21,7 +21,7 @@ import {
   makeNode,
   parsePremises,
 } from './util/nodes'
-import { CheckerFeedback } from './typings/Sequent'
+import { CheckerFeedback } from './typings/Checker'
 
 export type RudolfStore = {
   tree: FormulaNode
@@ -121,7 +121,7 @@ export const initialState: RudolfStore = {
   tree: parsePremises(premiseArray),
   nextRow: premiseArray.length + 1,
   justifications: { 1: { rule: 'AS', parentRow: '' } },
-  feedback: { success: false, errorMessage: 'Nothing yet.' },
+  feedback: { errorMessage: 'Nothing yet.' },
 }
 
 export const rudolfReducer = createReducerFunction(RudolfReducer)
