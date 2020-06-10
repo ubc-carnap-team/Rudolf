@@ -21,11 +21,13 @@ import {
   makeNode,
   parsePremises,
 } from './util/nodes'
+import { CheckerFeedback } from './typings/Sequent'
 
 export type RudolfStore = {
   tree: FormulaNode
   nextRow: number
   justifications: JustificationMap
+  feedback: CheckerFeedback
 }
 
 export class RudolfReducer extends ImmerReducer<RudolfStore> {
@@ -40,6 +42,10 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
 
   updateContradiction(id: string, contradictoryRows: string) {
     Object.assign(getNode(this.draftState.tree, id), { contradictoryRows })
+  }
+
+  updateFeedback(feedback: CheckerFeedback) {
+    this.draftState.feedback = feedback
   }
 
   toggleResolved(nodeId: string, index: number) {
@@ -115,20 +121,22 @@ export const initialState: RudolfStore = {
   tree: parsePremises(premiseArray),
   nextRow: premiseArray.length + 1,
   justifications: { 1: { rule: 'AS', parentRow: '' } },
+  feedback: { success: false, errorMessage: 'Nothing yet.' },
 }
 
 export const rudolfReducer = createReducerFunction(RudolfReducer)
 export const {
-  createTree,
-  toggleResolved,
-  updateFormula,
-  updateJustification,
   continueBranch,
-  splitBranch,
+  createTree,
   markContradiction,
   markFinished,
   reopenBranch,
+  splitBranch,
+  toggleResolved,
   updateContradiction,
+  updateFeedback,
+  updateFormula,
+  updateJustification,
 } = createActionCreators(RudolfReducer)
 export type RudolfAction = Actions<typeof RudolfReducer>
 export type CustomDispatch = Dispatch<RudolfAction>

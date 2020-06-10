@@ -1,63 +1,64 @@
-import React, { FC, useState, useEffect } from 'react'
 import { TextareaAutosize } from '@material-ui/core'
+import React, { FC, useEffect } from 'react'
+
+import { RudolfStore, updateFeedback, CustomDispatch } from '../RudolfReducer'
+import { SequentNode, FeedbackNode, CheckerFeedback } from '../typings/Sequent'
 import { JustificationMap } from '../typings/TreeState'
 import { convertToSequent } from '../util/carnapAdapter'
-import { SequentNode } from '../typings/Sequent'
-import { RudolfStore } from '../RudolfReducer'
 
-export const checkSequent = async (sequent: SequentNode) => {
+export const checkSequent = async (
+  sequent: SequentNode
+): Promise<FeedbackNode> => {
   return new Promise((resolve, reject) => {
     try {
       window.Carnap.checkIchikawaJenkinsSLTableau(
         sequent,
-        (result: unknown) => {
+        (result: FeedbackNode) => {
           resolve(result)
         }
       )
-    } catch (err) {
-      reject(err)
+    } catch (error) {
+      reject(error)
     }
   })
 }
 
-const safeConvertToSequent = async (
+const checkTree = async (
   tree: any,
   justifications: JustificationMap
-): Promise<string> => {
-  try {
-    const sequent = convertToSequent(tree, justifications)
-    const feedback = await checkSequent(sequent)
-    return JSON.stringify({
-      tree,
-      sequent,
-      feedback,
-    })
-  } catch (err) {
-    console.log(err)
-    return JSON.stringify({ tree, err })
-  }
+): Promise<CheckerFeedback> => {
+  const sequent = convertToSequent(tree, justifications)
+  const feedbackTree: FeedbackNode = await checkSequent(sequent)
+  return { feedbackTree, sequent, success: true }
 }
-
-export const JSONView: FC<RudolfStore> = ({ tree, justifications }) => {
-  const [feedback, updateFeedback] = useState('')
+export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
+  tree,
+  justifications,
+  feedback,
+  dispatch,
+}) => {
   useEffect(() => {
-    safeConvertToSequent(tree, justifications)
-      .then((res: string) => {
-        return updateFeedback(res)
+    checkTree(tree, justifications)
+      .then((res: CheckerFeedback) => {
+        return dispatch(updateFeedback(res))
       })
-      .catch(console.error.bind(globalThis))
-  })
+      .catch(({ message }: Error) => {
+        return dispatch(
+          updateFeedback({ success: false, errorMessage: message })
+        )
+      })
+  }, [dispatch, justifications, tree])
   return (
     <TextareaAutosize
       className="json-view"
-      value={feedback}
+      value={JSON.stringify({ tree, justifications, feedback })}
       style={{
         overflow: 'hidden scroll',
         fontSize: '16px',
         minWidth: '100%',
         position: 'fixed',
         bottom: 0,
-        maxHeight: '25%',
+        maxHeight: '50%',
       }}
     />
   )

@@ -39,16 +39,6 @@ export interface ContradictionNode extends TreeNodeProps {
   contradictoryRows: string
 }
 
-export interface FeedbackMessage {
-  status: 'correct' | 'incorrect' | 'parsing'
-  message: string
-}
-
-export interface FeedbackNode {
-  feedback: FeedbackMessage[]
-  forest: FeedbackNode[]
-}
-
 export interface Justification {
   rule: string
   parentRow: string

@@ -102,19 +102,19 @@ const NodeView: FC<Props> = ({ node, dispatch, store }) => {
   } else if (node.nodeType === 'contradiction') {
     return (
       <div className="closed-branch-marker">
-        X|
+        X
         <AutoSizeInput
           className="rule"
           onChange={({ currentTarget: { value } }) =>
             dispatch(updateContradiction(node.id, value))
           }
           value={node.contradictoryRows}
-          placeholder="row"
+          placeholder="rows"
         />
       </div>
     )
   } else if (node.nodeType === 'finished') {
-    return <div className="finished-branch-marker">O| </div>
+    return <div className="finished-branch-marker">O </div>
   } else {
     throw new Error(
       `Invariant violation: Invalid nodeType on node: ${JSON.stringify(node)}`

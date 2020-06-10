@@ -59,7 +59,7 @@ const App: React.FC = (): JSX.Element => {
         dispatch={dispatch}
         store={currentState}
       />
-      <JSONView {...currentState} />
+      <JSONView {...{ ...currentState, dispatch }} />
     </main>
   )
 }
