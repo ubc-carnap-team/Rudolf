@@ -28,8 +28,6 @@ export interface FormulaNode extends TreeNodeProps {
 export interface FinishedNode extends TreeNodeProps {
   nodeType: 'finished'
   formulas: []
-  // rule: string // ['O', ...number[]] // List of resolved rows? on the branch
-  resolvedRows: number[]
 }
 
 export interface ContradictionNode extends TreeNodeProps {

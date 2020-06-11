@@ -7,7 +7,7 @@ import {
   TreeForm,
   TreeNode,
 } from '../typings/TreeState'
-import { isNonLeafNode } from './util'
+import { isNonEmptyArray } from './util'
 
 export const makeNode = ({
   formulas = [],
@@ -31,14 +31,10 @@ export const makeContradictionNode = (parentId: string): ContradictionNode => ({
   id: `${parentId}0`,
 })
 
-export const makeFinishedNode = (
-  parentId: string,
-  resolvedRows: number[]
-): FinishedNode => ({
+export const makeFinishedNode = (parentId: string): FinishedNode => ({
   nodeType: 'finished',
   formulas: [],
   id: `${parentId}0`,
-  resolvedRows,
 })
 
 /**
@@ -63,40 +59,6 @@ export const destructivelyAppendChildren = (
       destructivelyAppendChildren(child, createNodes)
     )
   }
-}
-
-/**
- *
- * @param root The root of a subTree
- */
-export const findresolvedRows = (root: FormulaNode, id: string): number[] => {
-  const resolvedRows: number[] = []
-  const nodePath: (0 | 1)[] = convertIdToPath(id)
-  let currentNode: FormulaNode = root
-
-  if (id === '') {
-    currentNode.formulas.forEach((element, idx) => {
-      if (element.resolved) {
-        resolvedRows.push(firstRow(currentNode) + idx)
-      }
-    })
-  } else {
-    for (const idx of nodePath) {
-      if (currentNode.nodeType !== 'formulas') {
-        throw new Error('Failed to get node path')
-      }
-
-      currentNode.formulas.forEach((element) => {
-        if (element.resolved) {
-          resolvedRows.push(firstRow(currentNode) + idx)
-        }
-      })
-      if (isNonLeafNode(currentNode)) {
-        currentNode = currentNode.forest[idx]
-      }
-    }
-  }
-  return resolvedRows
 }
 
 /**
@@ -153,3 +115,13 @@ export const getNode = (root: FormulaNode, id: string): TreeNode => {
   }
   return currentNode
 }
+
+export const isNonLeafNode = (
+  node: TreeNode
+): node is FormulaNode & { forest: FormulaNode[] } =>
+  isFormulaNode(node) &&
+  isNonEmptyArray(node.forest) &&
+  node.forest[0]?.nodeType === 'formulas'
+
+export const isFormulaNode = (node: TreeNode): node is FormulaNode =>
+  node.nodeType === 'formulas'

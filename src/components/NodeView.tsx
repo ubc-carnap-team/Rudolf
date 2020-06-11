@@ -10,9 +10,8 @@ import {
   updateJustification,
   RudolfStore,
 } from '../RudolfReducer'
-import { lastRow, firstRow } from '../util/nodes'
+import { lastRow, firstRow, isFormulaNode } from '../util/nodes'
 import Spacers from './Spacers'
-import { isFormulaNode } from '../util/util'
 
 type Props = {
   node: TreeNode
@@ -60,7 +59,7 @@ const NodeView: FC<Props> = ({ node, dispatch, store }) => {
                 placeholder="rule"
               />
               <AutoSizeInput
-                className="rule"
+                className="row"
                 onChange={({ currentTarget: { value: parentRow } }) =>
                   dispatch(updateJustification(firstRow(node), { parentRow }))
                 }

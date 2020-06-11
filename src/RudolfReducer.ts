@@ -13,7 +13,6 @@ import {
 } from './typings/TreeState'
 import {
   destructivelyAppendChildren,
-  findresolvedRows,
   getNode,
   makeContradictionNode,
   makeEmptyFormulas,
@@ -103,9 +102,8 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   }
 
   markFinished(nodeId: string) {
-    const resolvedRows = findresolvedRows(this.draftState.tree, nodeId)
     const draftNode = getNode(this.draftState.tree, nodeId) as FormulaNode
-    draftNode.forest = [makeFinishedNode(nodeId, resolvedRows)]
+    draftNode.forest = [makeFinishedNode(nodeId)]
   }
 
   reopenBranch(nodeId: string) {
