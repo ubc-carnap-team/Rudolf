@@ -1,35 +1,15 @@
-import {
-  FormulaNode,
-  TreeForm,
-  TreeNode,
-  JustificationMap,
-} from '../typings/TreeState'
+import { FormulaNode, TreeForm, JustificationMap } from '../typings/TreeState'
 import { firstRow } from './nodes'
 import { SequentNode } from '../typings/Checker'
 
 export const convertToSequent = (
-  node: TreeNode,
-  justifications: JustificationMap
-): SequentNode => {
-  switch (node.nodeType) {
-    case 'formulas':
-      return convertToSequentFN(node, [], justifications)
-    case 'finished':
-    case 'contradiction':
-      throw new Error('TODO')
-    default:
-      throw new Error('invalid node')
-  }
-}
-
-const convertToSequentFN = (
   { formulas: newFormulas, forest }: FormulaNode,
-  previousFormulas: TreeForm[],
-  justifications: JustificationMap
+  justifications: JustificationMap,
+  previousFormulas: TreeForm[] = []
 ): SequentNode => {
   const formulas = previousFormulas.concat(newFormulas)
   if (forest.length === 0) {
-    return { label: formulasToSequent(formulas), rule: '', forest: [] }
+    return { label: convertFormulas(formulas), rule: '', forest: [] }
   } else {
     const [child] = forest
     if (child.nodeType === 'formulas') {
@@ -49,17 +29,17 @@ const convertToSequentFN = (
         )
       }
       return {
-        label: formulasToSequent(formulas),
+        label: convertFormulas(formulas),
         rule: 'St',
         forest: [
           {
             label: rearrangeFormulas(formulas, parentRow),
             rule,
             forest: forest.map((node) =>
-              convertToSequentFN(
+              convertToSequent(
                 node as FormulaNode,
-                formulas.filter((form) => !(form.row === parentRow)),
-                justifications
+                justifications,
+                formulas.filter((form) => !(form.row === parentRow))
               )
             ),
           },
@@ -80,13 +60,13 @@ const convertToSequentFN = (
       if (!(form1 && form2)) {
         throw new Error('Contradiction cites non-existent row')
       }
-      const contradictionSequent: string = formulasToSequent([
+      const contradictionSequent: string = convertFormulas([
         form1,
         ...formulas.filter((form) => ![row1, row2].includes(form.row)),
         form2,
       ])
       return {
-        label: formulasToSequent(formulas),
+        label: convertFormulas(formulas),
         rule: 'St',
         forest: [
           {
@@ -98,7 +78,7 @@ const convertToSequentFN = (
       }
     } else if (child.nodeType === 'finished') {
       return {
-        label: formulasToSequent(formulas),
+        label: convertFormulas(formulas),
         rule: 'Lit',
         forest: [
           {
@@ -113,6 +93,7 @@ const convertToSequentFN = (
     }
   }
 }
+
 const rearrangeFormulas = (
   forms: TreeForm[],
   mainFormulaRow: number
@@ -121,11 +102,10 @@ const rearrangeFormulas = (
   const mainFormula = forms[idx]
   const formulasWithoutMain = forms.slice(0, idx).concat(forms.slice(idx + 1))
   const newList = [...formulasWithoutMain, mainFormula]
-  return formulasToSequent(newList)
+  return convertFormulas(newList)
 }
 
-const formulasToSequent = (forms: TreeForm[]) => {
-  console.log(forms)
+const convertFormulas = (forms: TreeForm[]) => {
   return forms
     .map(({ value }) => value)
     .join(',')

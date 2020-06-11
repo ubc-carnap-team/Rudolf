@@ -1,18 +1,18 @@
-// @ts-nocheck
-/* eslint-disable @typescript-eslint/camelcase */
 import { convertToSequent } from './carnapAdapter'
 import { FormulaNode } from '../typings/TreeState'
-import modusPonens from '../examples/modusPonens.json'
-import notQ_PAndQ from '../examples/conjunctionContradiction.json'
+import { SequentNode } from '../typings/Checker'
+
+// TODO
+// We should be doing property-based testing.
+// i.e. checking the proof succeeds/fails
+// instead of constraining the intermediate representation
 
 describe('convertToSequent', () => {
-  it('converts open tree for single conjunction correctly', () => {
+  it('converts open branched tree for single conjunction correctly', () => {
     const pAndQNode: FormulaNode = {
       nodeType: 'formulas',
       formulas: [{ row: 1, value: 'P/\\Q', resolved: true }],
-      rule: 'AS',
-      parentRow: '',
-      id: '0',
+      id: '',
       forest: [
         {
           nodeType: 'formulas',
@@ -20,33 +20,37 @@ describe('convertToSequent', () => {
             { row: 2, value: 'P', resolved: false },
             { row: 3, value: 'Q', resolved: false },
           ],
-          rule: '\\/',
-          parentRow: '1',
-          id: '00',
-          forest: [],
+          id: '0',
+          forest: [{ nodeType: 'finished', id: '00', formulas: [] }],
         },
       ],
     }
-    const expected = {
+    const expected: SequentNode = {
       label: 'P/\\Q:|-:',
-      rule: '\\/',
+      rule: 'St',
       forest: [
         {
-          label: 'P,Q:|-:',
-          rule: '',
-          forest: [],
+          label: 'P/\\Q:|-:',
+          rule: '&',
+          forest: [
+            {
+              label: 'P,Q:|-:',
+              rule: 'Lit',
+              forest: [{ label: '', rule: '', forest: [] }],
+            },
+          ],
         },
       ],
     }
-    expect(convertToSequent(pAndQNode)).toEqual(expected)
+    expect(
+      convertToSequent(pAndQNode, { 2: { rule: '&', parentRow: '1' } })
+    ).toEqual(expected)
   })
 
-  it('converts small complete example with conjunction correctly.', () => {
-    const expected = 'TODO'
-    expect(convertToSequent(notQ_PAndQ as any)).toEqual(expected)
+  xit('converts small complete example with conjunction correctly.', () => {
+    // TODO
   })
-  it('converts complete modus ponens tree correctly.', () => {
-    const expected = 'TODO'
-    expect(convertToSequent(modusPonens as any)).toEqual(expected)
+  xit('converts complete modus ponens tree correctly.', () => {
+    // TODO
   })
 })
