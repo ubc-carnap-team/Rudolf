@@ -29,7 +29,7 @@ const checkTree = async (
 ): Promise<CheckerFeedback> => {
   const sequent = convertToSequent(tree, justifications)
   const feedbackTree: FeedbackNode = await checkSequent(sequent)
-  return { feedbackTree, sequent }
+  return { sequent, feedbackTree }
 }
 export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
   tree,

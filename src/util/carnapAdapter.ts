@@ -33,19 +33,32 @@ const convertToSequentFN = (
   } else {
     const [child] = forest
     if (child.nodeType === 'formulas') {
-      const { rule, parentRow } = justifications[firstRow(child)]
+      const justification = justifications[firstRow(child)]
+      const { rule } = justification
+      const parentRow = Number(justification.parentRow)
+      if (!validRow(parentRow)) {
+        throw new Error(
+          `Cited row must be a positive integer. Got "${parentRow}"`
+        )
+      }
+      if (parentRow >= firstRow(child)) {
+        throw new Error(
+          `Row cited (${parentRow}) must be less than current row (${firstRow(
+            child
+          )}).`
+        )
+      }
       return {
         label: formulasToSequent(formulas),
         rule: 'St',
         forest: [
           {
-            // TODO Handle case where row string isn't a number
-            label: rearrangeFormulas(formulas, Number(parentRow)),
+            label: rearrangeFormulas(formulas, parentRow),
             rule,
             forest: forest.map((node) =>
               convertToSequentFN(
                 node as FormulaNode,
-                formulas.filter((form) => !(form.row === Number(parentRow))),
+                formulas.filter((form) => !(form.row === parentRow)),
                 justifications
               )
             ),
@@ -53,15 +66,19 @@ const convertToSequentFN = (
         ],
       }
     } else if (child.nodeType === 'contradiction') {
-      // Expect parentRow to be "<number>,<number>"
-      // TODO Handle case where it isn't
+      // We expect parentRow to be "<number>,<number>"
       const [row1, row2] = child.contradictoryRows.split(',').map(Number)
+      if (![row1, row2].every(validRow)) {
+        throw new Error(
+          `Contradiction must cite 2 rows, separated by a comma. Got "${child.contradictoryRows}"`
+        )
+      }
       const [form1, form2] = formulas
         .filter((form) => [row1, row2].includes(form.row))
         // this sort is a hack to avoid parsing for negation symbol, which may vary
         .sort((a, b) => b.value.length - a.value.length)
-      if (!(form1 || form2)) {
-        console.error(form1, form2)
+      if (!(form1 && form2)) {
+        throw new Error('Contradiction cites non-existent row')
       }
       const contradictionSequent: string = formulasToSequent([
         form1,
@@ -108,8 +125,13 @@ const rearrangeFormulas = (
 }
 
 const formulasToSequent = (forms: TreeForm[]) => {
+  console.log(forms)
   return forms
     .map(({ value }) => value)
     .join(',')
     .concat(':|-:')
+}
+
+const validRow = (maybeRow: number): boolean => {
+  return maybeRow > 0
 }
