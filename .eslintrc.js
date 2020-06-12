@@ -59,5 +59,6 @@ module.exports = {
       'error',
       { argsIgnorePattern: '^_', ignoreRestSiblings: true },
     ],
+    '@typescript-eslint/ban-ts-ignore': 'off',
   },
 }

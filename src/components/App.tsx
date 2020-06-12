@@ -54,8 +54,12 @@ const App: React.FC = (): JSX.Element => {
           <Redo />
         </IconButton>
       </span>
-      <NodeView node={currentState.tree} dispatch={dispatch} />
-      <JSONView tree={currentState.tree} />
+      <NodeView
+        node={currentState.tree}
+        dispatch={dispatch}
+        store={currentState}
+      />
+      <JSONView {...{ ...currentState, dispatch }} />
     </main>
   )
 }

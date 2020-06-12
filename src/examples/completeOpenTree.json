@@ -1,0 +1,75 @@
+{
+  "nodeType": "formulas",
+  "formulas": [{ "value": "~(P&~(P\\/Q))", "row": 1, "resolved": true }],
+  "forest": [
+    {
+      "nodeType": "formulas",
+      "formulas": [{ "value": "~P", "row": 2, "resolved": false }],
+      "forest": [
+        {
+          "nodeType": "finished",
+          "formulas": [],
+          "rule": "O",
+          "id": "00",
+          "parentRow": "1"
+        }
+      ],
+      "rule": "~&",
+      "parentRow": "1",
+      "id": "0"
+    },
+    {
+      "nodeType": "formulas",
+      "formulas": [{ "value": "~~(P\\/Q)", "row": 2, "resolved": false }],
+      "forest": [
+        {
+          "nodeType": "formulas",
+          "formulas": [{ "value": "P\\/Q", "row": 3, "resolved": true }],
+          "forest": [
+            {
+              "nodeType": "formulas",
+              "formulas": [{ "value": "P", "row": 4, "resolved": false }],
+              "forest": [
+                {
+                  "nodeType": "finished",
+                  "formulas": [],
+                  "rule": "O",
+                  "id": "1000",
+                  "parentRow": "1"
+                }
+              ],
+              "rule": "\\/",
+              "parentRow": "3",
+              "id": "100"
+            },
+            {
+              "nodeType": "formulas",
+              "formulas": [{ "value": "Q", "row": 4, "resolved": false }],
+              "forest": [
+                {
+                  "nodeType": "finished",
+                  "formulas": [],
+                  "rule": "O",
+                  "id": "1010",
+                  "parentRow": "1"
+                }
+              ],
+              "rule": "",
+              "parentRow": "",
+              "id": "101"
+            }
+          ],
+          "rule": "~~",
+          "parentRow": "2",
+          "id": "10"
+        }
+      ],
+      "rule": "",
+      "parentRow": "",
+      "id": "1"
+    }
+  ],
+  "rule": "AS",
+  "parentRow": "",
+  "id": ""
+}

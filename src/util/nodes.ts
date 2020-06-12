@@ -7,67 +7,35 @@ import {
   TreeForm,
   TreeNode,
 } from '../typings/TreeState'
-import { lastEl } from './helpers'
+import { isNonEmptyArray } from './util'
 
 export const makeNode = ({
   formulas = [],
   forest = [],
-  rule = '',
   id,
 }: Partial<FormulaNode> & {
   id: string
-  row: number
-}): FormulaNode => ({
-  nodeType: 'formulas',
-  formulas,
-  forest,
-  rule,
-  id,
-})
+}): FormulaNode => {
+  return {
+    nodeType: 'formulas',
+    formulas,
+    forest,
+    id,
+  }
+}
 
 export const makeContradictionNode = (parentId: string): ContradictionNode => ({
   nodeType: 'contradiction',
   formulas: [],
-  rule: 'X-PLACEHOLDER',
+  contradictoryRows: '',
   id: `${parentId}0`,
 })
 
-export const makeFinishedNode = (
-  parentId: string,
-  resolvedRows: number[]
-): FinishedNode => ({
+export const makeFinishedNode = (parentId: string): FinishedNode => ({
   nodeType: 'finished',
   formulas: [],
-  rule: `O(${resolvedRows.join(',')})`,
   id: `${parentId}0`,
 })
-
-/**
- *
- * @param root The root of a subTree
- * @param createNodes function that creates new node objects
- */
-export const appendChildren = (
-  root: TreeNode,
-  createNodes: NodeGenerator
-): TreeNode => {
-  if (root.nodeType === 'contradiction') {
-    return root
-  } else if (root.nodeType === 'finished') {
-    console.error("shouldn't try to append to finished branches.")
-    // TODO: Special Handling for FinishedNodes?
-    return root
-  } else if (isOpenLeaf(root)) {
-    return { ...root, forest: createNodes(root.id, lastRow(root) + 1) } // TODO
-  } else {
-    return {
-      ...root,
-      forest: root.forest.map<TreeNode>((child) =>
-        appendChildren(child, createNodes)
-      ),
-    }
-  }
-}
 
 /**
  *
@@ -85,7 +53,7 @@ export const destructivelyAppendChildren = (
     console.warn("shouldn't try to append to finished branch")
     return
   } else if (root.forest.length === 0) {
-    root.forest = createNodes(root.id, -1)
+    root.forest = createNodes(root.id)
   } else {
     root.forest.forEach((child) =>
       destructivelyAppendChildren(child, createNodes)
@@ -95,87 +63,46 @@ export const destructivelyAppendChildren = (
 
 /**
  *
- * @param root The root of a subTree
- */
-export const findresolvedRows = (root: FormulaNode, id: string): number[] => {
-  const resolvedRows: number[] = []
-  const nodePath: (0 | 1)[] = convertIdToPath(id)
-  let currentNode: TreeNode = root
-
-  if (id === '0') {
-    currentNode.formulas.forEach((element) => {
-      if (element.resolved) {
-        resolvedRows.push(element.row)
-      }
-    })
-  } else {
-    for (const idx of nodePath) {
-      if (currentNode.nodeType !== 'formulas') {
-        throw new Error('Failed to get node path')
-      }
-
-      currentNode.formulas.forEach((element) => {
-        if (element.resolved) {
-          resolvedRows.push(element.row)
-        }
-      })
-      currentNode = currentNode.forest[idx]
-    }
-  }
-  return resolvedRows
-}
-
-/**
- *
  * @param formulas an array of of formulas.
  */
-export const parsePremises = (
-  formulas: string[],
-  parentId: string,
-  row: number
-): FormulaNode => {
-  const id = `${parentId}0`
+export const parsePremises = (formulas: string[]): FormulaNode => {
   return makeNode({
-    formulas: formulas.map((form, index) => makeTreeForm(form, index + row)),
-    rule: 'A',
+    formulas: formulas.map((form, idx) => makeTreeForm(form, idx + 1)),
     forest: [],
-    id,
-    row,
+    id: '',
   })
 }
 
 const makeTreeForm = (value = '', row: number): TreeForm => ({
   value,
-  row,
   resolved: false,
+  row,
 })
 
 export const isOpenLeaf = (node: TreeNode | null): node is OpenLeafNode =>
   node != null && node.nodeType === 'formulas' && node.forest.length === 0
 
-export const lastRow = (node: FormulaNode) => lastEl(node.formulas).row
+export const lastRow = (node: FormulaNode) =>
+  firstRow(node) + node.formulas.length
 
 export const firstRow = (node: FormulaNode) => node.formulas[0].row
 
 export const makeEmptyFormulas = (n: number, nextRow: number): TreeForm[] => {
   const arr = []
   while (n-- > 0) {
-    arr.push({ value: '', row: nextRow++, resolved: false })
+    arr.push(makeTreeForm('', nextRow++))
   }
   return arr
 }
 
 export const convertIdToPath = (id: string): (0 | 1)[] =>
-  id
-    .split('')
-    .splice(1)
-    .map((char: string) => {
-      if (char === '0' || char === '1') {
-        return Number(char) as 0 | 1
-      } else {
-        throw new Error(`invalid character in node id: ${char}`)
-      }
-    })
+  id.split('').map((char: string) => {
+    if (char === '0' || char === '1') {
+      return Number(char) as 0 | 1
+    } else {
+      throw new Error(`invalid character in node id: ${char} in ${id}`)
+    }
+  })
 
 export const getNode = (root: FormulaNode, id: string): TreeNode => {
   const nodePath: (0 | 1)[] = convertIdToPath(id)
@@ -188,3 +115,13 @@ export const getNode = (root: FormulaNode, id: string): TreeNode => {
   }
   return currentNode
 }
+
+export const isNonLeafNode = (
+  node: TreeNode
+): node is FormulaNode & { forest: FormulaNode[] } =>
+  isFormulaNode(node) &&
+  isNonEmptyArray(node.forest) &&
+  node.forest[0]?.nodeType === 'formulas'
+
+export const isFormulaNode = (node: TreeNode): node is FormulaNode =>
+  node.nodeType === 'formulas'

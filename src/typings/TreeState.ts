@@ -2,17 +2,12 @@
  * The shared properties of all nodes
  */
 interface TreeNodeProps {
-  formulas: TreeForm[]
-  rule: string
   id: string
 }
 
 export type TreeNode = FormulaNode | FinishedNode | ContradictionNode
 
-export type NodeGenerator = (
-  parentId: string,
-  parentRow: number
-) => FormulaNode[]
+export type NodeGenerator = (parentId: string) => FormulaNode[]
 
 export type OpenLeafNode = FormulaNode & { forest: [] }
 
@@ -26,7 +21,6 @@ export interface FormulaNode extends TreeNodeProps {
   nodeType: 'formulas'
   forest: TreeNode[]
   formulas: TreeForm[]
-  rule: string
 }
 
 // We mark a branch as closed by adding a special node
@@ -34,21 +28,20 @@ export interface FormulaNode extends TreeNodeProps {
 export interface FinishedNode extends TreeNodeProps {
   nodeType: 'finished'
   formulas: []
-  rule: string // ['O', ...number[]] // List of resolved rows? on the branch
 }
 
 export interface ContradictionNode extends TreeNodeProps {
   nodeType: 'contradiction'
   formulas: []
-  rule: string // ['X', number, number] e.g X
+  // rule: string // ['X', number, number] e.g X
+  contradictoryRows: string
 }
 
-export interface FeedbackMessage {
-  status: 'correct' | 'incorrect' | 'parsing'
-  message: string
+export interface Justification {
+  rule: string
+  parentRow: string
 }
 
-export interface FeedbackNode {
-  feedback: FeedbackMessage[]
-  forest: FeedbackNode[]
+export type JustificationMap = {
+  [firstRow: number]: Justification
 }
