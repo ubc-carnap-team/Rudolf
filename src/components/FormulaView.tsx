@@ -3,6 +3,7 @@ import { Check } from '@material-ui/icons'
 import { CustomDispatch, updateFormula } from '../RudolfReducer'
 import { NodeMenu } from './NodeMenu'
 import { FormulaNode } from '../typings/TreeState'
+import AutosizeInput from 'react-input-autosize'
 
 interface Props {
   row: number
@@ -28,7 +29,7 @@ const FormulaView: FC<Props> = ({ index, row, dispatch, node }) => {
       }}
     >
       <span>{row}</span>
-      <input
+      <AutosizeInput
         className="label"
         onChange={(event) =>
           dispatch(updateFormula(node.id, index, event.currentTarget.value))
