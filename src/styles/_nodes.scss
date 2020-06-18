@@ -14,12 +14,19 @@ $nodeHeight: 50px;
     display: block;
   }
 
-  .node {
+  .formula {
     display: block;
     padding-left: 0.2em;
     padding-right: 0.2em;
     height: $nodeHeight;
     box-sizing: border-box;
+  }
+  .node.incorrect {
+    border: solid red;
+  }
+
+  .node.correct {
+    border: solid green;
   }
 
   input {

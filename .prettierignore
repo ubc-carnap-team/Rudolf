@@ -1,0 +1,1 @@
+public/all.js

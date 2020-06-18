@@ -2,24 +2,41 @@
 import React, { FC, Fragment } from 'react'
 import LineTo from 'react-lineto'
 import AutoSizeInput from 'react-input-autosize'
-import { TreeNode } from '../typings/TreeState'
+import { TreeNode, JustificationMap } from '../typings/TreeState'
 import FormulaView from './FormulaView'
 import {
   CustomDispatch,
   updateContradiction,
   updateJustification,
-  RudolfStore,
 } from '../RudolfReducer'
 import { lastRow, firstRow, isFormulaNode } from '../util/nodes'
 import Spacers from './Spacers'
+import { Tooltip } from '@material-ui/core'
+import { FeedbackMap } from '../typings/Checker'
 
 type Props = {
   node: TreeNode
   dispatch: CustomDispatch
-  store: RudolfStore
+  justifications: JustificationMap
+  feedbackMap?: FeedbackMap
 }
 
-const NodeView: FC<Props> = ({ node, dispatch, store }) => {
+const NodeView: FC<Props> = ({
+  node,
+  dispatch,
+  justifications,
+  feedbackMap,
+  ...props
+}) => {
+  let feedbackInfo, feedbackClass
+  if (feedbackMap) {
+    const feedback = feedbackMap[node.id] ?? ''
+    feedbackInfo = feedback.info
+    feedbackClass = feedback.class === 'correct' ? 'correct' : 'incorrect'
+  } else {
+    feedbackInfo = ''
+    feedbackClass = ''
+  }
   if (isFormulaNode(node)) {
     const { id, formulas, forest } = node
 
@@ -28,49 +45,54 @@ const NodeView: FC<Props> = ({ node, dispatch, store }) => {
         <Spacers diff={firstRow(forest[0]) - lastRow(node)} />
       ) : undefined
 
-    const { rule, parentRow } = store.justifications[firstRow(node)]
+    const { rule, parentRow } = justifications[firstRow(node)]
+
     return (
       <div className={`node-container `}>
-        <div
-          className={`node-id=${id}`}
-          // TODO: allow context menu on nodes?
-          // onContextMenu={handleContextMenu}
-        >
-          {formulas.map((form, index) => {
-            return (
-              <FormulaView
-                key={`${form}-${index}`}
-                node={node}
-                index={index}
-                dispatch={dispatch}
-                row={form.row}
-                {...form}
-              />
-            )
-          })}
-          {node.id !== '' ? (
-            <div className="justification">
-              <AutoSizeInput
-                className="rule"
-                onChange={({ currentTarget: { value: rule } }) =>
-                  dispatch(updateJustification(firstRow(node), { rule }))
-                }
-                value={rule}
-                placeholder="rule"
-              />
-              <AutoSizeInput
-                className="row"
-                onChange={({ currentTarget: { value: parentRow } }) =>
-                  dispatch(updateJustification(firstRow(node), { parentRow }))
-                }
-                value={parentRow}
-                placeholder="row"
-              />
-            </div>
-          ) : (
-            'AS'
-          )}
-        </div>
+        <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
+          <div
+            className={`node node-id=${id} ${feedbackClass}`}
+            // TODO: allow context menu on nodes?
+            // onContextMenu={handleContextMenu}
+            {...props}
+          >
+            {formulas.map((form, index) => {
+              return (
+                <FormulaView
+                  key={`${form}-${index}`}
+                  node={node}
+                  index={index}
+                  dispatch={dispatch}
+                  row={form.row}
+                  {...form}
+                />
+              )
+            })}
+
+            {node.id !== '' ? (
+              <div className="justification">
+                <AutoSizeInput
+                  className="rule"
+                  onChange={({ currentTarget: { value: rule } }) =>
+                    dispatch(updateJustification(firstRow(node), { rule }))
+                  }
+                  value={rule}
+                  placeholder="rule"
+                />
+                <AutoSizeInput
+                  className="row"
+                  onChange={({ currentTarget: { value: parentRow } }) =>
+                    dispatch(updateJustification(firstRow(node), { parentRow }))
+                  }
+                  value={parentRow}
+                  placeholder="row"
+                />
+              </div>
+            ) : (
+              'AS'
+            )}
+          </div>
+        </Tooltip>
 
         <div className={`children ${forest.length > 1 ? 'split' : 'stack'}`}>
           {forest.map((child) => {
@@ -89,7 +111,8 @@ const NodeView: FC<Props> = ({ node, dispatch, store }) => {
                   {...{
                     node: child,
                     dispatch,
-                    store,
+                    justifications,
+                    feedbackMap,
                   }}
                 />
               </Fragment>
@@ -100,20 +123,31 @@ const NodeView: FC<Props> = ({ node, dispatch, store }) => {
     )
   } else if (node.nodeType === 'contradiction') {
     return (
-      <div className="closed-branch-marker">
-        X
-        <AutoSizeInput
-          className="rule"
-          onChange={({ currentTarget: { value } }) =>
-            dispatch(updateContradiction(node.id, value))
-          }
-          value={node.contradictoryRows}
-          placeholder="rows"
-        />
-      </div>
+      <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
+        <div
+          className={`closed-branch-marker node ${feedbackClass}`}
+          {...props}
+        >
+          X
+          <AutoSizeInput
+            className="rule"
+            onChange={({ currentTarget: { value } }) =>
+              dispatch(updateContradiction(node.id, value))
+            }
+            value={node.contradictoryRows}
+            placeholder="rows"
+          />
+        </div>
+      </Tooltip>
     )
   } else if (node.nodeType === 'finished') {
-    return <div className="finished-branch-marker">O </div>
+    return (
+      <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
+        <div className={`finished-branch-marker ${feedbackClass}`} {...props}>
+          O{' '}
+        </div>
+      </Tooltip>
+    )
   } else {
     throw new Error(
       `Invariant violation: Invalid nodeType on node: ${JSON.stringify(node)}`

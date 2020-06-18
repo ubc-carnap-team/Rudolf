@@ -1,15 +1,21 @@
-import { FormulaNode, TreeForm, JustificationMap } from '../typings/TreeState'
+import {
+  FeedbackMap,
+  FeedbackNode,
+  SequentNode,
+  FeedbackMessage,
+  CheckerFeedback,
+} from '../typings/Checker'
+import { FormulaNode, JustificationMap, TreeForm } from '../typings/TreeState'
 import { firstRow } from './nodes'
-import { SequentNode } from '../typings/Checker'
 
 export const convertToSequent = (
-  { formulas: newFormulas, forest }: FormulaNode,
+  { formulas: newFormulas, forest, id }: FormulaNode,
   justifications: JustificationMap,
   previousFormulas: TreeForm[] = []
 ): SequentNode => {
   const formulas = previousFormulas.concat(newFormulas)
   if (forest.length === 0) {
-    return { label: convertFormulas(formulas), rule: '', forest: [] }
+    return { label: convertFormulas(formulas), rule: '', forest: [], id }
   } else {
     const [child] = forest
     if (child.nodeType === 'formulas') {
@@ -35,6 +41,7 @@ export const convertToSequent = (
           {
             label: rearrangeFormulas(formulas, parentRow),
             rule,
+            id,
             forest: forest.map((node) =>
               convertToSequent(
                 node as FormulaNode,
@@ -68,10 +75,12 @@ export const convertToSequent = (
       return {
         label: convertFormulas(formulas),
         rule: 'St',
+        id,
         forest: [
           {
             label: contradictionSequent,
             rule: 'Ax',
+            id: child.id,
             forest: [{ label: '', rule: '', forest: [] }],
           },
         ],
@@ -79,12 +88,20 @@ export const convertToSequent = (
     } else if (child.nodeType === 'finished') {
       return {
         label: convertFormulas(formulas),
-        rule: 'Lit',
+        rule: 'St',
+        id,
         forest: [
           {
-            label: '',
-            rule: '',
-            forest: [],
+            label: convertFormulas(formulas),
+            rule: 'Lit',
+            id: child.id,
+            forest: [
+              {
+                label: '',
+                rule: '',
+                forest: [],
+              },
+            ],
           },
         ],
       }
@@ -92,6 +109,70 @@ export const convertToSequent = (
       throw new Error('this was supposed to be exhaustive')
     }
   }
+}
+
+export const processFeedback = (
+  sequentRoot: SequentNode,
+  feedbackRoot: FeedbackNode
+): FeedbackMap => {
+  const feedbackMap: FeedbackMap = {}
+  if (sequentRoot.forest.length) {
+    // close over (mutable) feedback map for recursive calls
+    const rec = (
+      sequent: SequentNode,
+      feedbackNode: FeedbackNode,
+      parentFeedback: FeedbackMessage
+    ): void => {
+      // detect dummy nodes inserted to pad tree
+      if (typeof sequent.id === 'string') {
+        if (sequent.rule === 'Ax' || sequent.rule === 'Lit') {
+          feedbackMap[sequent.id] = extractMessage(feedbackNode)
+          return
+        } else {
+          feedbackMap[sequent.id] = parentFeedback
+          sequent.forest.forEach((childSequent, idx) => {
+            rec(
+              childSequent,
+              feedbackNode.forest[idx],
+              extractMessage(feedbackNode)
+            )
+          })
+        }
+      } else {
+        sequent.forest.forEach((childSequent, idx) => {
+          rec(childSequent, feedbackNode.forest[idx], parentFeedback)
+        })
+      }
+    }
+    // recursive call
+    rec(sequentRoot, feedbackRoot, {
+      class: 'correct',
+      info: 'Assumptions',
+    })
+  }
+  return feedbackMap
+}
+
+// Promisifies the checker
+const checkSequent = async (sequent: SequentNode): Promise<FeedbackNode> => {
+  return new Promise((resolve, reject) => {
+    try {
+      Carnap.checkIchikawaJenkinsSLTableau(sequent, (result: FeedbackNode) => {
+        resolve(result)
+      })
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
+export const checkTree = async (
+  tree: any,
+  justifications: JustificationMap
+): Promise<CheckerFeedback> => {
+  const sequent = convertToSequent(tree, justifications)
+  const feedback: FeedbackNode = await checkSequent(sequent)
+  return { sequent, feedback: processFeedback(sequent, feedback) }
 }
 
 const rearrangeFormulas = (
@@ -105,13 +186,16 @@ const rearrangeFormulas = (
   return convertFormulas(newList)
 }
 
-const convertFormulas = (forms: TreeForm[]) => {
-  return forms
+const convertFormulas = (forms: TreeForm[]) =>
+  forms
     .map(({ value }) => value)
     .join(',')
     .concat(':|-:')
-}
 
-const validRow = (maybeRow: number): boolean => {
-  return maybeRow > 0
-}
+const validRow = (maybeRow: number): boolean => maybeRow > 0
+
+// returns the non-recursive properties of the FeedbackNode
+const extractMessage = ({
+  forest,
+  ...feedbackMessage
+}: FeedbackNode): FeedbackMessage => feedbackMessage

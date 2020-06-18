@@ -21,7 +21,7 @@ const FormulaView: FC<Props> = ({ index, row, dispatch, node }) => {
   const ref: Ref<HTMLDivElement> = useRef(null)
   return (
     <div
-      className="formula node"
+      className="formula"
       ref={ref}
       onContextMenu={(e) => {
         e.preventDefault()

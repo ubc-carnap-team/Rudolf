@@ -6,6 +6,7 @@ import {
 } from 'immer-reducer'
 import { Dispatch } from 'react'
 
+import { CheckerFeedback } from './typings/Checker'
 import {
   FormulaNode,
   Justification,
@@ -20,7 +21,6 @@ import {
   makeNode,
   parsePremises,
 } from './util/nodes'
-import { CheckerFeedback } from './typings/Checker'
 
 export type RudolfStore = {
   tree: FormulaNode

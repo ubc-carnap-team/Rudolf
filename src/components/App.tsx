@@ -57,7 +57,8 @@ const App: React.FC = (): JSX.Element => {
       <NodeView
         node={currentState.tree}
         dispatch={dispatch}
-        store={currentState}
+        justifications={currentState.justifications}
+        feedbackMap={currentState.feedback.feedback}
       />
       <JSONView {...{ ...currentState, dispatch }} />
     </main>
