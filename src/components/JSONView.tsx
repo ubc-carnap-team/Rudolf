@@ -1,5 +1,5 @@
 import { TextareaAutosize } from '@material-ui/core'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 import { RudolfStore, updateFeedback, CustomDispatch } from '../RudolfReducer'
 import { SequentNode, FeedbackNode, CheckerFeedback } from '../typings/Checker'
@@ -48,6 +48,11 @@ export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
         })
     }
   }, [dispatch, justifications, tree])
+
+  const [open, setOpen] = useState(true)
+  function onClick() {
+    setOpen(!open)
+  }
   return (
     <TextareaAutosize
       className="json-view"
@@ -58,8 +63,9 @@ export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
         minWidth: '100%',
         position: 'fixed',
         bottom: 0,
-        maxHeight: '50%',
+        maxHeight: open ? '50%' : '2%',
       }}
+      onClick={onClick}
     />
   )
 }
