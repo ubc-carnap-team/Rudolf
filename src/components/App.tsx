@@ -12,7 +12,7 @@ import {
   createTree,
 } from '../RudolfReducer'
 import { makeUndoable } from '../undoableReducer'
-import { JSONView } from './JSONView'
+import { JSONView } from './JSONView/JSONView'
 
 const App: React.FC = (): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)

@@ -1,10 +1,19 @@
 import { TextareaAutosize } from '@material-ui/core'
 import React, { FC, useEffect, useState } from 'react'
 
-import { RudolfStore, updateFeedback, CustomDispatch } from '../RudolfReducer'
-import { SequentNode, FeedbackNode, CheckerFeedback } from '../typings/Checker'
-import { JustificationMap } from '../typings/TreeState'
-import { convertToSequent } from '../util/carnapAdapter'
+import {
+  RudolfStore,
+  updateFeedback,
+  CustomDispatch,
+} from '../../RudolfReducer'
+import {
+  SequentNode,
+  FeedbackNode,
+  CheckerFeedback,
+} from '../../typings/Checker'
+import { JustificationMap } from '../../typings/TreeState'
+import { convertToSequent } from '../../util/carnapAdapter'
+import useJSS from './style'
 
 export const checkSequent = async (
   sequent: SequentNode
@@ -48,24 +57,25 @@ export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
         })
     }
   }, [dispatch, justifications, tree])
-
-  const [open, setOpen] = useState(true)
-  function onClick() {
-    setOpen(!open)
-  }
+  const classes = useJSS()
+  const [open, setOpen] = useState(false)
   return (
-    <TextareaAutosize
-      className="json-view"
-      value={JSON.stringify({ tree, justifications, feedback })}
-      style={{
-        overflow: 'hidden scroll',
-        fontSize: '16px',
-        minWidth: '100%',
-        position: 'fixed',
-        bottom: 0,
-        maxHeight: open ? '50%' : '2%',
-      }}
-      onClick={onClick}
-    />
+    <div className={classes.Bounder}>
+      <div
+        className={classes.Toggle}
+        onClick={() => {
+          setOpen(!open)
+        }}
+      >
+        {open ? 'close' : 'open'}
+      </div>
+      <TextareaAutosize
+        className={classes.TextArea}
+        value={JSON.stringify({ tree, justifications, feedback })}
+        style={{
+          maxHeight: open ? '50vh' : '0vh',
+        }}
+      />
+    </div>
   )
 }
