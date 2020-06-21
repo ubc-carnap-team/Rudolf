@@ -7,6 +7,7 @@ const useJSS = createUseStyles({
     bottom: 0,
     display: 'flex',
     flexDirection: 'column',
+    zIndex: 10,
   },
 
   TextArea: {
