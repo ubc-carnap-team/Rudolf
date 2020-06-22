@@ -1,19 +1,11 @@
 import { TextareaAutosize } from '@material-ui/core'
 import React, { FC, useEffect, useState } from 'react'
 
-import {
-  RudolfStore,
-  updateFeedback,
-  CustomDispatch,
-} from '../../RudolfReducer'
-import {
-  SequentNode,
-  FeedbackNode,
-  CheckerFeedback,
-} from '../../typings/Checker'
-import { JustificationMap } from '../../typings/TreeState'
-import { convertToSequent } from '../../util/carnapAdapter'
-import useJSS from './style'
+import { RudolfStore, updateFeedback, CustomDispatch } from '../RudolfReducer'
+import { SequentNode, FeedbackNode, CheckerFeedback } from '../typings/Checker'
+import { JustificationMap } from '../typings/TreeState'
+import { convertToSequent } from '../util/carnapAdapter'
+import useJSS from './JSONView_styles'
 
 export const checkSequent = async (
   sequent: SequentNode
