@@ -3,6 +3,6 @@ declare namespace Carnap {
 
   const checkIchikawaJenkinsSLTableau: (
     sequent: SequentNode,
-    callback: (feedback: never) => any
+    callback: (feedback: FeedbackNode) => any
   ) => void
 }

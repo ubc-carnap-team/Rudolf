@@ -1,37 +1,10 @@
 import { TextareaAutosize } from '@material-ui/core'
 import React, { FC, useEffect, useState } from 'react'
 
-import { RudolfStore, updateFeedback, CustomDispatch } from '../RudolfReducer'
-import { SequentNode, FeedbackNode, CheckerFeedback } from '../typings/Checker'
-import { JustificationMap } from '../typings/TreeState'
-import { convertToSequent } from '../util/carnapAdapter'
+import { CustomDispatch, RudolfStore, updateFeedback } from '../RudolfReducer'
 import useJSS from './JSONView_styles'
+import { checkTree } from '../util/carnapAdapter'
 
-export const checkSequent = async (
-  sequent: SequentNode
-): Promise<FeedbackNode> => {
-  return new Promise((resolve, reject) => {
-    try {
-      window.Carnap.checkIchikawaJenkinsSLTableau(
-        sequent,
-        (result: FeedbackNode) => {
-          resolve(result)
-        }
-      )
-    } catch (error) {
-      reject(error)
-    }
-  })
-}
-
-const checkTree = async (
-  tree: any,
-  justifications: JustificationMap
-): Promise<CheckerFeedback> => {
-  const sequent = convertToSequent(tree, justifications)
-  const feedbackTree: FeedbackNode = await checkSequent(sequent)
-  return { sequent, feedbackTree }
-}
 export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
   tree,
   justifications,
@@ -41,8 +14,8 @@ export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
   useEffect(() => {
     if (window.Carnap) {
       checkTree(tree, justifications)
-        .then((res: CheckerFeedback) => {
-          return dispatch(updateFeedback(res))
+        .then(({ sequent, feedback }) => {
+          return dispatch(updateFeedback({ feedback, sequent }))
         })
         .catch(({ message }: Error) => {
           return dispatch(updateFeedback({ errorMessage: message }))

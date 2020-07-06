@@ -2,21 +2,21 @@ export interface SequentNode {
   label: string
   rule: string
   forest: SequentNode[]
+  id?: string
 }
 
-export type CheckerFeedback =
-  | {
-      feedbackTree: FeedbackNode
-      sequent: SequentNode
-    }
-  | { errorMessage: string }
-
-export interface FeedbackMessage {
-  status: 'correct' | 'incorrect' | 'parsing'
-  message: string
+export type CheckerFeedback = {
+  feedback?: FeedbackMap
+  sequent?: SequentNode
+  errorMessage?: string
 }
 
-export interface FeedbackNode {
-  feedback: FeedbackMessage[]
+export type FeedbackNode = {
+  class: string
+  info: string
   forest: FeedbackNode[]
 }
+
+export type FeedbackMessage = Omit<FeedbackNode, 'forest'>
+
+export type FeedbackMap = { [id: string]: FeedbackMessage }

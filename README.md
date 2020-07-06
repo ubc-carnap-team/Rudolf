@@ -1,14 +1,16 @@
+# README
+
 ## Development Environment Setup
 
-* Install `yarn` 1.x [following the installation documentation](https://classic.yarnpkg.com/en/docs/install).
+- Install `yarn` 1.x [following the installation documentation](https://classic.yarnpkg.com/en/docs/install).
 
-* Ensure you have git submodules set up with `git submodule update --init`.
+- Ensure you have git submodules set up with `git submodule update --init`.
 
-* Install the project's dependencies with `yarn install`.
+- Install the project's dependencies with `yarn install`.
 
 You can now run a development server with `yarn start`, which will automatically start a browser and open the app. It is also accessible by going to [http://localhost:3000/Rudolf](http://localhost:3000/Rudolf).
 
----------
+---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -18,23 +20,23 @@ In the project directory, you can run:
 
 ### `yarn start`
 
-Runs the app in the development mode.<br>
+Runs the app in the development mode.
 Open [http://localhost:3000/Rudolf](http://localhost:3000/Rudolf) to view it in the browser.
 
-The page will reload if you make edits.<br>
+The page will reload if you make edits.
 You will also see any lint errors in the console.
 
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.<br>
+Launches the test runner in the interactive watch mode.
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
 
-Builds the app for production to the `build` folder.<br>
+Builds the app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
+The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
