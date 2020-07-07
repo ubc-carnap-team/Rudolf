@@ -1,13 +1,12 @@
 import { IconButton } from '@material-ui/core'
 import { Redo, Undo } from '@material-ui/icons'
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useReducer, useState } from 'react'
 
 import {
   createTree,
   initialPremises,
   initialState,
   rudolfReducer,
-  updateWindowSize,
 } from '../RudolfReducer'
 import { makeUndoable } from '../undoableReducer'
 import { JSONView } from './JSONView'
@@ -21,17 +20,6 @@ const App: React.FC = (): JSX.Element => {
   const [[pastStates, currentState, futureStates], dispatch] = useReducer(
     ...makeUndoable(rudolfReducer, initialState)
   )
-  useEffect(() => {
-    const updater: typeof window.onresize = () => {
-      dispatch(updateWindowSize())
-    }
-    window.onresize = updater
-    return () => {
-      if ((window.onresize = updater)) {
-        window.onresize = null
-      }
-    }
-  }, [])
 
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
