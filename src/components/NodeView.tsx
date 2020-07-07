@@ -2,7 +2,7 @@
 import { Tooltip } from '@material-ui/core'
 import React, { FC, Fragment } from 'react'
 import AutoSizeInput from 'react-input-autosize'
-import LineTo from 'react-lineto'
+import { ArcherElement } from 'react-archer'
 
 import {
   CustomDispatch,
@@ -53,47 +53,60 @@ const NodeView: FC<Props> = ({
     return (
       <div className={`node-container `}>
         <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
-          <div
-            className={`node node-id=${id} ${feedbackClass}`}
-            // TODO: allow context menu on nodes?
-            // onContextMenu={handleContextMenu}
-            {...props}
-          >
-            {formulas.map((form, index) => {
-              return (
-                <FormulaView
-                  key={`${form}-${index}`}
-                  node={node}
-                  index={index}
-                  dispatch={dispatch}
-                  {...form}
-                />
-              )
+          <ArcherElement
+            id={id}
+            relations={forest.map((child) => {
+              return {
+                targetId: child.id,
+                targetAnchor: 'top',
+                sourceAnchor: 'bottom',
+              }
             })}
+          >
+            <div
+              className={`node node-id=${id} ${feedbackClass}`}
+              // TODO: allow context menu on nodes?
+              // onContextMenu={handleContextMenu}
+              {...props}
+            >
+              {formulas.map((form, index) => {
+                return (
+                  <FormulaView
+                    key={`${form}-${index}`}
+                    node={node}
+                    index={index}
+                    dispatch={dispatch}
+                    {...form}
+                  />
+                )
+              })}
 
-            {node.id !== '' ? (
-              <div className="justification">
-                <AutoSizeInput
-                  className="rule"
-                  onChange={({ currentTarget: { value: rule } }) =>
-                    dispatch(updateJustification(firstRow(node), { rule }))
-                  }
-                  value={rule}
-                  placeholder="rule"
-                />
-                <AutoSizeInput
-                  className="row"
-                  onChange={({ currentTarget: { value: parentRow } }) =>
-                    dispatch(updateJustification(firstRow(node), { parentRow }))
-                  }
-                  value={parentRow}
-                  placeholder="row"
-                />
-              </div>
-            ) : (
-              'AS'
-            )}
-          </div>
+              {node.id !== '' ? (
+                <div className="justification">
+                  <AutoSizeInput
+                    className="rule"
+                    onChange={({ currentTarget: { value: rule } }) =>
+                      dispatch(updateJustification(firstRow(node), { rule }))
+                    }
+                    value={rule}
+                    placeholder="rule"
+                  />
+                  <AutoSizeInput
+                    className="row"
+                    onChange={({ currentTarget: { value: parentRow } }) =>
+                      dispatch(
+                        updateJustification(firstRow(node), { parentRow })
+                      )
+                    }
+                    value={parentRow}
+                    placeholder="row"
+                  />
+                </div>
+              ) : (
+                'AS'
+              )}
+            </div>
+          </ArcherElement>
         </Tooltip>
 
         <div className={`children ${forest.length > 1 ? 'split' : 'stack'}`}>
@@ -101,15 +114,6 @@ const NodeView: FC<Props> = ({
             return (
               <Fragment key={child.id}>
                 {spacers}
-                <LineTo
-                  key={windowSize}
-                  from={`node-id=${id}`}
-                  to={`node-id=${child.id}`}
-                  borderColor="black"
-                  fromAnchor="bottom"
-                  toAnchor="top"
-                  delay={0}
-                />
                 <NodeView
                   {...{
                     node: child,

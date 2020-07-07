@@ -14,6 +14,7 @@ import { JSONView } from './JSONView'
 import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
+import { ArcherContainer } from 'react-archer'
 
 const App: React.FC = (): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
@@ -66,13 +67,21 @@ const App: React.FC = (): JSX.Element => {
           <Redo />
         </IconButton>
       </span>
-      <NodeView
-        node={currentState.tree}
-        dispatch={dispatch}
-        justifications={currentState.justifications}
-        feedbackMap={currentState.feedback.feedback}
-        windowSize={currentState.windowSize}
-      />
+      <ArcherContainer
+        arrowLength={0}
+        style={{ zIndex: 1 }}
+        svgContainerStyle={{ zIndex: -1 }}
+        strokeColor="black"
+        noCurves={true}
+      >
+        <NodeView
+          node={currentState.tree}
+          dispatch={dispatch}
+          justifications={currentState.justifications}
+          feedbackMap={currentState.feedback.feedback}
+          windowSize={currentState.windowSize}
+        />
+      </ArcherContainer>
       <JSONView {...{ ...currentState, dispatch }} />
     </main>
   )
