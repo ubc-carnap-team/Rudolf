@@ -1,24 +1,36 @@
-import React, { useState, useReducer } from 'react'
-
-import NodeView from './NodeView'
-import PremiseInput from './PremiseInput'
-import PremisesSelector from './PremisesSelector'
 import { IconButton } from '@material-ui/core'
-import { Undo, Redo } from '@material-ui/icons'
+import { Redo, Undo } from '@material-ui/icons'
+import React, { useEffect, useReducer, useState } from 'react'
+
 import {
+  createTree,
   initialPremises,
   initialState,
   rudolfReducer,
-  createTree,
+  updateWindowSize,
 } from '../RudolfReducer'
 import { makeUndoable } from '../undoableReducer'
 import { JSONView } from './JSONView'
+import NodeView from './NodeView'
+import PremiseInput from './PremiseInput'
+import PremisesSelector from './PremisesSelector'
 
 const App: React.FC = (): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
   const [[pastStates, currentState, futureStates], dispatch] = useReducer(
     ...makeUndoable(rudolfReducer, initialState)
   )
+  useEffect(() => {
+    const updater: typeof window.onresize = () => {
+      dispatch(updateWindowSize())
+    }
+    window.onresize = updater
+    return () => {
+      if ((window.onresize = updater)) {
+        window.onresize = null
+      }
+    }
+  }, [])
 
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
@@ -59,6 +71,7 @@ const App: React.FC = (): JSX.Element => {
         dispatch={dispatch}
         justifications={currentState.justifications}
         feedbackMap={currentState.feedback.feedback}
+        windowSize={currentState.windowSize}
       />
       <JSONView {...{ ...currentState, dispatch }} />
     </main>
