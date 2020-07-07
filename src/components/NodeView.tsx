@@ -1,24 +1,26 @@
 /* eslint-disable react/jsx-no-undef */
+import { Tooltip } from '@material-ui/core'
 import React, { FC, Fragment } from 'react'
-import LineTo from 'react-lineto'
 import AutoSizeInput from 'react-input-autosize'
-import { TreeNode, JustificationMap } from '../typings/TreeState'
-import FormulaView from './FormulaView'
+import LineTo from 'react-lineto'
+
 import {
   CustomDispatch,
   updateContradiction,
   updateJustification,
 } from '../RudolfReducer'
-import { lastRow, firstRow, isFormulaNode } from '../util/nodes'
-import Spacers from './Spacers'
-import { Tooltip } from '@material-ui/core'
 import { FeedbackMap } from '../typings/Checker'
+import { JustificationMap, TreeNode } from '../typings/TreeState'
+import { firstRow, isFormulaNode, lastRow } from '../util/nodes'
+import FormulaView from './FormulaView'
+import Spacers from './Spacers'
 
 type Props = {
   node: TreeNode
   dispatch: CustomDispatch
   justifications: JustificationMap
   feedbackMap?: FeedbackMap
+  windowSize: string
 }
 
 const NodeView: FC<Props> = ({
@@ -26,6 +28,7 @@ const NodeView: FC<Props> = ({
   dispatch,
   justifications,
   feedbackMap,
+  windowSize,
   ...props
 }) => {
   let feedbackInfo, feedbackClass
@@ -63,7 +66,6 @@ const NodeView: FC<Props> = ({
                   node={node}
                   index={index}
                   dispatch={dispatch}
-                  row={form.row}
                   {...form}
                 />
               )
@@ -100,6 +102,7 @@ const NodeView: FC<Props> = ({
               <Fragment key={child.id}>
                 {spacers}
                 <LineTo
+                  key={windowSize}
                   from={`node-id=${id}`}
                   to={`node-id=${child.id}`}
                   borderColor="black"
@@ -113,6 +116,7 @@ const NodeView: FC<Props> = ({
                     dispatch,
                     justifications,
                     feedbackMap,
+                    windowSize,
                   }}
                 />
               </Fragment>
