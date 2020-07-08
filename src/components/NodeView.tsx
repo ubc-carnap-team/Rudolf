@@ -20,7 +20,6 @@ type Props = {
   dispatch: CustomDispatch
   justifications: JustificationMap
   feedbackMap?: FeedbackMap
-  windowSize: string
 }
 
 const NodeView: FC<Props> = ({
@@ -28,7 +27,6 @@ const NodeView: FC<Props> = ({
   dispatch,
   justifications,
   feedbackMap,
-  windowSize,
   ...props
 }) => {
   let feedbackInfo, feedbackClass
@@ -120,7 +118,6 @@ const NodeView: FC<Props> = ({
                     dispatch,
                     justifications,
                     feedbackMap,
-                    windowSize,
                   }}
                 />
               </Fragment>

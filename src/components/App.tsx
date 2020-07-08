@@ -60,14 +60,13 @@ const App: React.FC = (): JSX.Element => {
         style={{ zIndex: 1 }}
         svgContainerStyle={{ zIndex: -1 }}
         strokeColor="black"
-        noCurves={true}
+        noCurves={false}
       >
         <NodeView
           node={currentState.tree}
           dispatch={dispatch}
           justifications={currentState.justifications}
           feedbackMap={currentState.feedback.feedback}
-          windowSize={currentState.windowSize}
         />
       </ArcherContainer>
       <JSONView {...{ ...currentState, dispatch }} />

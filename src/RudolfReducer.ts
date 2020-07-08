@@ -27,7 +27,6 @@ export type RudolfStore = {
   nextRow: number
   justifications: JustificationMap
   feedback: CheckerFeedback
-  windowSize: string
 }
 
 export class RudolfReducer extends ImmerReducer<RudolfStore> {
@@ -111,10 +110,6 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     const draftNode = getNode(this.draftState.tree, nodeId) as FormulaNode
     draftNode.forest = []
   }
-
-  updateWindowSize() {
-    this.draftState.windowSize = `${window.innerHeight}x${window.innerWidth}`
-  }
 }
 
 export const initialPremises = 'P->Q,P,~Q'
@@ -125,7 +120,6 @@ export const initialState: RudolfStore = {
   nextRow: premiseArray.length + 1,
   justifications: { 1: { rule: 'AS', parentRow: '' } },
   feedback: { errorMessage: 'Nothing yet.' },
-  windowSize: `${window.innerHeight}x${window.innerWidth}`,
 }
 
 export const rudolfReducer = createReducerFunction(RudolfReducer)
@@ -141,7 +135,6 @@ export const {
   updateFeedback,
   updateFormula,
   updateJustification,
-  updateWindowSize,
 } = createActionCreators(RudolfReducer)
 export type RudolfAction = Actions<typeof RudolfReducer>
 export type CustomDispatch = Dispatch<RudolfAction>
