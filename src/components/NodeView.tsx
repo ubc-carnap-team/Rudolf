@@ -129,28 +129,32 @@ const NodeView: FC<Props> = ({
   } else if (node.nodeType === 'contradiction') {
     return (
       <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
-        <div
-          className={`closed-branch-marker node ${feedbackClass}`}
-          {...props}
-        >
-          X
-          <AutoSizeInput
-            className="rule"
-            onChange={({ currentTarget: { value } }) =>
-              dispatch(updateContradiction(node.id, value))
-            }
-            value={node.contradictoryRows}
-            placeholder="rows"
-          />
-        </div>
+        <ArcherElement id={node.id}>
+          <div
+            className={`closed-branch-marker node ${feedbackClass}`}
+            {...props}
+          >
+            X
+            <AutoSizeInput
+              className="rule"
+              onChange={({ currentTarget: { value } }) =>
+                dispatch(updateContradiction(node.id, value))
+              }
+              value={node.contradictoryRows}
+              placeholder="rows"
+            />
+          </div>
+        </ArcherElement>
       </Tooltip>
     )
   } else if (node.nodeType === 'finished') {
     return (
       <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
-        <div className={`finished-branch-marker ${feedbackClass}`} {...props}>
-          O{' '}
-        </div>
+        <ArcherElement id={node.id}>
+          <div className={`finished-branch-marker ${feedbackClass}`} {...props}>
+            O{' '}
+          </div>
+        </ArcherElement>
       </Tooltip>
     )
   } else {
