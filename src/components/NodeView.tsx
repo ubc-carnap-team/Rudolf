@@ -54,8 +54,6 @@ const NodeView: FC<Props> = ({
           <ArcherElement
             id={id}
             relations={forest.map((child) => {
-              console.log(id)
-              console.log(child.id)
               return {
                 targetId: child.id,
                 targetAnchor: 'top',
