@@ -20,7 +20,7 @@ const appJSS = createUseStyles({
     alignItems: 'center',
   },
 
-  AppContentBounder: {
+  TreeBounder: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -39,7 +39,7 @@ const appJSS = createUseStyles({
     },
   },
 
-  AppContent: {
+  Tree: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

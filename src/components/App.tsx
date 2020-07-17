@@ -60,10 +60,10 @@ const App: React.FC = (): JSX.Element => {
         </span>
       </div>
       <div
-        className={classes.AppContentBounder}
+        className={classes.TreeBounder}
         style={{ top: topItemsRef.current?.offsetHeight }}
       >
-        <div className={classes.AppContent}>
+        <div className={classes.Tree}>
           <ArcherContainer
             arrowLength={0}
             style={{ zIndex: 1 }}
