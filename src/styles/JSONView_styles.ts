@@ -1,6 +1,6 @@
 import { createUseStyles } from 'react-jss'
 
-const useJSS = createUseStyles({
+const jsonviewJSS = createUseStyles({
   Bounder: {
     minWidth: '100%',
     position: 'fixed',
@@ -27,4 +27,4 @@ const useJSS = createUseStyles({
   },
 })
 
-export default useJSS
+export default jsonviewJSS

@@ -2,7 +2,7 @@ import { TextareaAutosize } from '@material-ui/core'
 import React, { FC, useEffect, useState } from 'react'
 
 import { CustomDispatch, RudolfStore, updateFeedback } from '../RudolfReducer'
-import useJSS from './JSONView_styles'
+import jsonviewJSS from '../styles/JSONView_styles'
 import { checkTree } from '../util/carnapAdapter'
 
 export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
@@ -22,7 +22,7 @@ export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
         })
     }
   }, [dispatch, justifications, tree])
-  const classes = useJSS()
+  const classes = jsonviewJSS()
   const [open, setOpen] = useState(false)
   return (
     <div className={classes.Bounder}>
