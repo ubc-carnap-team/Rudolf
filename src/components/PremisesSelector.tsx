@@ -16,13 +16,16 @@ const PremisesSelector: React.FC<Props> = ({ onChange }) => {
   }
 
   return (
-    <select onChange={handleSelect}>
-      {examples.map(([value, name]) => (
-        <option value={value} key={value}>
-          {name}
-        </option>
-      ))}
-    </select>
+    <label>
+      Example premise:
+      <select onChange={handleSelect}>
+        {examples.map(([value, name]) => (
+          <option value={value} key={value}>
+            {name}
+          </option>
+        ))}
+      </select>
+    </label>
   )
 }
 

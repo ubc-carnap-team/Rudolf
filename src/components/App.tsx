@@ -37,6 +37,7 @@ const App: React.FC = (): JSX.Element => {
       />
       <span className="tree-buttons">
         <IconButton
+          aria-label="Undo"
           className="undo-button"
           onClick={() => {
             dispatch({ type: 'UNDO' })
@@ -46,6 +47,7 @@ const App: React.FC = (): JSX.Element => {
           <Undo />
         </IconButton>
         <IconButton
+          aria-label="Redo"
           className="redo-button"
           onClick={() => {
             dispatch({ type: 'REDO' })
