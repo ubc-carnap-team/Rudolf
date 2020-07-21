@@ -63,7 +63,10 @@ const App: React.FC = (): JSX.Element => {
       </div>
       <div
         className={classes.TreeBounder}
-        style={{ top: topItemsRef.current?.offsetHeight }}
+        style={{
+          top: topItemsRef.current?.offsetHeight,
+          position: topItemsRef.current ? 'absolute' : 'static',
+        }}
       >
         <div className={classes.Tree}>
           <ArcherContainer
