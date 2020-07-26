@@ -11,8 +11,8 @@ type Props = {
 function AutosizingInput({ onChange, value, placeholder, style }: Props) {
   const [width, setWidth] = useState(
     `${Math.max(
-      4 / 5,
-      (value.length !== 0 ? value.length : placeholder.length) * (2 / 3)
+      1,
+      (value.length !== 0 ? value.length : placeholder.length) * (3 / 4)
     )}em`
   )
   return (
@@ -20,7 +20,7 @@ function AutosizingInput({ onChange, value, placeholder, style }: Props) {
       style={Object.assign({ width }, style)}
       onChange={(e) => {
         onChange(e)
-        setWidth(`${Math.max(4 / 5, e.currentTarget.value.length * (2 / 3))}em`)
+        setWidth(`${Math.max(1, e.currentTarget.value.length * (3 / 4))}em`)
       }}
       value={value}
       placeholder={placeholder}
