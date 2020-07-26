@@ -4,14 +4,6 @@ export const isEmptyArray = <T>(
 
 export const lastEl = <T>(arr: T[]) => arr[arr.length - 1]
 
-const rangeRec = (start: number, stop: number): number[] => {
-  if (start === stop - 1) {
-    return [start]
-  } else {
-    return [start, ...range(start + 1, stop)]
-  }
-}
-
 /**
  * @param start start of array (inclusive)
  * @param stop end of array (exclusive)
@@ -20,7 +12,7 @@ const rangeRec = (start: number, stop: number): number[] => {
  */
 export const range = (start: number, stop: number): number[] => {
   if (start < stop) {
-    return rangeRec(start, stop)
+    return [start, ...range(start + 1, stop)]
   } else {
     return []
   }
