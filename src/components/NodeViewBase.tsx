@@ -57,18 +57,18 @@ const NodeViewBase = ({ currentState, dispatch }: Props) => {
             >
               <AutosizingInput
                 style={{ marginRight: '2vmin' }}
-                onChange={({ currentTarget: { value: rule } }) =>
-                  dispatch(updateJustification(row, { rule }))
-                }
-                value={rule}
-                placeholder="rule"
-              />
-              <AutosizingInput
                 onChange={({ currentTarget: { value: parentRow } }) =>
                   dispatch(updateJustification(row, { parentRow }))
                 }
                 value={parentRow}
                 placeholder="row"
+              />
+              <AutosizingInput
+                onChange={({ currentTarget: { value: rule } }) =>
+                  dispatch(updateJustification(row, { rule }))
+                }
+                value={rule}
+                placeholder="rule"
               />
             </div>
           )
