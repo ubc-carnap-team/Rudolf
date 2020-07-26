@@ -1,15 +1,18 @@
 import { createUseStyles } from 'react-jss'
 
 export const rowHeight = '1.5em'
+export const rowGap = '3vmin'
+const columnGap = '3vmin'
 
 const nodeviewJSS = createUseStyles({
   NodeViewBaseContainer: {
     display: 'grid',
     padding: '0.2em',
-    textAlign: 'center',
     gridTemplateColumns:
       '[rowNumber] auto [nodeView] auto [justification] auto',
     placeItems: 'center',
+    columnGap,
+    rowGap,
   },
 
   RowNumber: {
@@ -18,6 +21,14 @@ const nodeviewJSS = createUseStyles({
 
   Justification: {
     gridColumn: 'justification',
+    display: 'flex',
+  },
+
+  NodeView: {
+    display: 'grid',
+    textAlign: 'center',
+    columnGap,
+    rowGap,
   },
 })
 
