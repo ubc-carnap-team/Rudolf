@@ -7,7 +7,6 @@ import {
 } from '../RudolfReducer'
 import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
 import { range } from '../util/helpers'
-import { firstRow } from '../util/nodes'
 import AutosizingInput from './AutosizingInput'
 
 type Props = {
@@ -18,7 +17,7 @@ type Props = {
 const NodeViewBase = ({ currentState, dispatch }: Props) => {
   const classes = nodeviewJSS()
   const { nextRow, tree, justifications, feedback } = currentState
-  const rows = range(firstRow(currentState.tree), nextRow)
+  const rows = range(1, nextRow)
   return (
     <div
       className={classes.NodeViewBaseContainer}
