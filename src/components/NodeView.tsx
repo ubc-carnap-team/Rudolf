@@ -71,9 +71,13 @@ const NodeView: FC<Props> = ({
               })}
             >
               <div
-                className={`node node-id=${id} ${feedbackClass}`}
                 // TODO: allow context menu on nodes?
                 // onContextMenu={handleContextMenu}
+                style={{
+                  borderStyle: feedbackMap ? 'solid' : 'none',
+                  borderColor: feedbackClass === 'correct' ? 'green' : 'red',
+                  borderWidth: '1.5px',
+                }}
                 {...props}
               >
                 {formulas.map((form, index) => {
