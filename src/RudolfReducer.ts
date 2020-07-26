@@ -55,7 +55,8 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   createTree(premiseArray: string[]) {
     this.draftState.tree = parsePremises(premiseArray)
     this.draftState.nextRow = premiseArray.length + 1
-    this.draftState.justifications = { 1: { rule: '', parentRow: '' } }
+    //this.draftState.justifications = { 1: { rule: '', parentRow: '' } }
+    this.draftState.justifications = {}
   }
 
   continueBranch(nodeId: string, formulaCount: number) {
@@ -118,7 +119,8 @@ const premiseArray = initialPremises.split(',')
 export const initialState: RudolfStore = {
   tree: parsePremises(premiseArray),
   nextRow: premiseArray.length + 1,
-  justifications: { 1: { rule: 'AS', parentRow: '' } },
+  //justifications: { 1: { rule: 'AS', parentRow: '' } },
+  justifications: {},
   feedback: { errorMessage: 'Nothing yet.' },
 }
 
