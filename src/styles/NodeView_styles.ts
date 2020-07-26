@@ -22,6 +22,7 @@ const nodeviewJSS = createUseStyles({
   Justification: {
     gridColumn: 'justification',
     display: 'flex',
+    alignSelf: 'start',
   },
 
   NodeView: {
