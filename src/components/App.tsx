@@ -10,11 +10,11 @@ import {
 } from '../RudolfReducer'
 import { makeUndoable } from '../undoableReducer'
 import { JSONView } from './JSONView'
-import NodeView from './NodeView'
 import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
 import { ArcherContainer } from 'react-archer'
 import appJSS from '../styles/App_styles'
+import NodeViewBase from './NodeViewBase'
 
 const App: React.FC = (): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
@@ -76,12 +76,7 @@ const App: React.FC = (): JSX.Element => {
             strokeColor="black"
             noCurves={false}
           >
-            <NodeView
-              node={currentState.tree}
-              dispatch={dispatch}
-              justifications={currentState.justifications}
-              feedbackMap={currentState.feedback.feedback}
-            />
+            <NodeViewBase currentState={currentState} dispatch={dispatch} />
           </ArcherContainer>
         </div>
       </div>

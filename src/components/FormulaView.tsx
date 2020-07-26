@@ -3,7 +3,8 @@ import { Check } from '@material-ui/icons'
 import { CustomDispatch, updateFormula } from '../RudolfReducer'
 import { NodeMenu } from './NodeMenu'
 import { FormulaNode } from '../typings/TreeState'
-import AutosizeInput from 'react-input-autosize'
+import { rowHeight, rowGap } from '../styles/NodeView_styles'
+import AutosizingInput from './AutosizingInput'
 
 interface Props {
   row: number
@@ -14,26 +15,27 @@ interface Props {
   dispatch: CustomDispatch
 }
 
-const FormulaView: FC<Props> = ({ index, row, dispatch, node }) => {
+const FormulaView: FC<Props> = ({ index, dispatch, node }) => {
   const formula = node.formulas[index]
   const { value, resolved } = formula
   const [contextMenu, setContextMenu] = useState(false) // Convert to reducer action/field w/ ref, node, optional index.
   const ref: Ref<HTMLDivElement> = useRef(null)
   return (
     <div
-      className="formula"
+      style={{
+        height: rowHeight,
+        marginBottom: rowGap,
+      }}
       ref={ref}
       onContextMenu={(e) => {
         e.preventDefault()
         setContextMenu(true)
       }}
     >
-      <span>{row}</span>
-      <AutosizeInput
-        className="label"
-        onChange={(event) =>
+      <AutosizingInput
+        onChange={(event) => {
           dispatch(updateFormula(node.id, index, event.currentTarget.value))
-        }
+        }}
         value={value}
         placeholder="formula"
       />

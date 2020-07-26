@@ -1,25 +1,22 @@
 /* eslint-disable react/jsx-no-undef */
 import { Tooltip } from '@material-ui/core'
-import React, { FC, Fragment } from 'react'
-import AutoSizeInput from 'react-input-autosize'
+import React, { FC } from 'react'
+import AutosizeInput from 'react-input-autosize'
 import { ArcherElement } from 'react-archer'
 
-import {
-  CustomDispatch,
-  updateContradiction,
-  updateJustification,
-} from '../RudolfReducer'
+import { CustomDispatch, updateContradiction } from '../RudolfReducer'
 import { FeedbackMap } from '../typings/Checker'
 import { JustificationMap, TreeNode } from '../typings/TreeState'
-import { firstRow, isFormulaNode, lastRow } from '../util/nodes'
+import { firstRow, isFormulaNode } from '../util/nodes'
 import FormulaView from './FormulaView'
-import Spacers from './Spacers'
+import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
 
 type Props = {
   node: TreeNode
   dispatch: CustomDispatch
   justifications: JustificationMap
   feedbackMap?: FeedbackMap
+  currLastRow: number
 }
 
 const NodeView: FC<Props> = ({
@@ -27,8 +24,10 @@ const NodeView: FC<Props> = ({
   dispatch,
   justifications,
   feedbackMap,
+  currLastRow,
   ...props
 }) => {
+  const classes = nodeviewJSS()
   let feedbackInfo, feedbackClass
   if (feedbackMap) {
     const feedback = feedbackMap[node.id] ?? ''
@@ -41,89 +40,81 @@ const NodeView: FC<Props> = ({
   if (isFormulaNode(node)) {
     const { id, formulas, forest } = node
 
-    const spacers =
-      forest[0]?.nodeType === 'formulas' ? (
-        <Spacers diff={firstRow(forest[0]) - lastRow(node)} />
-      ) : undefined
-
-    const { rule, parentRow } = justifications[firstRow(node)]
-
     return (
-      <div className={`node-container `}>
-        <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
-          <ArcherElement
-            id={id}
-            relations={forest.map((child) => {
-              return {
-                targetId: child.id,
-                targetAnchor: 'top',
-                sourceAnchor: 'bottom',
-              }
-            })}
+      <div
+        className={classes.NodeView}
+        style={{
+          gridTemplateRows: `repeat(${
+            currLastRow - firstRow(node) + 1
+          }, ${rowHeight})`,
+          gridTemplateColumns: `repeat(${forest.length}, auto)`,
+        }}
+      >
+        <div
+          style={{
+            gridRow: '1',
+            gridColumn: `1 / span ${forest.length}`,
+          }}
+        >
+          <Tooltip
+            title={feedbackInfo}
+            PopperProps={{ style: { fontSize: 16 } }}
           >
-            <div
-              className={`node node-id=${id} ${feedbackClass}`}
-              // TODO: allow context menu on nodes?
-              // onContextMenu={handleContextMenu}
-              {...props}
-            >
-              {formulas.map((form, index) => {
-                return (
-                  <FormulaView
-                    key={`${form}-${index}`}
-                    node={node}
-                    index={index}
-                    dispatch={dispatch}
-                    {...form}
-                  />
-                )
+            <ArcherElement
+              id={id}
+              relations={forest.map((child) => {
+                return {
+                  targetId: child.id,
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                }
               })}
-
-              {node.id !== '' ? (
-                <div className="justification">
-                  <AutoSizeInput
-                    className="rule"
-                    onChange={({ currentTarget: { value: rule } }) =>
-                      dispatch(updateJustification(firstRow(node), { rule }))
-                    }
-                    value={rule}
-                    placeholder="rule"
-                  />
-                  <AutoSizeInput
-                    className="row"
-                    onChange={({ currentTarget: { value: parentRow } }) =>
-                      dispatch(
-                        updateJustification(firstRow(node), { parentRow })
-                      )
-                    }
-                    value={parentRow}
-                    placeholder="row"
-                  />
-                </div>
-              ) : (
-                'AS'
-              )}
-            </div>
-          </ArcherElement>
-        </Tooltip>
-
-        <div className={`children ${forest.length > 1 ? 'split' : 'stack'}`}>
-          {forest.map((child) => {
-            return (
-              <Fragment key={child.id}>
-                {spacers}
-                <NodeView
-                  {...{
-                    node: child,
-                    dispatch,
-                    justifications,
-                    feedbackMap,
-                  }}
-                />
-              </Fragment>
-            )
-          })}
+            >
+              <div
+                className={`node node-id=${id} ${feedbackClass}`}
+                // TODO: allow context menu on nodes?
+                // onContextMenu={handleContextMenu}
+                {...props}
+              >
+                {formulas.map((form, index) => {
+                  return (
+                    <FormulaView
+                      key={`${form}-${index}`}
+                      node={node}
+                      index={index}
+                      dispatch={dispatch}
+                      {...form}
+                    />
+                  )
+                })}
+              </div>
+            </ArcherElement>
+          </Tooltip>
         </div>
+
+        {forest.map((child, index) => {
+          return (
+            <div
+              key={child.id}
+              style={{
+                gridColumn: `${index} / span 1`,
+                gridRow: child.formulas[0]
+                  ? `${child.formulas[0].row - firstRow(node) + 1}`
+                  : 2,
+              }}
+            >
+              <NodeView
+                {...{
+                  node: child,
+                  dispatch,
+                  justifications,
+                  currLastRow,
+                  feedbackMap,
+                }}
+              />
+            </div>
+          )
+        })}
       </div>
     )
   } else if (node.nodeType === 'contradiction') {
@@ -135,7 +126,7 @@ const NodeView: FC<Props> = ({
             {...props}
           >
             X
-            <AutoSizeInput
+            <AutosizeInput
               className="rule"
               onChange={({ currentTarget: { value } }) =>
                 dispatch(updateContradiction(node.id, value))
