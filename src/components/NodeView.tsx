@@ -28,14 +28,12 @@ const NodeView: FC<Props> = ({
   ...props
 }) => {
   const classes = nodeviewJSS()
-  let feedbackInfo, feedbackClass
+  let feedbackInfo = ''
+  let feedbackClass = ''
   if (feedbackMap) {
     const feedback = feedbackMap[node.id] ?? ''
-    feedbackInfo = feedback.info
+    feedbackInfo = feedback.info ?? ''
     feedbackClass = feedback.class === 'correct' ? 'correct' : 'incorrect'
-  } else {
-    feedbackInfo = ''
-    feedbackClass = ''
   }
   if (isFormulaNode(node)) {
     const { id, formulas, forest } = node
