@@ -14,7 +14,7 @@ import PremiseInput from './PremiseInput'
 import PremisesSelector from './PremisesSelector'
 import { ArcherContainer } from 'react-archer'
 import appJSS from '../styles/App_styles'
-import NodeViewBase from './NodeViewBase'
+import TruthTree from './TruthTree'
 
 const App: React.FC = (): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
@@ -76,7 +76,7 @@ const App: React.FC = (): JSX.Element => {
             strokeColor="black"
             noCurves={false}
           >
-            <NodeViewBase currentState={currentState} dispatch={dispatch} />
+            <TruthTree currentState={currentState} dispatch={dispatch} />
           </ArcherContainer>
         </div>
       </div>
