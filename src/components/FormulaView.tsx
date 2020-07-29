@@ -4,7 +4,7 @@ import { CustomDispatch, updateFormula } from '../RudolfReducer'
 import { NodeMenu } from './NodeMenu'
 import { FormulaNode } from '../typings/TreeState'
 import { rowHeight, rowGap } from '../styles/NodeView_styles'
-import AutosizingInput from './AutosizingInput'
+import StyledAutosizeInput from './StyledAutosizeInput'
 
 interface Props {
   row: number
@@ -32,7 +32,7 @@ const FormulaView: FC<Props> = ({ index, dispatch, node }) => {
         setContextMenu(true)
       }}
     >
-      <AutosizingInput
+      <StyledAutosizeInput
         onChange={(event) => {
           dispatch(updateFormula(node.id, index, event.currentTarget.value))
         }}

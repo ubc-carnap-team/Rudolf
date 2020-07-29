@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-undef */
 import { Tooltip } from '@material-ui/core'
 import React, { FC } from 'react'
-import AutosizeInput from 'react-input-autosize'
 import { ArcherElement } from 'react-archer'
 
 import { CustomDispatch, updateContradiction } from '../RudolfReducer'
@@ -10,13 +9,14 @@ import { JustificationMap, TreeNode } from '../typings/TreeState'
 import { firstRow, isFormulaNode } from '../util/nodes'
 import FormulaView from './FormulaView'
 import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
+import StyledAutosizeInput from './StyledAutosizeInput'
 
 type Props = {
   node: TreeNode
   dispatch: CustomDispatch
   justifications: JustificationMap
   feedbackMap?: FeedbackMap
-  currLastRow: number
+  nextRow: number
 }
 
 const NodeView: FC<Props> = ({
@@ -24,7 +24,7 @@ const NodeView: FC<Props> = ({
   dispatch,
   justifications,
   feedbackMap,
-  currLastRow,
+  nextRow,
   ...props
 }) => {
   const classes = nodeviewJSS()
@@ -44,9 +44,7 @@ const NodeView: FC<Props> = ({
       <div
         className={classes.NodeView}
         style={{
-          gridTemplateRows: `repeat(${
-            currLastRow - firstRow(node) + 1
-          }, ${rowHeight})`,
+          gridTemplateRows: `repeat(${nextRow - firstRow(node)}, ${rowHeight})`,
           gridTemplateColumns: `repeat(${forest.length}, auto)`,
         }}
       >
@@ -112,7 +110,7 @@ const NodeView: FC<Props> = ({
                   node: child,
                   dispatch,
                   justifications,
-                  currLastRow,
+                  nextRow,
                   feedbackMap,
                 }}
               />
@@ -130,8 +128,7 @@ const NodeView: FC<Props> = ({
             {...props}
           >
             X
-            <AutosizeInput
-              className="rule"
+            <StyledAutosizeInput
               onChange={({ currentTarget: { value } }) =>
                 dispatch(updateContradiction(node.id, value))
               }
