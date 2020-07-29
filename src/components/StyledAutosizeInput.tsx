@@ -12,7 +12,7 @@ type Props = {
 function StyledAutosizeInput({ onChange, value, placeholder, style }: Props) {
   return (
     <AutosizeInput
-      style={Object.assign({}, style)}
+      style={style}
       inputStyle={{
         padding: '0vmin .5vmin',
         backgroundColor: 'transparent',
