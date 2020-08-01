@@ -7,14 +7,14 @@ import {
 } from '../RudolfReducer'
 import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
 import { range } from '../util/helpers'
-import AutosizingInput from './AutosizingInput'
+import StyledAutosizeInput from './StyledAutosizeInput'
 
 type Props = {
   currentState: RudolfStore
   dispatch: CustomDispatch
 }
 
-const NodeViewBase = ({ currentState, dispatch }: Props) => {
+const TruthTree = ({ currentState, dispatch }: Props) => {
   const classes = nodeviewJSS()
   const { nextRow, tree, justifications, feedback } = currentState
   const rows = range(1, nextRow)
@@ -43,41 +43,38 @@ const NodeViewBase = ({ currentState, dispatch }: Props) => {
           dispatch={dispatch}
           justifications={justifications}
           feedbackMap={feedback.feedback}
-          currLastRow={nextRow - 1}
+          nextRow={nextRow}
         />
       </div>
-      {rows.map((row) => {
-        if (justifications[row]) {
-          const { parentRow, rule } = justifications[row]
-          return (
-            <div
-              className={classes.Justification}
-              key={row}
-              style={{ gridRow: row }}
-            >
-              <AutosizingInput
-                style={{ marginRight: '2vmin' }}
-                onChange={({ currentTarget: { value: parentRow } }) =>
-                  dispatch(updateJustification(row, { parentRow }))
-                }
-                value={parentRow}
-                placeholder="row"
-              />
-              <AutosizingInput
-                onChange={({ currentTarget: { value: rule } }) =>
-                  dispatch(updateJustification(row, { rule }))
-                }
-                value={rule}
-                placeholder="rule"
-              />
-            </div>
-          )
-        } else {
-          return null
-        }
+      {Object.keys(justifications).map((rowString) => {
+        const row = Number(rowString)
+        const { parentRow, rule } = justifications[row]
+        return (
+          <div
+            className={classes.Justification}
+            key={row}
+            style={{ gridRow: row }}
+          >
+            <StyledAutosizeInput
+              style={{ marginRight: '.5vmin' }}
+              onChange={({ currentTarget: { value: parentRow } }) =>
+                dispatch(updateJustification(row, { parentRow }))
+              }
+              value={parentRow}
+              placeholder="row"
+            />
+            <StyledAutosizeInput
+              onChange={({ currentTarget: { value: rule } }) =>
+                dispatch(updateJustification(row, { rule }))
+              }
+              value={rule}
+              placeholder="rule"
+            />
+          </div>
+        )
       })}
     </div>
   )
 }
 
-export default NodeViewBase
+export default TruthTree
