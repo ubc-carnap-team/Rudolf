@@ -56,39 +56,41 @@ const NodeView: FC<Props> = ({
             title={feedbackInfo}
             PopperProps={{ style: { fontSize: 16 } }}
           >
-            <ArcherElement
-              id={id}
-              relations={forest.map((child) => {
-                return {
-                  targetId: child.id,
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                }
-              })}
-            >
-              <div
-                // TODO: allow context menu on nodes?
-                // onContextMenu={handleContextMenu}
-                style={{
-                  borderStyle: feedbackMap ? 'solid' : 'none',
-                  borderColor: feedbackClass === 'correct' ? 'green' : 'red',
-                  borderWidth: '1.5px',
-                }}
-                {...props}
-              >
-                {formulas.map((form, index) => {
-                  return (
-                    <FormulaView
-                      key={`${form}-${index}`}
-                      node={node}
-                      index={index}
-                      dispatch={dispatch}
-                      {...form}
-                    />
-                  )
+            <div>
+              <ArcherElement
+                id={id}
+                relations={forest.map((child) => {
+                  return {
+                    targetId: child.id,
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                  }
                 })}
-              </div>
-            </ArcherElement>
+              >
+                <div
+                  // TODO: allow context menu on nodes?
+                  // onContextMenu={handleContextMenu}
+                  style={{
+                    borderStyle: feedbackMap ? 'solid' : 'none',
+                    borderColor: feedbackClass === 'correct' ? 'green' : 'red',
+                    borderWidth: '1.5px',
+                  }}
+                  {...props}
+                >
+                  {formulas.map((form, index) => {
+                    return (
+                      <FormulaView
+                        key={`${form}-${index}`}
+                        node={node}
+                        index={index}
+                        dispatch={dispatch}
+                        {...form}
+                      />
+                    )
+                  })}
+                </div>
+              </ArcherElement>
+            </div>
           </Tooltip>
         </div>
 
