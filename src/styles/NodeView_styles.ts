@@ -2,7 +2,7 @@ import { createUseStyles } from 'react-jss'
 
 export const rowHeight = '1.5em'
 export const rowGap = '3vmin'
-export const columnGap = '3vmin'
+const columnGap = '3vmin'
 
 const nodeviewJSS = createUseStyles({
   NodeViewBaseContainer: {
