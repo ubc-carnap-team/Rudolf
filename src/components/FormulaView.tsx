@@ -3,7 +3,7 @@ import { Check } from '@material-ui/icons'
 import { CustomDispatch, updateFormula } from '../RudolfReducer'
 import { NodeMenu } from './NodeMenu'
 import { FormulaNode } from '../typings/TreeState'
-import { rowHeight, rowGap } from '../styles/NodeView_styles'
+import { rowHeight } from '../styles/NodeView_styles'
 import StyledAutosizeInput from './StyledAutosizeInput'
 
 interface Props {
@@ -24,7 +24,7 @@ const FormulaView: FC<Props> = ({ index, dispatch, node }) => {
     <div
       style={{
         height: rowHeight,
-        marginBottom: rowGap,
+        gridRow: index + 1,
       }}
       ref={ref}
       onContextMenu={(e) => {
