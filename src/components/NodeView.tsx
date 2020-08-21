@@ -70,10 +70,13 @@ const NodeView: FC<Props> = ({
                 <div
                   // TODO: allow context menu on nodes?
                   // onContextMenu={handleContextMenu}
+                  className={classes.FormulaBounder}
                   style={{
-                    borderStyle: feedbackMap ? 'solid' : 'none',
-                    borderColor: feedbackClass === 'correct' ? 'green' : 'red',
-                    borderWidth: '1.5px',
+                    borderColor: feedbackMap
+                      ? feedbackClass === 'correct'
+                        ? 'green'
+                        : 'red'
+                      : 'transparent',
                   }}
                   {...props}
                 >
