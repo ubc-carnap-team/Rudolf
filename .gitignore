@@ -3,3 +3,4 @@
 build
 .vscode
 *.code-workspace
+dist/
