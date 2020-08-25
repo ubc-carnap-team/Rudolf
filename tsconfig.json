@@ -12,8 +12,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "noEmitOnError": true,
     "jsx": "preserve",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "declaration": true
   },
+  "files": ["./src/components/Rudolf.tsx"],
+  "typeRoot": "./src/typings",
   "include": ["src"]
 }

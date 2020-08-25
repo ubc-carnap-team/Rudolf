@@ -38,14 +38,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build-demo": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "yarn eslint --ext '.ts,.tsx' src --fix",
     "eslint-check": "eslint --print-config ./src/App.tsx | eslint-config-prettier-check",
     "ts": "yarn tsc --watch",
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "build-lib": "webpack ./webpack.config.js"
   },
   "browserslist": {
     "production": [
@@ -63,7 +64,8 @@
     "gh-pages": "^3.0.0",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1"
+    "pretty-quick": "^2.0.1",
+    "webpack-cli": "^3.3.12"
   },
   "husky": {
     "hooks": {
