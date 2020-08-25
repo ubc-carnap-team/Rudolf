@@ -31,6 +31,22 @@ const nodeviewJSS = createUseStyles({
     columnGap,
     rowGap,
   },
+
+  FormulaBounder: {
+    display: 'grid',
+    rowGap,
+  },
+
+  Correct: {
+    borderWidth: '1.5px',
+    borderStyle: 'solid',
+    borderColor: 'green',
+  },
+  Incorrect: {
+    borderWidth: '1.5px',
+    borderStyle: 'solid',
+    borderColor: 'red',
+  },
 })
 
 export default nodeviewJSS
