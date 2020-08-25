@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-undef */
 import { Tooltip } from '@material-ui/core'
 import React, { FC } from 'react'
 import { ArcherElement } from 'react-archer'
@@ -19,6 +18,8 @@ type Props = {
   nextRow: number
 }
 
+// TODO: allow context menu on nodes?
+
 const NodeView: FC<Props> = ({
   node,
   dispatch,
@@ -33,7 +34,8 @@ const NodeView: FC<Props> = ({
   if (feedbackMap) {
     const feedback = feedbackMap[node.id] ?? ''
     feedbackInfo = feedback.info ?? ''
-    feedbackClass = feedback.class === 'correct' ? 'correct' : 'incorrect'
+    feedbackClass =
+      feedback.class === 'correct' ? classes.Correct : classes.Incorrect
   }
   if (isFormulaNode(node)) {
     const { id, formulas, forest } = node
@@ -68,16 +70,7 @@ const NodeView: FC<Props> = ({
                 })}
               >
                 <div
-                  // TODO: allow context menu on nodes?
-                  // onContextMenu={handleContextMenu}
-                  className={classes.FormulaBounder}
-                  style={{
-                    borderColor: feedbackMap
-                      ? feedbackClass === 'correct'
-                        ? 'green'
-                        : 'red'
-                      : 'transparent',
-                  }}
+                  className={`${classes.FormulaBounder} ${feedbackClass} `}
                   {...props}
                 >
                   {formulas.map((form, index) => {
@@ -125,31 +118,38 @@ const NodeView: FC<Props> = ({
   } else if (node.nodeType === 'contradiction') {
     return (
       <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
-        <ArcherElement id={node.id}>
-          <div
-            className={`closed-branch-marker node ${feedbackClass}`}
-            {...props}
-          >
-            X
-            <StyledAutosizeInput
-              onChange={({ currentTarget: { value } }) =>
-                dispatch(updateContradiction(node.id, value))
-              }
-              value={node.contradictoryRows}
-              placeholder="rows"
-            />
-          </div>
-        </ArcherElement>
+        <div>
+          <ArcherElement id={node.id}>
+            <div
+              className={`closed-branch-marker node ${feedbackClass}`}
+              {...props}
+            >
+              X
+              <StyledAutosizeInput
+                onChange={({ currentTarget: { value } }) =>
+                  dispatch(updateContradiction(node.id, value))
+                }
+                value={node.contradictoryRows}
+                placeholder="rows"
+              />
+            </div>
+          </ArcherElement>
+        </div>
       </Tooltip>
     )
   } else if (node.nodeType === 'finished') {
     return (
       <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
-        <ArcherElement id={node.id}>
-          <div className={`finished-branch-marker ${feedbackClass}`} {...props}>
-            O{' '}
-          </div>
-        </ArcherElement>
+        <div>
+          <ArcherElement id={node.id}>
+            <div
+              className={`finished-branch-marker ${feedbackClass}`}
+              {...props}
+            >
+              O
+            </div>
+          </ArcherElement>
+        </div>
       </Tooltip>
     )
   } else {
