@@ -68,8 +68,8 @@ export const convertToSequent = (
         throw new Error('Contradiction cites non-existent row')
       }
       const contradictionSequent: string = convertFormulas([
-        form1,
         ...formulas.filter((form) => ![row1, row2].includes(form.row)),
+        form1,
         form2,
       ])
       return {
