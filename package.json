@@ -47,7 +47,7 @@
     "ts": "yarn tsc --watch",
     "predeploy": "yarn build-demo",
     "deploy": "gh-pages -d build",
-    "build-lib": "webpack"
+    "build-lib": "webpack --config webpack.config.js"
   },
   "browserslist": {
     "production": [
@@ -64,8 +64,10 @@
   "devDependencies": {
     "gh-pages": "^3.0.0",
     "husky": "^4.2.5",
+    "parcel-bundler": "^1.12.4",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
+    "sass": "^1.26.10",
     "webpack-cli": "^3.3.12"
   },
   "husky": {

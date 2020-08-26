@@ -14,7 +14,8 @@
     "noEmitOnError": true,
     "jsx": "preserve",
     "skipLibCheck": true,
-    "declaration": true
+    "declaration": true,
+    "noEmit": true
   },
   "files": ["./src/components/Rudolf.tsx"],
   "typeRoot": "./src/typings",

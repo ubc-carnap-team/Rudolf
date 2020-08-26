@@ -1,5 +1,8 @@
-import Rudolf from './components/Rudolf.tsx'
+import Rudolf from './components/Rudolf'
+import ReactDOM from 'react-dom'
+import React from 'react'
+import './styles/_main.scss'
 
-console.log('loaded Rudolf library')
-
-export default Rudolf
+export const createTree = (selector: string) => {
+  ReactDOM.render(React.createElement(Rudolf), document.querySelector(selector))
+}
