@@ -14,6 +14,7 @@
     "@types/react-input-autosize": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
+    "babel-loader": "^8.1.0",
     "bootstrap": "^4.3.1",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.0.0",
@@ -44,9 +45,9 @@
     "lint": "yarn eslint --ext '.ts,.tsx' src --fix",
     "eslint-check": "eslint --print-config ./src/App.tsx | eslint-config-prettier-check",
     "ts": "yarn tsc --watch",
-    "predeploy": "yarn build",
+    "predeploy": "yarn build-demo",
     "deploy": "gh-pages -d build",
-    "build-lib": "webpack ./webpack.config.js"
+    "build-lib": "webpack"
   },
   "browserslist": {
     "production": [
