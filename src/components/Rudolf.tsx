@@ -7,7 +7,6 @@ import React, { useReducer, useState, useRef, useEffect } from 'react'
 
 import {
   createTree,
-  initialPremises,
   initialState,
   rudolfReducer,
   updateFeedback,
@@ -20,10 +19,12 @@ import appJSS from '../styles/App_styles'
 import TruthTree from './TruthTree'
 import { checkTree } from '../util/carnapAdapter'
 
-const Rudolf: React.FC = (): JSX.Element => {
+const Rudolf: React.FC<{ initialPremises?: string }> = ({
+  initialPremises = '',
+}): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
   const [[pastStates, currentState, futureStates], dispatch] = useReducer(
-    ...makeUndoable(rudolfReducer, initialState)
+    ...makeUndoable(rudolfReducer, initialState(premises))
   )
 
   const handleSubmitPremises = (rawInput: string) => {
