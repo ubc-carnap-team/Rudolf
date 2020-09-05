@@ -1,6 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-// import './styles/_main.scss'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 

@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/all.css'
 
 import { IconButton } from '@material-ui/core'
