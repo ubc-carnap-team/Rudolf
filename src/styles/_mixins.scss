@@ -1,7 +1,9 @@
 @font-face {
-  font-family: 'FiraLogic';
-  src: local('FiraLogic'),
-    url(../assets/FiraLogic/dist/FiraLogic-Regular.woff) format('woff');
+  font-family: 'Fira Logic';
+  src: url('https://cdn.jsdelivr.net/gh/gleachkr/FiraLogic/dist/FiraLogic-Regular.woff')
+      format('woff'),
+    url('https://cdn.jsdelivr.net/gh/gleachkr/FiraLogic/dist/FiraLogic-Regular.tff')
+      format('tff');
 }
 
 @mixin logic-fonts {

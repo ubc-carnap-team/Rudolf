@@ -2,7 +2,7 @@
   "name": "rudolf",
   "version": "0.1.0",
   "homepage": "https://McTano.github.io/Rudolf",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@babel/core": "^7.6.2",
     "@material-ui/core": "^4.5.0",
@@ -23,6 +23,7 @@
     "eslint-plugin-react": "^7.14.2",
     "immer-reducer": "^0.7.10",
     "node-sass": "^4.12.0",
+    "parcel": "^1.12.4",
     "react": "^16.8.6",
     "react-archer": "^2.0.2",
     "react-bootstrap": "^1.0.0-beta.10",
@@ -47,7 +48,8 @@
     "ts": "yarn tsc --watch",
     "predeploy": "yarn build-demo",
     "deploy": "gh-pages -d build",
-    "build-lib": "webpack --config webpack.config.js"
+    "build-lib": "parcel build src/lib.ts --global Rudolf",
+    "prepublish": "yarn build-lib"
   },
   "browserslist": {
     "production": [

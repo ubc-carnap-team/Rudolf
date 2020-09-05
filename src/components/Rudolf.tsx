@@ -1,3 +1,5 @@
+import '../styles/all.css'
+
 import { IconButton } from '@material-ui/core'
 import { Redo, Undo } from '@material-ui/icons'
 import React, { useReducer, useState, useRef, useEffect } from 'react'
