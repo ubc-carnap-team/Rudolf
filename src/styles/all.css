@@ -1,15 +1,11 @@
 button.submit-premises {
   font-family: Book Antiqua, serif;
-  margin-left: 8px;
+  margin: 5px 5px 0 8px;
 }
 
-select {
+select.select-premises {
   margin-bottom: 20px;
   font-family: Book Antiqua, serif;
-}
-
-button {
-  margin: 5px 5px 0 0;
 }
 
 .node-container {
@@ -17,13 +13,16 @@ button {
   padding: 0.2em;
   text-align: center;
 }
+
 .node-container .split {
   display: flex;
   /* flex-direction: row; */
 }
+
 .node-container .stack {
   display: block;
 }
+
 .node-container .formula {
   display: block;
   padding-left: 0.2em;
@@ -31,12 +30,7 @@ button {
   height: 50px;
   box-sizing: border-box;
 }
-.node-container .node.incorrect {
-  border: solid red;
-}
-.node-container .node.correct {
-  border: solid green;
-}
+
 .node-container input {
   background: transparent;
   font-size: 1em;
@@ -46,9 +40,11 @@ button {
   resize: horizontal;
   box-sizing: border-box;
 }
+
 .node-container input:focus {
   border: solid 2px blue;
 }
+
 .node-container .children.split {
   padding-top: 0.75em;
 }
@@ -69,7 +65,7 @@ button {
 html,
 #root,
 body {
-  font-family: 'FiraLogic', monospace;
+  font-family: 'Fira Logic', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
