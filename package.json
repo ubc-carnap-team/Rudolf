@@ -1,6 +1,6 @@
 {
   "name": "truth-tree",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://McTano.github.io/Rudolf",
   "private": false,
   "license": "GPL-3.0-or-later",
@@ -51,7 +51,7 @@
     "ts": "yarn tsc --watch",
     "predeploy": "yarn build-demo",
     "deploy": "gh-pages -d build",
-    "build-lib": "parcel build src/lib.ts --global Rudolf",
+    "build-lib": "parcel build src/lib.ts --global Rudolf --public-url .",
     "prepublish": "yarn build-lib"
   },
   "browserslist": {
