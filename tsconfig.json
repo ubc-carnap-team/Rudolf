@@ -11,12 +11,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmitOnError": true,
     "jsx": "react",
     "skipLibCheck": true,
     "noEmit": true
   },
-  "files": ["./src/components/Rudolf.tsx"],
   "typeRoot": "./src/typings",
   "include": ["src"]
 }
