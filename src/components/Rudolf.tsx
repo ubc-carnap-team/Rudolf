@@ -51,7 +51,6 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
   return (
     <main className={classes.AppBounder}>
       <div className={classes.TopItemsBounder} ref={topItemsRef}>
-        {/* <PremisesSelector onChange={handleSubmitPremises} /> */}
         <PremiseInput
           premises={premises}
           onSubmit={handleSubmitPremises}
