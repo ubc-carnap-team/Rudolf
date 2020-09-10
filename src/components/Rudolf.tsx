@@ -80,24 +80,16 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
           </IconButton>
         </span>
       </div>
-      <div
-        className={classes.TreeBounder}
-        style={{
-          top: topItemsRef.current?.offsetHeight,
-          position: topItemsRef.current ? 'absolute' : 'static',
-        }}
-      >
-        <div className={classes.Tree}>
-          <ArcherContainer
-            arrowLength={0}
-            style={{ zIndex: 1 }}
-            svgContainerStyle={{ zIndex: -1 }}
-            strokeColor="black"
-            noCurves={false}
-          >
-            <TruthTree currentState={currentState} dispatch={dispatch} />
-          </ArcherContainer>
-        </div>
+      <div className={classes.TreeBounder}>
+        <ArcherContainer
+          arrowLength={0}
+          style={{ zIndex: 1 }}
+          svgContainerStyle={{ zIndex: -1 }}
+          strokeColor="black"
+          noCurves={false}
+        >
+          <TruthTree currentState={currentState} dispatch={dispatch} />
+        </ArcherContainer>
       </div>
       <JSONView {...{ ...currentState, dispatch }} />
     </main>

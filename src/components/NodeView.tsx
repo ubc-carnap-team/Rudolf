@@ -39,7 +39,6 @@ const NodeView: FC<Props> = ({
   }
   if (isFormulaNode(node)) {
     const { id, formulas, forest } = node
-
     return (
       <div
         className={classes.NodeView}
