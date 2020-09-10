@@ -11,9 +11,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve",
-    "skipLibCheck": true
+    "jsx": "react",
+    "skipLibCheck": true,
+    "noEmit": true
   },
+  "typeRoot": "./src/typings",
   "include": ["src"]
 }
