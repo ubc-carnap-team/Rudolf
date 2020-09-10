@@ -1,6 +1,7 @@
 **/**/node_modules
 *.log
-build
+build/
 .vscode
 *.code-workspace
 dist/
+.cache/

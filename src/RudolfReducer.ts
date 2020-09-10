@@ -3,6 +3,7 @@ import {
   createActionCreators,
   createReducerFunction,
   ImmerReducer,
+  ImmerReducerFunction,
 } from 'immer-reducer'
 import { Dispatch } from 'react'
 
@@ -112,17 +113,20 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   }
 }
 
-export const initialPremises = 'P->Q,P,~Q'
-const premiseArray = initialPremises.split(',')
-
-export const initialState: RudolfStore = {
-  tree: parsePremises(premiseArray),
-  nextRow: premiseArray.length + 1,
-  justifications: {},
-  feedback: { errorMessage: 'Nothing yet.' },
+export const initialState = (premises: string): RudolfStore => {
+  const premiseArray = premises.split(',')
+  return {
+    tree: parsePremises(premiseArray),
+    nextRow: premiseArray.length + 1,
+    justifications: {},
+    feedback: { errorMessage: 'Nothing yet.' },
+  }
 }
 
-export const rudolfReducer = createReducerFunction(RudolfReducer)
+export const rudolfReducer: ImmerReducerFunction<typeof RudolfReducer> = createReducerFunction(
+  RudolfReducer
+)
+
 export const {
   continueBranch,
   createTree,

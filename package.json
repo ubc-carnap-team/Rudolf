@@ -1,8 +1,13 @@
 {
-  "name": "rudolf",
-  "version": "0.1.0",
+  "name": "truth-tree",
+  "version": "0.1.5",
   "homepage": "https://McTano.github.io/Rudolf",
-  "private": true,
+  "private": false,
+  "license": "GPL-3.0-or-later",
+  "main": "dist/lib.js",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@babel/core": "^7.6.2",
     "@material-ui/core": "^4.5.0",
@@ -21,11 +26,9 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.2",
     "immer-reducer": "^0.7.10",
-    "node-sass": "^4.12.0",
+    "parcel": "^1.12.4",
     "react": "^16.8.6",
     "react-archer": "^2.0.2",
-    "react-bootstrap": "^1.0.0-beta.10",
-    "react-bootstrap-modal": "^4.2.0",
     "react-dom": "^16.8.6",
     "react-input-autosize": "^2.2.2",
     "react-jss": "^10.3.0",
@@ -38,14 +41,16 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build-demo": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "yarn eslint --ext '.ts,.tsx' src --fix",
     "eslint-check": "eslint --print-config ./src/App.tsx | eslint-config-prettier-check",
     "ts": "yarn tsc --watch",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "predeploy": "yarn build-demo",
+    "deploy": "gh-pages -d build",
+    "build-lib": "parcel build src/lib.ts --global Rudolf --public-url .",
+    "prepublish": "yarn build-lib"
   },
   "browserslist": {
     "production": [
@@ -62,6 +67,7 @@
   "devDependencies": {
     "gh-pages": "^3.0.0",
     "husky": "^4.2.5",
+    "parcel-bundler": "^1.12.4",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1"
   },

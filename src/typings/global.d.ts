@@ -1,8 +1,12 @@
-declare namespace Carnap {
-  import { SequentNode } from './Sequent'
-
-  const checkIchikawaJenkinsSLTableau: (
-    sequent: SequentNode,
-    callback: (feedback: FeedbackNode) => any
-  ) => void
+import { SequentNode, FeedbackNode } from './Checker'
+declare global {
+  const Carnap: {
+    checkIchikawaJenkinsSLTableau: (
+      sequent: SequentNode,
+      callback: (feedback: FeedbackNode) => any
+    ) => void
+  }
+  interface Window {
+    Carnap: typeof Carnap
+  }
 }

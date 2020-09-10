@@ -1,13 +1,15 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './styles/_main.scss'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import App from './components/App'
+import Rudolf from './components/Rudolf'
 import * as serviceWorker from './serviceWorker'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+const initialPremises = 'P->Q,P,~Q'
+
+ReactDOM.render(
+  <Rudolf initialPremises={initialPremises} />,
+  document.getElementById('root')
+)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -1,25 +1,30 @@
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '../styles/all.css'
+
 import { IconButton } from '@material-ui/core'
 import { Redo, Undo } from '@material-ui/icons'
-import React, { useReducer, useState, useRef } from 'react'
+import React, { useReducer, useState, useRef, useEffect } from 'react'
 
 import {
   createTree,
-  initialPremises,
   initialState,
   rudolfReducer,
+  updateFeedback,
 } from '../RudolfReducer'
 import { makeUndoable } from '../undoableReducer'
 import { JSONView } from './JSONView'
 import PremiseInput from './PremiseInput'
-import PremisesSelector from './PremisesSelector'
 import { ArcherContainer } from 'react-archer'
 import appJSS from '../styles/App_styles'
 import TruthTree from './TruthTree'
+import { checkTree } from '../util/carnapAdapter'
 
-const App: React.FC = (): JSX.Element => {
+const Rudolf: React.FC<{ initialPremises?: string }> = ({
+  initialPremises = '',
+}): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
   const [[pastStates, currentState, futureStates], dispatch] = useReducer(
-    ...makeUndoable(rudolfReducer, initialState)
+    ...makeUndoable(rudolfReducer, initialState(premises))
   )
 
   const handleSubmitPremises = (rawInput: string) => {
@@ -27,12 +32,25 @@ const App: React.FC = (): JSX.Element => {
     const premiseArray = rawInput.split(',')
     dispatch(createTree(premiseArray))
   }
+
+  const { tree, justifications } = currentState
+
+  useEffect(() => {
+    if (window.Carnap) {
+      checkTree(tree, justifications)
+        .then(({ sequent, feedback }) => {
+          return dispatch(updateFeedback({ feedback, sequent }))
+        })
+        .catch(({ message }: Error) => {
+          return dispatch(updateFeedback({ errorMessage: message }))
+        })
+    }
+  }, [dispatch, justifications, tree])
   const classes = appJSS()
   const topItemsRef = useRef<HTMLDivElement>(null)
   return (
     <main className={classes.AppBounder}>
       <div className={classes.TopItemsBounder} ref={topItemsRef}>
-        <PremisesSelector onChange={handleSubmitPremises} />
         <PremiseInput
           premises={premises}
           onSubmit={handleSubmitPremises}
@@ -85,4 +103,4 @@ const App: React.FC = (): JSX.Element => {
   )
 }
 
-export default App
+export default Rudolf
