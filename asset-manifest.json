@@ -1,26 +1,25 @@
 {
   "files": {
-    "main.css": "/Rudolf/static/css/main.584ad0de.chunk.css",
-    "main.js": "/Rudolf/static/js/main.3960c930.chunk.js",
-    "main.js.map": "/Rudolf/static/js/main.3960c930.chunk.js.map",
-    "runtime-main.js": "/Rudolf/static/js/runtime-main.46c9cfcc.js",
-    "runtime-main.js.map": "/Rudolf/static/js/runtime-main.46c9cfcc.js.map",
-    "static/css/2.47e06e2e.chunk.css": "/Rudolf/static/css/2.47e06e2e.chunk.css",
-    "static/js/2.23e25dc7.chunk.js": "/Rudolf/static/js/2.23e25dc7.chunk.js",
-    "static/js/2.23e25dc7.chunk.js.map": "/Rudolf/static/js/2.23e25dc7.chunk.js.map",
+    "main.css": "/Rudolf/static/css/main.5580a0b6.chunk.css",
+    "main.js": "/Rudolf/static/js/main.c61abc1c.chunk.js",
+    "main.js.map": "/Rudolf/static/js/main.c61abc1c.chunk.js.map",
+    "runtime-main.js": "/Rudolf/static/js/runtime-main.ce733ba0.js",
+    "runtime-main.js.map": "/Rudolf/static/js/runtime-main.ce733ba0.js.map",
+    "static/css/2.d9ad5f5c.chunk.css": "/Rudolf/static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.cf959dfc.chunk.js": "/Rudolf/static/js/2.cf959dfc.chunk.js",
+    "static/js/2.cf959dfc.chunk.js.map": "/Rudolf/static/js/2.cf959dfc.chunk.js.map",
     "index.html": "/Rudolf/index.html",
-    "precache-manifest.942629f622653e888ac8c3f763cd7e47.js": "/Rudolf/precache-manifest.942629f622653e888ac8c3f763cd7e47.js",
+    "precache-manifest.edbe9d08fb0df1ee3650d3b30c0edabe.js": "/Rudolf/precache-manifest.edbe9d08fb0df1ee3650d3b30c0edabe.js",
     "service-worker.js": "/Rudolf/service-worker.js",
-    "static/css/2.47e06e2e.chunk.css.map": "/Rudolf/static/css/2.47e06e2e.chunk.css.map",
-    "static/css/main.584ad0de.chunk.css.map": "/Rudolf/static/css/main.584ad0de.chunk.css.map",
-    "static/js/2.23e25dc7.chunk.js.LICENSE.txt": "/Rudolf/static/js/2.23e25dc7.chunk.js.LICENSE.txt",
-    "static/media/_main.scss": "/Rudolf/static/media/FiraLogic-Regular.a8ace03e.woff"
+    "static/css/2.d9ad5f5c.chunk.css.map": "/Rudolf/static/css/2.d9ad5f5c.chunk.css.map",
+    "static/css/main.5580a0b6.chunk.css.map": "/Rudolf/static/css/main.5580a0b6.chunk.css.map",
+    "static/js/2.cf959dfc.chunk.js.LICENSE.txt": "/Rudolf/static/js/2.cf959dfc.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.46c9cfcc.js",
-    "static/css/2.47e06e2e.chunk.css",
-    "static/js/2.23e25dc7.chunk.js",
-    "static/css/main.584ad0de.chunk.css",
-    "static/js/main.3960c930.chunk.js"
+    "static/js/runtime-main.ce733ba0.js",
+    "static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.cf959dfc.chunk.js",
+    "static/css/main.5580a0b6.chunk.css",
+    "static/js/main.c61abc1c.chunk.js"
   ]
 }
