@@ -47,6 +47,9 @@ const nodeviewJSS = createUseStyles({
     borderStyle: 'solid',
     borderColor: 'red',
   },
+  Tooltip: {
+    fontSize: '3em',
+  },
 })
 
 export default nodeviewJSS

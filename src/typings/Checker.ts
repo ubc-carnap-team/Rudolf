@@ -5,11 +5,17 @@ export interface SequentNode {
   id?: string
 }
 
-export type CheckerFeedback = {
+export type CheckerFeedbackSuccess = {
+  success: true
   feedback?: FeedbackMap
-  sequent?: SequentNode
-  errorMessage?: string
 }
+
+export type CheckerFeedbackFailure = {
+  success: false
+  errorMessage: string
+}
+
+export type CheckerFeedback = CheckerFeedbackSuccess | CheckerFeedbackFailure
 
 export type FeedbackNode = {
   class: string
@@ -19,4 +25,4 @@ export type FeedbackNode = {
 
 export type FeedbackMessage = Omit<FeedbackNode, 'forest'>
 
-export type FeedbackMap = { [id: string]: FeedbackMessage }
+export type FeedbackMap = { [id: string]: FeedbackMessage | undefined }
