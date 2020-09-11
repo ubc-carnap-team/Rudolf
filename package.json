@@ -68,7 +68,7 @@
     "gh-pages": "^3.0.0",
     "husky": "^4.2.5",
     "parcel-bundler": "^1.12.4",
-    "prettier": "^2.0.5",
+    "prettier": "^2.1.1",
     "pretty-quick": "^2.0.1"
   },
   "husky": {
