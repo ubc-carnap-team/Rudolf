@@ -19,6 +19,7 @@ const appJSS = createUseStyles({
   TreeBounder: {
     borderColor: 'black',
     borderStyle: 'solid',
+    borderWidth: '.1em',
     '&::-webkit-scrollbar': {
       height: '6px',
       width: '6px',
