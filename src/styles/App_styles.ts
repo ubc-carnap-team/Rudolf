@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss'
 const appJSS = createUseStyles({
   AppBounder: {
     color: 'black',
-    fontSize: 'calc(10px + 2vmin)',
+    fontSize: 'calc(8px + 1.5vmin)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -26,6 +26,8 @@ const appJSS = createUseStyles({
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: 'black',
     },
+    maxWidth: '80vw',
+    overflowX: 'scroll',
   },
 })
 
