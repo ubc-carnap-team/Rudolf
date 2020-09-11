@@ -34,19 +34,21 @@ const nodeviewJSS = createUseStyles({
 
   FormulaBounder: {
     display: 'grid',
+    borderRadius: '.2em',
+    borderWidth: '.1em',
+    borderStyle: 'solid',
+    borderColor: 'transparent',
     rowGap,
   },
 
   Correct: {
-    borderWidth: '.1em',
-    borderStyle: 'solid',
     borderColor: 'green',
   },
+
   Incorrect: {
-    borderWidth: '.1em',
-    borderStyle: 'solid',
     borderColor: 'red',
   },
+
   Tooltip: {
     fontSize: '3em',
   },
