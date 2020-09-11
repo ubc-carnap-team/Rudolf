@@ -56,35 +56,33 @@ const NodeView: FC<Props> = ({
           }}
         >
           <CustomTooltip title={feedbackInfo}>
-            <div>
-              <ArcherElement
-                id={id}
-                relations={forest.map((child) => {
-                  return {
-                    targetId: child.id,
-                    targetAnchor: 'top',
-                    sourceAnchor: 'bottom',
-                  }
-                })}
+            <ArcherElement
+              id={id}
+              relations={forest.map((child) => {
+                return {
+                  targetId: child.id,
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                }
+              })}
+            >
+              <div
+                className={`${classes.FormulaBounder} ${feedbackClass} `}
+                {...props}
               >
-                <div
-                  className={`${classes.FormulaBounder} ${feedbackClass} `}
-                  {...props}
-                >
-                  {formulas.map((form, index) => {
-                    return (
-                      <FormulaView
-                        key={`${form}-${index}`}
-                        node={node}
-                        index={index}
-                        dispatch={dispatch}
-                        {...form}
-                      />
-                    )
-                  })}
-                </div>
-              </ArcherElement>
-            </div>
+                {formulas.map((form, index) => {
+                  return (
+                    <FormulaView
+                      key={`${form}-${index}`}
+                      node={node}
+                      index={index}
+                      dispatch={dispatch}
+                      {...form}
+                    />
+                  )
+                })}
+              </div>
+            </ArcherElement>
           </CustomTooltip>
         </div>
 

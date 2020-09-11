@@ -33,7 +33,7 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
     dispatch(createTree(premiseArray))
   }
 
-  const { tree, justifications } = currentState
+  const { tree, justifications, feedback } = currentState
 
   useEffect(() => {
     if (window.Carnap) {
@@ -82,7 +82,10 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
           </IconButton>
         </span>
       </div>
-      <div className={classes.TreeBounder}>
+      <div
+        className={classes.TreeBounder}
+        style={{ borderColor: feedback.success ? 'green' : 'red' }}
+      >
         <ArcherContainer
           arrowLength={0}
           style={{ zIndex: 1 }}

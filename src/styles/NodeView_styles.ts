@@ -5,7 +5,7 @@ export const rowGap = '.75em'
 const columnGap = '.5em'
 
 const nodeviewJSS = createUseStyles({
-  NodeViewBaseContainer: {
+  TruthTree: {
     display: 'grid',
     padding: '0.2em',
     gridTemplateColumns:
@@ -38,12 +38,12 @@ const nodeviewJSS = createUseStyles({
   },
 
   Correct: {
-    borderWidth: '1.5px',
+    borderWidth: '.1em',
     borderStyle: 'solid',
     borderColor: 'green',
   },
   Incorrect: {
-    borderWidth: '1.5px',
+    borderWidth: '.1em',
     borderStyle: 'solid',
     borderColor: 'red',
   },
