@@ -200,5 +200,15 @@ const validRow = (maybeRow: number): boolean => maybeRow > 0
 // returns the non-recursive properties of the FeedbackNode
 const extractMessage = ({
   forest,
-  ...feedbackMessage
-}: FeedbackNode): FeedbackMessage => feedbackMessage
+  ...feedback
+}: FeedbackNode): FeedbackMessage => translateFeedback(feedback)
+
+const feedbackMessages: { [message: string]: string } = {
+  'Wrong number of Premises': 'Wrong number of branches.',
+  "This doesn't follow by this rule": 'Incorrect application of rule.',
+}
+
+const translateFeedback = (feedback: FeedbackMessage): FeedbackMessage => ({
+  ...feedback,
+  info: feedbackMessages[feedback.info] ?? feedback.info,
+})
