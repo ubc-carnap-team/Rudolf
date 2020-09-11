@@ -3,7 +3,7 @@ import {
   FeedbackNode,
   SequentNode,
   FeedbackMessage,
-  CheckerFeedback,
+  CheckerFeedbackSuccess,
 } from '../typings/Checker'
 import { FormulaNode, JustificationMap, TreeForm } from '../typings/TreeState'
 import { firstRow } from './nodes'
@@ -169,10 +169,13 @@ const checkSequent = async (sequent: SequentNode): Promise<FeedbackNode> => {
 export const checkTree = async (
   tree: any,
   justifications: JustificationMap
-): Promise<CheckerFeedback> => {
+): Promise<CheckerFeedbackSuccess> => {
   const sequent = convertToSequent(tree, justifications)
   const feedback: FeedbackNode = await checkSequent(sequent)
-  return { sequent, feedback: processFeedback(sequent, feedback) }
+  return {
+    success: true,
+    feedback: processFeedback(sequent, feedback),
+  }
 }
 
 const rearrangeFormulas = (
@@ -197,5 +200,15 @@ const validRow = (maybeRow: number): boolean => maybeRow > 0
 // returns the non-recursive properties of the FeedbackNode
 const extractMessage = ({
   forest,
-  ...feedbackMessage
-}: FeedbackNode): FeedbackMessage => feedbackMessage
+  ...feedback
+}: FeedbackNode): FeedbackMessage => translateFeedback(feedback)
+
+const feedbackMessages: { [message: string]: string } = {
+  'Wrong number of Premises': 'Wrong number of branches.',
+  "This doesn't follow by this rule": 'Incorrect application of rule.',
+}
+
+const translateFeedback = (feedback: FeedbackMessage): FeedbackMessage => ({
+  ...feedback,
+  info: feedbackMessages[feedback.info] ?? feedback.info,
+})

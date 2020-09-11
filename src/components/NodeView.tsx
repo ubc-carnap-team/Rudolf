@@ -1,4 +1,3 @@
-import { Tooltip } from '@material-ui/core'
 import React, { FC } from 'react'
 import { ArcherElement } from 'react-archer'
 
@@ -9,6 +8,7 @@ import { firstRow, isFormulaNode } from '../util/nodes'
 import FormulaView from './FormulaView'
 import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
 import StyledAutosizeInput from './StyledAutosizeInput'
+import CustomTooltip from './CustomTooltip'
 
 type Props = {
   node: TreeNode
@@ -32,10 +32,12 @@ const NodeView: FC<Props> = ({
   let feedbackInfo = ''
   let feedbackClass = ''
   if (feedbackMap) {
-    const feedback = feedbackMap[node.id] ?? ''
-    feedbackInfo = feedback.info ?? ''
-    feedbackClass =
-      feedback.class === 'correct' ? classes.Correct : classes.Incorrect
+    const feedback = feedbackMap[node.id]
+    if (feedback) {
+      feedbackInfo = feedback.info ?? ''
+      feedbackClass =
+        feedback.class === 'correct' ? classes.Correct : classes.Incorrect
+    }
   }
   if (isFormulaNode(node)) {
     const { id, formulas, forest } = node
@@ -53,10 +55,7 @@ const NodeView: FC<Props> = ({
             gridColumn: `1 / span ${forest.length}`,
           }}
         >
-          <Tooltip
-            title={feedbackInfo}
-            PopperProps={{ style: { fontSize: 16 } }}
-          >
+          <CustomTooltip title={feedbackInfo}>
             <div>
               <ArcherElement
                 id={id}
@@ -86,7 +85,7 @@ const NodeView: FC<Props> = ({
                 </div>
               </ArcherElement>
             </div>
-          </Tooltip>
+          </CustomTooltip>
         </div>
 
         {forest.map((child, index) => {
@@ -116,7 +115,7 @@ const NodeView: FC<Props> = ({
     )
   } else if (node.nodeType === 'contradiction') {
     return (
-      <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
+      <CustomTooltip title={feedbackInfo}>
         <div>
           <ArcherElement id={node.id}>
             <div
@@ -134,11 +133,11 @@ const NodeView: FC<Props> = ({
             </div>
           </ArcherElement>
         </div>
-      </Tooltip>
+      </CustomTooltip>
     )
   } else if (node.nodeType === 'finished') {
     return (
-      <Tooltip title={feedbackInfo} PopperProps={{ style: { fontSize: 16 } }}>
+      <CustomTooltip title={feedbackInfo}>
         <div>
           <ArcherElement id={node.id}>
             <div
@@ -149,7 +148,7 @@ const NodeView: FC<Props> = ({
             </div>
           </ArcherElement>
         </div>
-      </Tooltip>
+      </CustomTooltip>
     )
   } else {
     throw new Error(

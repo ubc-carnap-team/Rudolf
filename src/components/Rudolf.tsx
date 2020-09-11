@@ -38,11 +38,13 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
   useEffect(() => {
     if (window.Carnap) {
       checkTree(tree, justifications)
-        .then(({ sequent, feedback }) => {
-          return dispatch(updateFeedback({ feedback, sequent }))
+        .then(({ feedback }) => {
+          return dispatch(updateFeedback({ success: true, feedback }))
         })
         .catch(({ message }: Error) => {
-          return dispatch(updateFeedback({ errorMessage: message }))
+          return dispatch(
+            updateFeedback({ success: false, errorMessage: message })
+          )
         })
     }
   }, [dispatch, justifications, tree])
