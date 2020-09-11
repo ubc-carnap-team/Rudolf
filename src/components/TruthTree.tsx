@@ -56,7 +56,6 @@ const TruthTree = ({ currentState, dispatch }: Props) => {
             style={{ gridRow: row }}
           >
             <StyledAutosizeInput
-              style={{ marginRight: '.5vmin' }}
               onChange={({ currentTarget: { value: parentRow } }) =>
                 dispatch(updateJustification(row, { parentRow }))
               }
