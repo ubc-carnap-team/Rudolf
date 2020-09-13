@@ -1,11 +1,11 @@
 import { createUseStyles } from 'react-jss'
 
 export const rowHeight = '1.5em'
-export const rowGap = '3vmin'
-const columnGap = '3vmin'
+export const rowGap = '.75em'
+const columnGap = '.5em'
 
 const nodeviewJSS = createUseStyles({
-  NodeViewBaseContainer: {
+  TruthTree: {
     display: 'grid',
     padding: '0.2em',
     gridTemplateColumns:
@@ -25,6 +25,10 @@ const nodeviewJSS = createUseStyles({
     alignSelf: 'start',
   },
 
+  NodeViewContainer: {
+    gridColumn: 'nodeView',
+  },
+
   NodeView: {
     display: 'grid',
     textAlign: 'center',
@@ -34,19 +38,13 @@ const nodeviewJSS = createUseStyles({
 
   FormulaBounder: {
     display: 'grid',
+    borderRadius: '.2em',
+    borderWidth: '.1em',
+    borderStyle: 'solid',
+    borderColor: 'transparent',
     rowGap,
   },
 
-  Correct: {
-    borderWidth: '1.5px',
-    borderStyle: 'solid',
-    borderColor: 'green',
-  },
-  Incorrect: {
-    borderWidth: '1.5px',
-    borderStyle: 'solid',
-    borderColor: 'red',
-  },
   Tooltip: {
     fontSize: '3em',
   },

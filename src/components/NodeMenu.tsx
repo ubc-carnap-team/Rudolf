@@ -45,7 +45,21 @@ export const NodeMenu: FC<Props> = ({
 }) => {
   const formula = node.formulas[index]
   return (
-    <Menu open={open} anchorEl={anchorEl} onClose={close}>
+    <Menu
+      open={open}
+      getContentAnchorEl={null}
+      anchorEl={anchorEl}
+      onClose={close}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+      style={{ zIndex: 2000 }}
+    >
       <MenuItem
         onClick={() => {
           dispatch(continueBranch(node.id, 1))

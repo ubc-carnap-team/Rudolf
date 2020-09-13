@@ -18,6 +18,7 @@ import { ArcherContainer } from 'react-archer'
 import appJSS from '../styles/App_styles'
 import TruthTree from './TruthTree'
 import { checkTree } from '../util/carnapAdapter'
+import feedbackJSS from '../styles/feedback_styles'
 
 const Rudolf: React.FC<{ initialPremises?: string }> = ({
   initialPremises = '',
@@ -33,7 +34,7 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
     dispatch(createTree(premiseArray))
   }
 
-  const { tree, justifications } = currentState
+  const { tree, justifications, feedback } = currentState
 
   useEffect(() => {
     if (window.Carnap) {
@@ -49,6 +50,7 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
     }
   }, [dispatch, justifications, tree])
   const classes = appJSS()
+  const feedbackClasses = feedbackJSS()
   const topItemsRef = useRef<HTMLDivElement>(null)
   return (
     <main className={classes.AppBounder}>
@@ -83,23 +85,19 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
         </span>
       </div>
       <div
-        className={classes.TreeBounder}
-        style={{
-          top: topItemsRef.current?.offsetHeight,
-          position: topItemsRef.current ? 'absolute' : 'static',
-        }}
+        className={`${classes.TreeBounder} ${
+          feedback.success ? '' : feedbackClasses.Incorrect
+        }`}
       >
-        <div className={classes.Tree}>
-          <ArcherContainer
-            arrowLength={0}
-            style={{ zIndex: 1 }}
-            svgContainerStyle={{ zIndex: -1 }}
-            strokeColor="black"
-            noCurves={false}
-          >
-            <TruthTree currentState={currentState} dispatch={dispatch} />
-          </ArcherContainer>
-        </div>
+        <ArcherContainer
+          arrowLength={0}
+          style={{ zIndex: 1 }}
+          svgContainerStyle={{ zIndex: -1 }}
+          strokeColor="black"
+          noCurves={false}
+        >
+          <TruthTree currentState={currentState} dispatch={dispatch} />
+        </ArcherContainer>
       </div>
       <JSONView {...{ ...currentState, dispatch }} />
     </main>

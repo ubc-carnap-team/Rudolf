@@ -22,9 +22,7 @@ const TruthTree = ({ currentState, dispatch }: Props) => {
   return (
     <CustomTooltip title={!feedback.success ? feedback.errorMessage : ''}>
       <div
-        className={`${classes.NodeViewBaseContainer} ${
-          feedback.success ? '' : classes.Incorrect
-        }`}
+        className={classes.TruthTree}
         style={{
           gridTemplateRows: `repeat(${nextRow - 1}, ${rowHeight})`,
         }}
@@ -41,8 +39,8 @@ const TruthTree = ({ currentState, dispatch }: Props) => {
           )
         })}
         <div
+          className={classes.NodeViewContainer}
           style={{
-            gridColumn: 'nodeView',
             gridRow: `1 / span ${rows.length}`,
           }}
         >
@@ -64,7 +62,7 @@ const TruthTree = ({ currentState, dispatch }: Props) => {
               style={{ gridRow: row }}
             >
               <StyledAutosizeInput
-                style={{ marginRight: '.5vmin' }}
+                style={{ marginRight: '.1em' }}
                 onChange={({ currentTarget: { value: parentRow } }) =>
                   dispatch(updateJustification(row, { parentRow }))
                 }

@@ -2,16 +2,12 @@ import { createUseStyles } from 'react-jss'
 
 const appJSS = createUseStyles({
   AppBounder: {
-    background: '#ffffff',
-    textAlign: 'center',
     color: 'black',
-    fontSize: 'calc(10px + 2vmin)',
-    width: '100vw',
-    height: '100vh',
+    fontSize: 'calc(8px + 1.5vmin)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    overflow: 'hidden',
+    margin: '1em',
   },
 
   TopItemsBounder: {
@@ -21,15 +17,9 @@ const appJSS = createUseStyles({
   },
 
   TreeBounder: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '80vw',
-    height: '70vh',
-    position: 'absolute',
-    borderColor: 'black',
     borderStyle: 'solid',
-    overflow: 'scroll',
+    borderWidth: '.1em',
+    borderRadius: '.2em',
     '&::-webkit-scrollbar': {
       height: '6px',
       width: '6px',
@@ -37,15 +27,8 @@ const appJSS = createUseStyles({
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: 'black',
     },
-  },
-
-  Tree: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    position: 'absolute',
-    left: '50%',
-    transform: 'translate(max(-50%, -40vw), 0px)',
+    maxWidth: '80vw',
+    overflowX: 'scroll',
   },
 })
 

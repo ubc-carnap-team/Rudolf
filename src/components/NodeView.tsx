@@ -9,6 +9,7 @@ import FormulaView from './FormulaView'
 import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
 import StyledAutosizeInput from './StyledAutosizeInput'
 import CustomTooltip from './CustomTooltip'
+import feedbackJSS from '../styles/feedback_styles'
 
 type Props = {
   node: TreeNode
@@ -29,6 +30,7 @@ const NodeView: FC<Props> = ({
   ...props
 }) => {
   const classes = nodeviewJSS()
+  const feedbackClasses = feedbackJSS()
   let feedbackInfo = ''
   let feedbackClass = ''
   if (feedbackMap) {
@@ -36,12 +38,13 @@ const NodeView: FC<Props> = ({
     if (feedback) {
       feedbackInfo = feedback.info ?? ''
       feedbackClass =
-        feedback.class === 'correct' ? classes.Correct : classes.Incorrect
+        feedback.class === 'correct'
+          ? feedbackClasses.Correct
+          : feedbackClasses.Incorrect
     }
   }
   if (isFormulaNode(node)) {
     const { id, formulas, forest } = node
-
     return (
       <div
         className={classes.NodeView}
