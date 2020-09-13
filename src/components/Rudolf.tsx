@@ -18,6 +18,7 @@ import { ArcherContainer } from 'react-archer'
 import appJSS from '../styles/App_styles'
 import TruthTree from './TruthTree'
 import { checkTree } from '../util/carnapAdapter'
+import feedbackJSS from '../styles/feedback_styles'
 
 const Rudolf: React.FC<{ initialPremises?: string }> = ({
   initialPremises = '',
@@ -49,6 +50,7 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
     }
   }, [dispatch, justifications, tree])
   const classes = appJSS()
+  const feedbackClasses = feedbackJSS()
   const topItemsRef = useRef<HTMLDivElement>(null)
   return (
     <main className={classes.AppBounder}>
@@ -83,8 +85,9 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
         </span>
       </div>
       <div
-        className={classes.TreeBounder}
-        style={{ borderColor: feedback.success ? 'green' : 'red' }}
+        className={`${classes.TreeBounder} ${
+          feedback.success ? '' : feedbackClasses.Incorrect
+        }`}
       >
         <ArcherContainer
           arrowLength={0}

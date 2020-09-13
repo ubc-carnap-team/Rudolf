@@ -25,6 +25,10 @@ const nodeviewJSS = createUseStyles({
     alignSelf: 'start',
   },
 
+  NodeViewContainer: {
+    gridColumn: 'nodeView',
+  },
+
   NodeView: {
     display: 'grid',
     textAlign: 'center',
@@ -39,14 +43,6 @@ const nodeviewJSS = createUseStyles({
     borderStyle: 'solid',
     borderColor: 'transparent',
     rowGap,
-  },
-
-  Correct: {
-    borderColor: 'green',
-  },
-
-  Incorrect: {
-    borderColor: 'red',
   },
 
   Tooltip: {

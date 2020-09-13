@@ -39,8 +39,8 @@ const TruthTree = ({ currentState, dispatch }: Props) => {
           )
         })}
         <div
+          className={classes.NodeViewContainer}
           style={{
-            gridColumn: 'nodeView',
             gridRow: `1 / span ${rows.length}`,
           }}
         >
@@ -62,7 +62,7 @@ const TruthTree = ({ currentState, dispatch }: Props) => {
               style={{ gridRow: row }}
             >
               <StyledAutosizeInput
-                style={{ marginRight: '.5vmin' }}
+                style={{ marginRight: '.1em' }}
                 onChange={({ currentTarget: { value: parentRow } }) =>
                   dispatch(updateJustification(row, { parentRow }))
                 }
