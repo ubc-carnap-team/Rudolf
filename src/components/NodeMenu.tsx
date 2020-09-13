@@ -58,6 +58,7 @@ export const NodeMenu: FC<Props> = ({
         vertical: 'top',
         horizontal: 'center',
       }}
+      style={{ zIndex: 2000 }}
     >
       <MenuItem
         onClick={() => {
