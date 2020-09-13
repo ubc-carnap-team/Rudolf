@@ -47,6 +47,7 @@ export const NodeMenu: FC<Props> = ({
   return (
     <Menu
       open={open}
+      getContentAnchorEl={null}
       anchorEl={anchorEl}
       onClose={close}
       anchorOrigin={{
