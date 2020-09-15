@@ -9,6 +9,7 @@ import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
 import { range } from '../util/helpers'
 import StyledAutosizeInput from './StyledAutosizeInput'
 import CustomTooltip from './CustomTooltip'
+import FeedbackIcon from './FeedbackIcon'
 
 type Props = {
   currentState: RudolfStore
@@ -76,6 +77,7 @@ const TruthTree = ({ currentState, dispatch }: Props) => {
                 value={rule}
                 placeholder="rule"
               />
+              {!feedback.success ? null : <FeedbackIcon isCorrect={true} />}
             </div>
           )
         })}
