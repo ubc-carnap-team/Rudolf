@@ -18,6 +18,7 @@ const nodeviewJSS = createUseStyles({
 
   RowNumber: {
     gridColumn: 'rowNumber',
+    marginLeft: '.5em',
   },
 
   Justification: {
@@ -25,6 +26,8 @@ const nodeviewJSS = createUseStyles({
     display: 'flex',
     alignSelf: 'start',
     alignItems: 'center',
+    marginRight: '.5em',
+    height: rowHeight,
   },
 
   NodeViewContainer: {
