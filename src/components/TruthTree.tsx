@@ -14,9 +14,10 @@ import FeedbackIcon from './FeedbackIcon'
 type Props = {
   currentState: RudolfStore
   dispatch: CustomDispatch
+  feedbackByRow: any
 }
 
-const TruthTree = ({ currentState, dispatch }: Props) => {
+const TruthTree = ({ currentState, dispatch, feedbackByRow }: Props) => {
   const classes = nodeviewJSS()
   const { nextRow, tree, justifications, feedback } = currentState
   const rows = range(1, nextRow)
@@ -71,13 +72,22 @@ const TruthTree = ({ currentState, dispatch }: Props) => {
                 placeholder="row"
               />
               <StyledAutosizeInput
+                style={{ marginRight: '.3em' }}
                 onChange={({ currentTarget: { value: rule } }) =>
                   dispatch(updateJustification(row, { rule }))
                 }
                 value={rule}
                 placeholder="rule"
               />
-              {!feedback.success ? null : <FeedbackIcon isCorrect={true} />}
+              {!feedback.success ? null : (
+                <FeedbackIcon
+                  isCorrect={
+                    feedbackByRow[row]
+                      ? feedbackByRow[row].class === 'correct'
+                      : false
+                  }
+                />
+              )}
             </div>
           )
         })}

@@ -71,10 +71,7 @@ const NodeView: FC<Props> = ({
                   }
                 })}
               >
-                <div
-                  className={`${classes.FormulaBounder} ${feedbackClass} `}
-                  {...props}
-                >
+                <div className={classes.FormulaBounder} {...props}>
                   {formulas.map((form, index) => {
                     return (
                       <FormulaView
