@@ -1,5 +1,5 @@
 import { FeedbackByRow, FeedbackMap } from '../typings/Checker'
-import { TreeNode } from '../typings/TreeState'
+import { FormulaNode, TreeNode } from '../typings/TreeState'
 
 export const isEmptyArray = <T>(
   maybeArray: Array<T> | string
@@ -22,20 +22,16 @@ export const range = (start: number, stop: number): number[] => {
 }
 
 const getChildFeedback = (
-  node: TreeNode,
+  node: FormulaNode,
   feedback: FeedbackMap
 ): FeedbackByRow => {
-  if (node.nodeType === 'formulas') {
-    if (node.forest.length > 1) {
-      return {
-        ...getFeedbackByRow(node.forest[0], feedback),
-        ...getFeedbackByRow(node.forest[1], feedback),
-      }
-    } else if (node.forest.length > 0) {
-      return getFeedbackByRow(node.forest[0], feedback)
-    } else {
-      return {}
+  if (node.forest.length > 1) {
+    return {
+      ...getFeedbackByRow(node.forest[0], feedback),
+      ...getFeedbackByRow(node.forest[1], feedback),
     }
+  } else if (node.forest.length > 0) {
+    return getFeedbackByRow(node.forest[0], feedback)
   } else {
     return {}
   }
@@ -45,9 +41,13 @@ export const getFeedbackByRow = (
   node: TreeNode,
   feedback: FeedbackMap
 ): FeedbackByRow => {
-  return {
-    [node.formulas[0].row]: feedback[node.id],
-    ...getChildFeedback(node, feedback),
+  if (node.nodeType === 'formulas') {
+    return {
+      [node.formulas[0].row]: feedback[node.id],
+      ...getChildFeedback(node, feedback),
+    }
+  } else {
+    return {}
   }
 }
 
