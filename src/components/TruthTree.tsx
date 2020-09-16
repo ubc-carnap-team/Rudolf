@@ -79,13 +79,23 @@ const TruthTree = ({ currentState, dispatch, feedbackByRow }: Props) => {
                 value={rule}
                 placeholder="rule"
               />
-              <FeedbackIcon
-                isCorrect={
+              <CustomTooltip
+                title={
                   feedback.success && feedbackByRow[row]
-                    ? feedbackByRow[row].class === 'correct'
-                    : false
+                    ? feedbackByRow[row].info
+                    : ''
                 }
-              />
+              >
+                <div>
+                  <FeedbackIcon
+                    isCorrect={
+                      feedback.success && feedbackByRow[row]
+                        ? feedbackByRow[row].class === 'correct'
+                        : false
+                    }
+                  />
+                </div>
+              </CustomTooltip>
             </div>
           )
         })}
