@@ -1,7 +1,7 @@
 import { createUseStyles } from 'react-jss'
 
 export const rowHeight = '1.5em'
-export const feedbackSize = '.75em'
+export const feedbackSize = '1em'
 export const rowGap = '.75em'
 const columnGap = '.5em'
 
