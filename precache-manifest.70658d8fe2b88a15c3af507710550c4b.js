@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "f3b95fc7e8041a5b2d79243ad6700ebe",
+    "revision": "48e618605ed93202402e4eaaea808068",
     "url": "/Rudolf/index.html"
   },
   {
-    "revision": "25db2362a171cf767776",
+    "revision": "5c8e4fdf48b04ef3b115",
     "url": "/Rudolf/static/css/2.d9ad5f5c.chunk.css"
   },
   {
-    "revision": "101506f500af7db64a5e",
+    "revision": "c8dfbc3f398d05a8aa3c",
     "url": "/Rudolf/static/css/main.5580a0b6.chunk.css"
   },
   {
-    "revision": "25db2362a171cf767776",
-    "url": "/Rudolf/static/js/2.0cc08779.chunk.js"
+    "revision": "5c8e4fdf48b04ef3b115",
+    "url": "/Rudolf/static/js/2.06ba1290.chunk.js"
   },
   {
     "revision": "a0361c858d3ed501b59eb1da0c25d73e",
-    "url": "/Rudolf/static/js/2.0cc08779.chunk.js.LICENSE.txt"
+    "url": "/Rudolf/static/js/2.06ba1290.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "101506f500af7db64a5e",
-    "url": "/Rudolf/static/js/main.2b2fc285.chunk.js"
+    "revision": "c8dfbc3f398d05a8aa3c",
+    "url": "/Rudolf/static/js/main.0ddca4b2.chunk.js"
   },
   {
     "revision": "40304c2b8a20c6026463",
