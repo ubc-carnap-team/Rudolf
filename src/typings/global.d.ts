@@ -1,10 +1,7 @@
-import { SequentNode, FeedbackNode } from './Checker'
+import { Checker } from './Checker'
 declare global {
   const Carnap: {
-    checkIchikawaJenkinsSLTableau: (
-      sequent: SequentNode,
-      callback: (feedback: FeedbackNode) => any
-    ) => void
+    checkIchikawaJenkinsSLTableau: Checker
   }
   interface Window {
     Carnap: typeof Carnap

@@ -4,6 +4,7 @@ import {
   SequentNode,
   FeedbackMessage,
   CheckerFeedbackSuccess,
+  Checker,
 } from '../typings/Checker'
 import { FormulaNode, JustificationMap, TreeForm } from '../typings/TreeState'
 import { firstRow } from './nodes'
@@ -153,11 +154,14 @@ export const processFeedback = (
   return feedbackMap
 }
 
-// Promisifies the checker
-const checkSequent = async (sequent: SequentNode): Promise<FeedbackNode> => {
+// Promisified checker
+const checkSequent = async (
+  sequent: SequentNode,
+  checker: Checker
+): Promise<FeedbackNode> => {
   return new Promise((resolve, reject) => {
     try {
-      Carnap.checkIchikawaJenkinsSLTableau(sequent, (result: FeedbackNode) => {
+      checker(sequent, (result: FeedbackNode) => {
         resolve(result)
       })
     } catch (error) {
@@ -167,11 +171,12 @@ const checkSequent = async (sequent: SequentNode): Promise<FeedbackNode> => {
 }
 
 export const checkTree = async (
-  tree: any,
-  justifications: JustificationMap
+  tree: FormulaNode,
+  justifications: JustificationMap,
+  checker: Checker
 ): Promise<CheckerFeedbackSuccess> => {
   const sequent = convertToSequent(tree, justifications)
-  const feedback: FeedbackNode = await checkSequent(sequent)
+  const feedback: FeedbackNode = await checkSequent(sequent, checker)
   return {
     success: true,
     feedback: processFeedback(sequent, feedback),
