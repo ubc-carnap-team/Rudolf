@@ -7,7 +7,10 @@ import * as serviceWorker from './serviceWorker'
 const initialPremises = 'P->Q,P,~Q'
 
 ReactDOM.render(
-  <Rudolf initialPremises={initialPremises} />,
+  <Rudolf
+    initialPremises={initialPremises}
+    checker={Carnap.checkIchikawaJenkinsSLTableau}
+  />,
   document.getElementById('root')
 )
 

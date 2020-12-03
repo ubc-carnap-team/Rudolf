@@ -20,10 +20,11 @@ import TruthTree from './TruthTree'
 import { checkTree } from '../util/carnapAdapter'
 import feedbackJSS from '../styles/feedback_styles'
 import { isAllFeedbackCorrect, getFeedbackByRow } from '../util/helpers'
-import { FeedbackMap } from '../typings/Checker'
+import { FeedbackMap, Checker } from '../typings/Checker'
 
-const Rudolf: React.FC<{ initialPremises?: string }> = ({
+const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
   initialPremises = '',
+  checker,
 }): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
   const [[pastStates, currentState, futureStates], dispatch] = useReducer(
@@ -40,7 +41,7 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
 
   useEffect(() => {
     if (window.Carnap) {
-      checkTree(tree, justifications)
+      checkTree(tree, justifications, checker)
         .then(({ feedback }) => {
           return dispatch(updateFeedback({ success: true, feedback }))
         })
@@ -50,7 +51,7 @@ const Rudolf: React.FC<{ initialPremises?: string }> = ({
           )
         })
     }
-  }, [dispatch, justifications, tree])
+  }, [dispatch, justifications, tree, checker])
   const classes = appJSS()
   const feedbackClasses = feedbackJSS()
   let feedbackByRow: any

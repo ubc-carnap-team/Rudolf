@@ -1,3 +1,8 @@
+export type Checker = (
+  sequent: SequentNode,
+  callback: (feedback: FeedbackNode) => any
+) => void
+
 export interface SequentNode {
   label: string
   rule: string
