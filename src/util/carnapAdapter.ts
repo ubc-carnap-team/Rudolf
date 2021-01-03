@@ -209,11 +209,11 @@ const extractMessage = ({
 }: FeedbackNode): FeedbackMessage => translateFeedback(feedback)
 
 const feedbackMessages: { [message: string]: string } = {
-  'Wrong number of Premises': 'Wrong number of branches.',
-  "This doesn't follow by this rule": 'Incorrect application of rule.',
+  'WRONG NUMBER OF PREMISES': 'Wrong number of branches.',
+  "THIS DOESN'T FOLLOW BY THIS RULE": 'Incorrect use of resolution rule.',
 }
 
 const translateFeedback = (feedback: FeedbackMessage): FeedbackMessage => ({
   ...feedback,
-  info: feedbackMessages[feedback.info] ?? feedback.info,
+  info: feedbackMessages[feedback.info.toLocaleUpperCase()] ?? feedback.info,
 })
