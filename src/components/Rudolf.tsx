@@ -1,9 +1,10 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/all.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { IconButton } from '@material-ui/core'
-import { Redo, Undo } from '@material-ui/icons'
-import React, { useReducer, useState, useRef, useEffect } from 'react'
+import { Feedback, Redo, Undo } from '@material-ui/icons'
+import React, { useEffect, useReducer, useRef, useState } from 'react'
+import { ArcherContainer } from 'react-archer'
 
 import {
   createTree,
@@ -11,15 +12,13 @@ import {
   rudolfReducer,
   updateFeedback,
 } from '../RudolfReducer'
-import { makeUndoable } from '../undoableReducer'
-import { JSONView } from './JSONView'
-import PremiseInput from './PremiseInput'
-import { ArcherContainer } from 'react-archer'
 import appJSS from '../styles/App_styles'
-import TruthTree from './TruthTree'
-import { checkTree } from '../util/carnapAdapter'
 import feedbackJSS from '../styles/feedback_styles'
 import { Checker } from '../typings/Checker'
+import { makeUndoable } from '../undoableReducer'
+import { checkTree } from '../util/carnapAdapter'
+import PremiseInput from './PremiseInput'
+import TruthTree from './TruthTree'
 
 const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
   initialPremises = '',
@@ -101,7 +100,18 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
           <TruthTree currentState={currentState} dispatch={dispatch} />
         </ArcherContainer>
       </div>
-      <JSONView {...{ ...currentState, dispatch }} />
+      <a
+        href={`mailto:phil.logic.ubc@gmail.com?subject=${encodeURIComponent(
+          `USER FEEDBACK - `
+        )}&body=${encodeURIComponent(
+          `DESCRIBE YOUR PROBLEM OR SUGGESTION HERE \n\n\n\n${JSON.stringify(
+            currentState
+          )}`
+        )}`}
+      >
+        feedback
+        <Feedback style={{ alignSelf: 'flex-end' }} />
+      </a>
     </main>
   )
 }
