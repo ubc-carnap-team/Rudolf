@@ -1,8 +1,9 @@
-import * as serviceWorker from './serviceWorker'
 import { createTrees, WidgetProps } from './lib'
+import * as serviceWorker from './serviceWorker'
 
 const initialPremises = 'P->Q,P,~Q'
 
+console.log('creating trees')
 const trees: WidgetProps[] = [
   {
     elementId: 'problem-1.1',
