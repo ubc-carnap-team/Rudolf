@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8737903973beab52201a050e88332880",
+    "revision": "417567297a09c9a2a821e57558dc7873",
     "url": "/Rudolf/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Rudolf/static/css/2.d9ad5f5c.chunk.css"
   },
   {
-    "revision": "17bd2c9d71719120eff5",
+    "revision": "c8a7ec975b4e62526d44",
     "url": "/Rudolf/static/css/main.5580a0b6.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Rudolf/static/js/2.a8ef3bcc.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "17bd2c9d71719120eff5",
-    "url": "/Rudolf/static/js/main.dbb1ae6c.chunk.js"
+    "revision": "c8a7ec975b4e62526d44",
+    "url": "/Rudolf/static/js/main.8caf53a0.chunk.js"
   },
   {
     "revision": "40304c2b8a20c6026463",
