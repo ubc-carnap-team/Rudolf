@@ -21,7 +21,7 @@ import PremiseInput from './PremiseInput'
 import RudolfFeedback from './RudolfFeedback'
 import TruthTree from './TruthTree'
 
-const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
+const Rudolf: React.FC<{ initialPremises?: string; checker: string }> = ({
   initialPremises = '',
   checker,
 }): JSX.Element => {
@@ -40,7 +40,7 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
 
   useEffect(() => {
     if (window.Carnap) {
-      checkTree(tree, justifications, checker)
+      checkTree(tree, justifications, (window.Carnap as any)[checker])
         .then(({ feedback }) => {
           return dispatch(updateFeedback({ success: true, feedback }))
         })

@@ -2,18 +2,17 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import Rudolf from './components/Rudolf'
-import { Checker } from './typings/Checker'
 
 export type WidgetProps = {
   elementId: string
   initialPremises: string
-  checker?: Checker
+  checker?: string
 }
 
 export const createTree = (
   elementId: string,
   initialPremises: string,
-  checker: Checker = Carnap.checkIchikawaJenkinsSLTableau
+  checker = 'checkIchikawaJenkinsSLTableau'
 ) => {
   ReactDOM.render(
     React.createElement(Rudolf, { initialPremises, checker }),

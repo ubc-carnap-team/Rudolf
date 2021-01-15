@@ -8,6 +8,7 @@ const appJSS = createUseStyles({
     flexDirection: 'column',
     alignItems: 'center',
     margin: '1em',
+    fontFamily: 'Fira Logic',
   },
 
   TopItemsBounder: {

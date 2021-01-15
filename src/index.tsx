@@ -8,7 +8,6 @@ const trees: WidgetProps[] = [
   {
     elementId: 'problem-1.1',
     initialPremises,
-    checker: Carnap.checkIchikawaJenkinsSLTableau,
   },
   { elementId: 'problem-1.2', initialPremises: '' },
 ]
