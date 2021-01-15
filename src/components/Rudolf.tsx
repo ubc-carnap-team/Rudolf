@@ -2,7 +2,7 @@ import '../styles/all.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { IconButton } from '@material-ui/core'
-import { Feedback, Redo, Undo } from '@material-ui/icons'
+import { Redo, Undo } from '@material-ui/icons'
 import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { ArcherContainer } from 'react-archer'
 
@@ -18,6 +18,7 @@ import { Checker } from '../typings/Checker'
 import { makeUndoable } from '../undoableReducer'
 import { checkTree } from '../util/carnapAdapter'
 import PremiseInput from './PremiseInput'
+import RudolfFeedback from './RudolfFeedback'
 import TruthTree from './TruthTree'
 
 const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
@@ -100,18 +101,7 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
           <TruthTree currentState={currentState} dispatch={dispatch} />
         </ArcherContainer>
       </div>
-      <a
-        href={`mailto:phil.logic.ubc@gmail.com?subject=${encodeURIComponent(
-          `USER FEEDBACK - `
-        )}&body=${encodeURIComponent(
-          `DESCRIBE YOUR PROBLEM OR SUGGESTION HERE \n\n\n\n${JSON.stringify(
-            currentState
-          )}`
-        )}`}
-      >
-        feedback
-        <Feedback style={{ alignSelf: 'flex-end' }} />
-      </a>
+      <RudolfFeedback currentState={currentState} />
     </main>
   )
 }
