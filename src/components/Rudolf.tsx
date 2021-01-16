@@ -14,7 +14,6 @@ import {
 } from '../RudolfReducer'
 import appJSS from '../styles/App_styles'
 import feedbackJSS from '../styles/feedback_styles'
-import { Checker } from '../typings/Checker'
 import { makeUndoable } from '../undoableReducer'
 import { checkTree } from '../util/carnapAdapter'
 import PremiseInput from './PremiseInput'
@@ -39,18 +38,31 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: string }> = ({
   const { tree, justifications, feedback } = currentState
 
   useEffect(() => {
-    if (window.Carnap) {
-      checkTree(tree, justifications, (window.Carnap as any)[checker])
-        .then(({ feedback }) => {
-          return dispatch(updateFeedback({ success: true, feedback }))
-        })
-        .catch(({ message }: Error) => {
-          return dispatch(
-            updateFeedback({ success: false, errorMessage: message })
-          )
-        })
+    const carnapObject = window?.Carnap
+    if (carnapObject) {
+      const checkerFunction = carnapObject[checker]
+      if (typeof checkerFunction == 'function') {
+        checkTree(tree, justifications, checkerFunction)
+          .then(({ feedback }) => {
+            return dispatch(updateFeedback({ success: true, feedback }))
+          })
+          .catch(({ message }: Error) => {
+            return dispatch(
+              updateFeedback({ success: false, errorMessage: message })
+            )
+          })
+      } else {
+        console.error(
+          `The name ${checker} is not defined as a function on the Carnap client object. ${Carnap}`
+        )
+      }
+    } else {
+      console.warn(
+        'The Carnap global variable is not defined or does not contain an object. Skipping Check.'
+      )
     }
   }, [dispatch, justifications, tree, checker])
+
   const classes = appJSS()
   const feedbackClasses = feedbackJSS()
   const topItemsRef = useRef<HTMLDivElement>(null)
@@ -63,6 +75,7 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: string }> = ({
           onSubmit={handleSubmitPremises}
           setPremises={setPremises}
         />
+        <RudolfFeedback currentState={currentState} />
         <span className="tree-buttons">
           <IconButton
             aria-label="Undo"
@@ -101,7 +114,6 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: string }> = ({
           <TruthTree currentState={currentState} dispatch={dispatch} />
         </ArcherContainer>
       </div>
-      <RudolfFeedback currentState={currentState} />
     </main>
   )
 }

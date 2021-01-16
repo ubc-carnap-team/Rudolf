@@ -7,7 +7,7 @@ it('renders without crashing', () => {
   ReactDOM.render(
     <Rudolf
       initialPremises="P,Q,R,S"
-      checker={Carnap.checkIchikawaJenkinsSLTableau}
+      checker={'checkIchikawaJenkinsSLTableau'}
     />,
     div
   )
