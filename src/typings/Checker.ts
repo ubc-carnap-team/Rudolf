@@ -31,3 +31,5 @@ export type FeedbackNode = {
 export type FeedbackMessage = Omit<FeedbackNode, 'forest'>
 
 export type FeedbackMap = { [id: string]: FeedbackMessage | undefined }
+
+export type FeedbackByRow = { [index: number]: FeedbackMessage | undefined }

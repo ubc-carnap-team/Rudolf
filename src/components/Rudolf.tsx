@@ -3,7 +3,7 @@ import '../styles/all.css'
 
 import { IconButton } from '@material-ui/core'
 import { Redo, Undo } from '@material-ui/icons'
-import React, { useReducer, useState, useRef, useEffect } from 'react'
+import React, { useReducer, useState, useEffect } from 'react'
 
 import {
   createTree,
@@ -19,7 +19,8 @@ import appJSS from '../styles/App_styles'
 import TruthTree from './TruthTree'
 import { checkTree } from '../util/carnapAdapter'
 import feedbackJSS from '../styles/feedback_styles'
-import { Checker } from '../typings/Checker'
+import { isAllFeedbackCorrect, getFeedbackByRow } from '../util/helpers'
+import { FeedbackMap, Checker } from '../typings/Checker'
 
 const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
   initialPremises = '',
@@ -53,10 +54,17 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
   }, [dispatch, justifications, tree, checker])
   const classes = appJSS()
   const feedbackClasses = feedbackJSS()
-  const topItemsRef = useRef<HTMLDivElement>(null)
+  let feedbackByRow: any
+  let allFeedbackCorrect = false
+  if (feedback.success) {
+    feedbackByRow = getFeedbackByRow(tree, feedback.feedback as FeedbackMap)
+    allFeedbackCorrect = isAllFeedbackCorrect(feedbackByRow)
+  } else {
+    feedbackByRow = {}
+  }
   return (
     <main className={classes.AppBounder}>
-      <div className={classes.TopItemsBounder} ref={topItemsRef}>
+      <div className={classes.TopItemsBounder}>
         {/* <PremisesSelector onChange={handleSubmitPremises} /> */}
         <PremiseInput
           premises={premises}
@@ -88,7 +96,9 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
       </div>
       <div
         className={`${classes.TreeBounder} ${
-          feedback.success ? '' : feedbackClasses.Incorrect
+          allFeedbackCorrect
+            ? feedbackClasses.Correct
+            : feedbackClasses.Incorrect
         }`}
       >
         <ArcherContainer
@@ -98,7 +108,11 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: Checker }> = ({
           strokeColor="black"
           noCurves={false}
         >
-          <TruthTree currentState={currentState} dispatch={dispatch} />
+          <TruthTree
+            currentState={currentState}
+            dispatch={dispatch}
+            feedbackByRow={feedbackByRow}
+          />
         </ArcherContainer>
       </div>
       <JSONView {...{ ...currentState, dispatch }} />

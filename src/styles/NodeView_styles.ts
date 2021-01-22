@@ -1,6 +1,7 @@
 import { createUseStyles } from 'react-jss'
 
 export const rowHeight = '1.5em'
+export const feedbackSize = '1em'
 export const rowGap = '.75em'
 const columnGap = '.5em'
 
@@ -17,12 +18,16 @@ const nodeviewJSS = createUseStyles({
 
   RowNumber: {
     gridColumn: 'rowNumber',
+    marginLeft: '.5em',
   },
 
   Justification: {
     gridColumn: 'justification',
     display: 'flex',
     alignSelf: 'start',
+    alignItems: 'center',
+    marginRight: '.5em',
+    height: rowHeight,
   },
 
   NodeViewContainer: {

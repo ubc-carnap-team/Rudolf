@@ -9,13 +9,15 @@ import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
 import { range } from '../util/helpers'
 import StyledAutosizeInput from './StyledAutosizeInput'
 import CustomTooltip from './CustomTooltip'
+import FeedbackIcon from './FeedbackIcon'
 
 type Props = {
   currentState: RudolfStore
   dispatch: CustomDispatch
+  feedbackByRow: any
 }
 
-const TruthTree = ({ currentState, dispatch }: Props) => {
+const TruthTree = ({ currentState, dispatch, feedbackByRow }: Props) => {
   const classes = nodeviewJSS()
   const { nextRow, tree, justifications, feedback } = currentState
   const rows = range(1, nextRow)
@@ -70,12 +72,30 @@ const TruthTree = ({ currentState, dispatch }: Props) => {
                 placeholder="row"
               />
               <StyledAutosizeInput
+                style={{ marginRight: '.3em' }}
                 onChange={({ currentTarget: { value: rule } }) =>
                   dispatch(updateJustification(row, { rule }))
                 }
                 value={rule}
                 placeholder="rule"
               />
+              <CustomTooltip
+                title={
+                  feedback.success && feedbackByRow[row]
+                    ? feedbackByRow[row].info
+                    : ''
+                }
+              >
+                <div>
+                  <FeedbackIcon
+                    isCorrect={
+                      feedback.success && feedbackByRow[row]
+                        ? feedbackByRow[row].class === 'correct'
+                        : false
+                    }
+                  />
+                </div>
+              </CustomTooltip>
             </div>
           )
         })}
