@@ -19,8 +19,11 @@ import { checkTree } from '../util/carnapAdapter'
 import PremiseInput from './PremiseInput'
 import RudolfFeedback from './RudolfFeedback'
 import TruthTree from './TruthTree'
+import { Checker } from '../typings/Checker'
 
-const Rudolf: React.FC<{ initialPremises?: string; checker: string }> = ({
+type Props = { initialPremises?: string; checker: string | Checker }
+
+const Rudolf: React.FC<Props> = ({
   initialPremises = '',
   checker,
 }): JSX.Element => {
@@ -37,20 +40,29 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: string }> = ({
 
   const { tree, justifications, feedback } = currentState
 
-  useEffect(() => {
+  useEffect((): void => {
+    const handleCheck = async (
+      tree: any,
+      justifications: any,
+      checkerFunction: Checker
+    ) =>
+      checkTree(tree, justifications, checkerFunction)
+        .then(({ feedback }) => {
+          return dispatch(updateFeedback({ success: true, feedback }))
+        })
+        .catch(({ message }: Error) => {
+          return dispatch(
+            updateFeedback({ success: false, errorMessage: message })
+          )
+        })
+
     const carnapObject = window?.Carnap
-    if (carnapObject) {
+    if (typeof checker === 'function') {
+      handleCheck(tree, justifications, checker)
+    } else if (carnapObject) {
       const checkerFunction = carnapObject[checker]
       if (typeof checkerFunction == 'function') {
-        checkTree(tree, justifications, checkerFunction)
-          .then(({ feedback }) => {
-            return dispatch(updateFeedback({ success: true, feedback }))
-          })
-          .catch(({ message }: Error) => {
-            return dispatch(
-              updateFeedback({ success: false, errorMessage: message })
-            )
-          })
+        handleCheck(tree, justifications, checkerFunction)
       } else {
         console.error(
           `The name ${checker} is not defined as a function on the Carnap client object. ${Carnap}`
@@ -61,7 +73,7 @@ const Rudolf: React.FC<{ initialPremises?: string; checker: string }> = ({
         'The Carnap global variable is not defined or does not contain an object. Skipping Check.'
       )
     }
-  }, [dispatch, justifications, tree, checker])
+  }, [tree, justifications, checker])
 
   const classes = appJSS()
   const feedbackClasses = feedbackJSS()
