@@ -1,6 +1,6 @@
 button.submit-premises {
-  font-family: Book Antiqua, serif;
-  margin: 5px 5px 0 8px;
+  font-family: Antiqua, serif;
+  margin: 5px 5pbookx 0 8px;
 }
 
 select.select-premises {
@@ -60,14 +60,4 @@ select.select-premises {
       format('woff'),
     url('https://cdn.jsdelivr.net/gh/gleachkr/FiraLogic/dist/FiraLogic-Regular.tff')
       format('tff');
-}
-
-html,
-#root,
-body {
-  font-family: 'Fira Logic', monospace;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin: 0;
-  min-height: 100%;
 }

@@ -9,6 +9,7 @@ const appJSS = createUseStyles({
     alignItems: 'center',
     margin: '1em',
     fontFamily: 'Fira Logic',
+    minWidth: '35vw',
   },
 
   TopItemsBounder: {
@@ -19,6 +20,8 @@ const appJSS = createUseStyles({
 
   TreeBounder: {
     borderStyle: 'solid',
+    minWidth: '30vw',
+    minHeight: '30vw',
     borderWidth: '.1em',
     borderRadius: '.2em',
     '&::-webkit-scrollbar': {
