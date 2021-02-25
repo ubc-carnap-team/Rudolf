@@ -148,7 +148,7 @@ const NodeView: FC<Props> = ({
               className={`finished-branch-marker ${feedbackClass}`}
               {...props}
             >
-              O
+              ↓
             </div>
           </ArcherElement>
         </div>
