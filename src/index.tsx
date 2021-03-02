@@ -1,18 +1,21 @@
 import { createTrees, WidgetProps } from './lib'
 import * as serviceWorker from './serviceWorker'
 
-const initialPremises = 'Fa & Fb'
-
 const trees: WidgetProps[] = [
   {
     elementId: 'problem-1.1',
-    initialPremises,
-    checker: 'checkIchikawaJenkinsQLTableau',
+    initialPremises: 'P->Q,P,~Q',
+    checker: 'checkIchikawaJenkinsSLTableau',
   },
   {
     elementId: 'problem-1.2',
-    checker: 'checkIchikawaJenkinsQLTableau',
+    checker: 'checkIchikawaJenkinsSLTableau',
     initialPremises: '',
+  },
+  {
+    elementId: 'problem-1.3',
+    checker: 'checkIchikawaJenkinsQLTableau',
+    initialPremises: 'Ax(Px->Qx),~Qa,~~Pa',
   },
 ]
 
