@@ -35,19 +35,20 @@ export const convertToSequent = (
           )}).`
         )
       }
+      const formulasInOrder = rearrangeFormulas(formulas, parentRow)
       return {
         label: convertFormulas(formulas),
         rule: 'St',
         forest: [
           {
-            label: rearrangeFormulas(formulas, parentRow),
+            label: convertFormulas(formulasInOrder),
             rule,
             id,
             forest: forest.map((node) =>
               convertToSequent(
                 node as FormulaNode,
                 justifications,
-                formulas.filter((form) => !form.resolved)
+                formulasInOrder.filter((form) => !form.resolved)
               )
             ),
           },
@@ -187,12 +188,12 @@ export const checkTree = async (
 const rearrangeFormulas = (
   forms: TreeForm[],
   mainFormulaRow: number
-): string => {
+): TreeForm[] => {
   const idx = forms.findIndex((form) => form.row === mainFormulaRow)
   const mainFormula = forms[idx]
   const formulasWithoutMain = forms.slice(0, idx).concat(forms.slice(idx + 1))
   const newList = [...formulasWithoutMain, mainFormula]
-  return convertFormulas(newList)
+  return newList
 }
 
 const convertFormulas = (forms: TreeForm[]) =>
