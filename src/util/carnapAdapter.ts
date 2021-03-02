@@ -47,7 +47,7 @@ export const convertToSequent = (
               convertToSequent(
                 node as FormulaNode,
                 justifications,
-                formulas.filter((form) => !(form.row === parentRow))
+                formulas.filter((form) => !form.resolved)
               )
             ),
           },
@@ -176,6 +176,7 @@ export const checkTree = async (
   checker: Checker
 ): Promise<CheckerFeedbackSuccess> => {
   const sequent = convertToSequent(tree, justifications)
+  console.info(sequent)
   const feedback: FeedbackNode = await checkSequent(sequent, checker)
   return {
     success: true,
