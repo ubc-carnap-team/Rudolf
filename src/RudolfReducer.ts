@@ -7,7 +7,6 @@ import {
 } from 'immer-reducer'
 import { Dispatch } from 'react'
 
-import { CheckerFeedback } from './typings/Checker'
 import {
   FormulaNode,
   Justification,
@@ -27,7 +26,6 @@ export type RudolfStore = {
   tree: FormulaNode
   nextRow: number
   justifications: JustificationMap
-  feedback: CheckerFeedback
 }
 
 export class RudolfReducer extends ImmerReducer<RudolfStore> {
@@ -42,10 +40,6 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
 
   updateContradiction(id: string, contradictoryRows: string) {
     Object.assign(getNode(this.draftState.tree, id), { contradictoryRows })
-  }
-
-  updateFeedback(feedback: CheckerFeedback) {
-    this.draftState.feedback = feedback
   }
 
   toggleResolved(nodeId: string, index: number) {
@@ -119,11 +113,6 @@ export const initialState = (premises: string): RudolfStore => {
     tree: parsePremises(premiseArray),
     nextRow: premiseArray.length + 1,
     justifications: {},
-    feedback: {
-      success: true,
-      feedback: {},
-      sequent: { label: premises, forest: [], rule: '' },
-    },
   }
 }
 
@@ -140,7 +129,6 @@ export const {
   splitBranch,
   toggleResolved,
   updateContradiction,
-  updateFeedback,
   updateFormula,
   updateJustification,
 } = createActionCreators(RudolfReducer)

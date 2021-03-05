@@ -9,15 +9,17 @@ import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
 import { range } from '../util/helpers'
 import StyledAutosizeInput from './StyledAutosizeInput'
 import CustomTooltip from './CustomTooltip'
+import { CheckerFeedback } from '../typings/Checker'
 
 type Props = {
-  currentState: RudolfStore
+  treeState: RudolfStore
   dispatch: CustomDispatch
+  feedback: CheckerFeedback
 }
 
-const TruthTree = ({ currentState, dispatch }: Props) => {
+const TruthTree = ({ treeState, dispatch, feedback }: Props) => {
   const classes = nodeviewJSS()
-  const { nextRow, tree, justifications, feedback } = currentState
+  const { nextRow, tree, justifications } = treeState
   const rows = range(1, nextRow)
   return (
     <CustomTooltip title={!feedback.success ? feedback.errorMessage : ''}>

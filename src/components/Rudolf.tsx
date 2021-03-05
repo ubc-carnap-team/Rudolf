@@ -6,12 +6,7 @@ import { Redo, Undo } from '@material-ui/icons'
 import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { ArcherContainer } from 'react-archer'
 
-import {
-  createTree,
-  initialState,
-  rudolfReducer,
-  updateFeedback,
-} from '../RudolfReducer'
+import { createTree, initialState, rudolfReducer } from '../RudolfReducer'
 import appJSS from '../styles/App_styles'
 import feedbackJSS from '../styles/feedback_styles'
 import { makeUndoable } from '../undoableReducer'
@@ -19,7 +14,7 @@ import { checkTree } from '../util/carnapAdapter'
 import PremiseInput from './PremiseInput'
 import RudolfFeedback from './RudolfFeedback'
 import TruthTree from './TruthTree'
-import { Checker } from '../typings/Checker'
+import { Checker, CheckerFeedback } from '../typings/Checker'
 import { DebugInfo } from './DebugInfo'
 
 type Props = {
@@ -34,7 +29,12 @@ const Rudolf: React.FC<Props> = ({
   debug = false,
 }): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
-  const [[pastStates, currentState, futureStates], dispatch] = useReducer(
+  const [feedback, setFeedback] = useState<CheckerFeedback>({
+    success: true,
+    feedback: {},
+    sequent: { label: premises, forest: [], rule: '' },
+  })
+  const [[pastStates, treeState, futureStates], dispatch] = useReducer(
     ...makeUndoable(rudolfReducer, initialState(premises))
   )
 
@@ -44,42 +44,30 @@ const Rudolf: React.FC<Props> = ({
     dispatch(createTree(premiseArray))
   }
 
-  const { tree, justifications, feedback } = currentState
+  const { tree, justifications } = treeState
+
+  const checkerFunction =
+    typeof checker === 'function' ? checker : window.Carnap?.[checker]
 
   useEffect((): void => {
-    const handleCheck = async (
-      tree: any,
-      justifications: any,
-      checkerFunction: Checker
-    ) =>
+    if (typeof checkerFunction === 'function') {
       checkTree(tree, justifications, checkerFunction)
-        .then(({ feedback, sequent }) => {
-          return dispatch(updateFeedback({ success: true, sequent, feedback }))
-        })
-        .catch(({ message }: Error) => {
-          return dispatch(
-            updateFeedback({ success: false, errorMessage: message })
-          )
-        })
-
-    const carnapObject = window?.Carnap
-    if (typeof checker === 'function') {
-      handleCheck(tree, justifications, checker)
-    } else if (carnapObject) {
-      const checkerFunction = carnapObject[checker]
-      if (typeof checkerFunction === 'function') {
-        handleCheck(tree, justifications, checkerFunction)
-      } else {
-        console.error(
-          `The name ${checker} is not defined as a function on the Carnap client object. ${Carnap}`
+        .then(({ feedback, sequent }) =>
+          setFeedback({ success: true, sequent, feedback })
         )
-      }
+        .catch(({ message }: Error) =>
+          setFeedback({ success: false, errorMessage: message })
+        )
+    } else if (window.Carnap) {
+      console.error(
+        `The name ${checker} is not defined as a function on the Carnap object. ${Carnap}`
+      )
     } else {
       console.warn(
         'The Carnap global variable is not defined or does not contain an object. Skipping Check.'
       )
     }
-  }, [tree, justifications, checker])
+  }, [tree, justifications, checker, checkerFunction])
 
   const classes = appJSS()
   const feedbackClasses = feedbackJSS()
@@ -93,7 +81,7 @@ const Rudolf: React.FC<Props> = ({
           onSubmit={handleSubmitPremises}
           setPremises={setPremises}
         />
-        <RudolfFeedback currentState={currentState} />
+        <RudolfFeedback treeState={treeState} />
         <span className="tree-buttons">
           <IconButton
             aria-label="Undo"
@@ -129,10 +117,10 @@ const Rudolf: React.FC<Props> = ({
           strokeColor="black"
           noCurves={false}
         >
-          <TruthTree currentState={currentState} dispatch={dispatch} />
+          <TruthTree {...{ treeState, dispatch, feedback }} />
         </ArcherContainer>
       </div>
-      {debug && <DebugInfo {...currentState} />}
+      {debug && <DebugInfo {...{ ...treeState, feedback }} />}
     </main>
   )
 }

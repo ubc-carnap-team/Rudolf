@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 
 import { RudolfStore } from '../RudolfReducer'
+import { CheckerFeedback } from '../typings/Checker'
 
 const jsonviewJSS = createUseStyles({
   Bounder: {
@@ -31,11 +32,9 @@ const jsonviewJSS = createUseStyles({
   },
 })
 
-export const DebugInfo: FC<RudolfStore> = ({
-  tree,
-  justifications,
-  feedback,
-}) => {
+type Props = RudolfStore & { feedback: CheckerFeedback }
+
+export const DebugInfo: FC<Props> = ({ tree, justifications, feedback }) => {
   const classes = jsonviewJSS()
   const [open, setOpen] = useState(false)
   return (
