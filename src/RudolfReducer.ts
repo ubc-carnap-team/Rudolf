@@ -119,7 +119,11 @@ export const initialState = (premises: string): RudolfStore => {
     tree: parsePremises(premiseArray),
     nextRow: premiseArray.length + 1,
     justifications: {},
-    feedback: { success: true, feedback: {} },
+    feedback: {
+      success: true,
+      feedback: {},
+      sequent: { label: premises, forest: [], rule: '' },
+    },
   }
 }
 

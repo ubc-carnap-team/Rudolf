@@ -20,12 +20,18 @@ import PremiseInput from './PremiseInput'
 import RudolfFeedback from './RudolfFeedback'
 import TruthTree from './TruthTree'
 import { Checker } from '../typings/Checker'
+import { DebugInfo } from './DebugInfo'
 
-type Props = { initialPremises?: string; checker: string | Checker }
+type Props = {
+  initialPremises?: string
+  checker: string | Checker
+  debug?: boolean
+}
 
 const Rudolf: React.FC<Props> = ({
   initialPremises = '',
   checker,
+  debug = false,
 }): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
   const [[pastStates, currentState, futureStates], dispatch] = useReducer(
@@ -47,8 +53,8 @@ const Rudolf: React.FC<Props> = ({
       checkerFunction: Checker
     ) =>
       checkTree(tree, justifications, checkerFunction)
-        .then(({ feedback }) => {
-          return dispatch(updateFeedback({ success: true, feedback }))
+        .then(({ feedback, sequent }) => {
+          return dispatch(updateFeedback({ success: true, sequent, feedback }))
         })
         .catch(({ message }: Error) => {
           return dispatch(
@@ -61,7 +67,7 @@ const Rudolf: React.FC<Props> = ({
       handleCheck(tree, justifications, checker)
     } else if (carnapObject) {
       const checkerFunction = carnapObject[checker]
-      if (typeof checkerFunction == 'function') {
+      if (typeof checkerFunction === 'function') {
         handleCheck(tree, justifications, checkerFunction)
       } else {
         console.error(
@@ -126,6 +132,7 @@ const Rudolf: React.FC<Props> = ({
           <TruthTree currentState={currentState} dispatch={dispatch} />
         </ArcherContainer>
       </div>
+      {debug && <DebugInfo {...currentState} />}
     </main>
   )
 }

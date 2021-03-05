@@ -3,7 +3,6 @@ import {
   FeedbackNode,
   SequentNode,
   FeedbackMessage,
-  CheckerFeedbackSuccess,
   Checker,
 } from '../typings/Checker'
 import { FormulaNode, JustificationMap, TreeForm } from '../typings/TreeState'
@@ -175,12 +174,12 @@ export const checkTree = async (
   tree: FormulaNode,
   justifications: JustificationMap,
   checker: Checker
-): Promise<CheckerFeedbackSuccess> => {
+): Promise<{ sequent: SequentNode; feedback: FeedbackMap }> => {
   const sequent = convertToSequent(tree, justifications)
   console.info(sequent)
   const feedback: FeedbackNode = await checkSequent(sequent, checker)
   return {
-    success: true,
+    sequent,
     feedback: processFeedback(sequent, feedback),
   }
 }

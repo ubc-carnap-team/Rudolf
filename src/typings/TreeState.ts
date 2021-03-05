@@ -45,3 +45,11 @@ export interface Justification {
 export type JustificationMap = {
   [firstRow: number]: Justification
 }
+
+function impossible(_: never): void {}
+
+type TopFunction = (_: never) => unknown
+type BottomFunction = (_: unknown) => never
+
+type T_B = TopFunction extends BottomFunction ? true : never
+type B_T = BottomFunction extends TopFunction ? true : never
