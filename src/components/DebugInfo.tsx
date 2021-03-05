@@ -15,7 +15,7 @@ const jsonviewJSS = createUseStyles({
   },
 
   TextArea: {
-    overflow: 'hidden scroll',
+    overflow: 'scroll',
     fontSize: '16px',
   },
 
@@ -50,10 +50,9 @@ export const DebugInfo: FC<RudolfStore> = ({
       </div>
       <TextareaAutosize
         className={classes.TextArea}
-        value={JSON.stringify({ tree, justifications, feedback })}
-        style={{
-          maxHeight: open ? '50vh' : '0vh',
-        }}
+        value={JSON.stringify({ tree, justifications, ...feedback }, null, 1)}
+        rowsMax={open ? 10 : 1}
+        style={{ maxHeight: open ? '' : '0' }}
       />
     </div>
   )
