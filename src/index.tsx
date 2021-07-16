@@ -1,7 +1,7 @@
 import { createTrees, WidgetProps } from './lib'
 import * as serviceWorker from './serviceWorker'
 
-const initialPremises = 'Fa & Fb'
+const initialPremises = 'Fa -> Fb'
 
 const trees: WidgetProps[] = [
   {
