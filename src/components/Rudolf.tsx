@@ -1,5 +1,4 @@
-import '../styles/all.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import '../styles/all.scss'
 
 import { IconButton } from '@material-ui/core'
 import { Redo, Undo } from '@material-ui/icons'
@@ -79,7 +78,7 @@ const Rudolf: React.FC<Props> = ({
   const feedbackClasses = feedbackJSS()
   const topItemsRef = useRef<HTMLDivElement>(null)
   return (
-    <main className={classes.AppBounder}>
+    <main className={`${classes.AppBounder} rudolf`}>
       <div className={classes.TopItemsBounder} ref={topItemsRef}>
         {/* <PremisesSelector onChange={handleSubmitPremises} /> */}
         <PremiseInput
