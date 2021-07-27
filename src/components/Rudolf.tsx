@@ -2,14 +2,13 @@ import '../styles/all.scss'
 
 import { IconButton } from '@material-ui/core'
 import { Redo, Undo } from '@material-ui/icons'
-import React, { useEffect, useReducer, useRef, useState } from 'react'
+import React, { FC, useEffect, useReducer, useRef, useState } from 'react'
 import { ArcherContainer } from 'react-archer'
 
 import {
   createTree,
-  initialState,
-  rudolfReducer,
-  updateFeedback,
+  getInitialState,
+  RudolfReducerFunction,
 } from '../RudolfReducer'
 import appJSS from '../styles/App_styles'
 import feedbackJSS from '../styles/feedback_styles'
@@ -18,18 +17,19 @@ import { checkTree } from '../util/carnapAdapter'
 import PremiseInput from './PremiseInput'
 import RudolfFeedback from './RudolfFeedback'
 import TruthTree from './TruthTree'
-import { Checker } from '../typings/Checker'
+import { Checker, CheckerFeedback } from '../typings/Checker'
 
 type Props = { initialPremises?: string; checker: string | Checker }
 
-const Rudolf: React.FC<Props> = ({
-  initialPremises = '',
-  checker,
-}): JSX.Element => {
+const Rudolf: FC<Props> = ({ initialPremises = '', checker }): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
   const [[pastStates, currentState, futureStates], dispatch] = useReducer(
-    ...makeUndoable(rudolfReducer, initialState(premises))
+    ...makeUndoable(RudolfReducerFunction, getInitialState(premises))
   )
+  const [feedback, updateFeedback] = useState<CheckerFeedback>({
+    success: true,
+    feedback: {},
+  })
 
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
@@ -37,7 +37,7 @@ const Rudolf: React.FC<Props> = ({
     dispatch(createTree(premiseArray))
   }
 
-  const { tree, justifications, feedback } = currentState
+  const { tree, justifications } = currentState
 
   useEffect((): void => {
     const handleCheck = async (
@@ -46,14 +46,10 @@ const Rudolf: React.FC<Props> = ({
       checkerFunction: Checker
     ) =>
       checkTree(tree, justifications, checkerFunction)
-        .then(({ feedback }) => {
-          return dispatch(updateFeedback({ success: true, feedback }))
-        })
-        .catch(({ message }: Error) => {
-          return dispatch(
-            updateFeedback({ success: false, errorMessage: message })
-          )
-        })
+        .then(({ feedback }) => updateFeedback({ success: true, feedback }))
+        .catch(({ message }: Error) =>
+          updateFeedback({ success: false, errorMessage: message })
+        )
 
     const carnapObject = window?.Carnap
     if (typeof checker === 'function') {
@@ -122,7 +118,11 @@ const Rudolf: React.FC<Props> = ({
           strokeColor="black"
           noCurves={false}
         >
-          <TruthTree currentState={currentState} dispatch={dispatch} />
+          <TruthTree
+            currentState={currentState}
+            feedback={feedback}
+            dispatch={dispatch}
+          />
         </ArcherContainer>
       </div>
     </main>

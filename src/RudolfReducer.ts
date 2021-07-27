@@ -7,7 +7,6 @@ import {
 } from 'immer-reducer'
 import { Dispatch } from 'react'
 
-import { CheckerFeedback } from './typings/Checker'
 import {
   FormulaNode,
   Justification,
@@ -23,14 +22,13 @@ import {
   parsePremises,
 } from './util/nodes'
 
-export type RudolfStore = {
+export interface RudolfStore {
   tree: FormulaNode
   nextRow: number
   justifications: JustificationMap
-  feedback: CheckerFeedback
 }
 
-export class RudolfReducer extends ImmerReducer<RudolfStore> {
+class RudolfReducerClass extends ImmerReducer<RudolfStore> {
   updateFormula(nodeId: string, formulaIndex: number, newValue: string) {
     const draftNode = getNode(this.draftState.tree, nodeId)
     draftNode.formulas[formulaIndex].value = newValue
@@ -42,10 +40,6 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
 
   updateContradiction(id: string, contradictoryRows: string) {
     Object.assign(getNode(this.draftState.tree, id), { contradictoryRows })
-  }
-
-  updateFeedback(feedback: CheckerFeedback) {
-    this.draftState.feedback = feedback
   }
 
   toggleResolved(nodeId: string, index: number) {
@@ -121,18 +115,17 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   }
 }
 
-export const initialState = (premises: string): RudolfStore => {
+export const getInitialState = (premises: string): RudolfStore => {
   const premiseArray = premises.split(',')
   return {
     tree: parsePremises(premiseArray),
     nextRow: premiseArray.length + 1,
     justifications: {},
-    feedback: { success: true, feedback: {} },
   }
 }
 
-export const rudolfReducer: ImmerReducerFunction<typeof RudolfReducer> = createReducerFunction(
-  RudolfReducer
+export const RudolfReducerFunction: ImmerReducerFunction<typeof RudolfReducerClass> = createReducerFunction(
+  RudolfReducerClass
 )
 
 export const {
@@ -144,9 +137,8 @@ export const {
   splitBranch,
   toggleResolved,
   updateContradiction,
-  updateFeedback,
   updateFormula,
   updateJustification,
-} = createActionCreators(RudolfReducer)
-export type RudolfAction = Actions<typeof RudolfReducer>
+} = createActionCreators(RudolfReducerClass)
+export type RudolfAction = Actions<typeof RudolfReducerClass>
 export type CustomDispatch = Dispatch<RudolfAction>

@@ -1,23 +1,15 @@
-import React from 'react'
+import React, { FC } from 'react'
 import NodeView from './NodeView'
-import {
-  RudolfStore,
-  CustomDispatch,
-  updateJustification,
-} from '../RudolfReducer'
+import { updateJustification } from '../RudolfReducer'
 import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
 import { range } from '../util/helpers'
 import StyledAutosizeInput from './StyledAutosizeInput'
 import CustomTooltip from './CustomTooltip'
+import { DefaultProps } from '../typings/index'
 
-type Props = {
-  currentState: RudolfStore
-  dispatch: CustomDispatch
-}
-
-const TruthTree = ({ currentState, dispatch }: Props) => {
+const TruthTree: FC<DefaultProps> = ({ currentState, feedback, dispatch }) => {
   const classes = nodeviewJSS()
-  const { nextRow, tree, justifications, feedback } = currentState
+  const { nextRow, tree, justifications } = currentState
   const rows = range(1, nextRow)
   return (
     <CustomTooltip title={!feedback.success ? feedback.errorMessage : ''}>
