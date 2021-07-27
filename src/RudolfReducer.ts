@@ -59,6 +59,10 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     this.draftState.justifications = {}
   }
 
+  // add a single node to the bottom of each open branch of the subtree
+  // whose root is the targeted node
+  // the id of each new node will be its parent node's id concatenated with '0'
+  // formulaCount sets the number of empty formulas, usually 1 or 2.
   continueBranch(nodeId: string, formulaCount: number) {
     const draftNode = getNode(this.draftState.tree, nodeId)
     destructivelyAppendChildren(draftNode, (id) => [
@@ -75,6 +79,10 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     this.draftState.nextRow += formulaCount
   }
 
+  // add two new branches to the bottom of each open branch of the subtree
+  // whose root is the targeted node
+  // the id of each new node will be its parent node's id concatenated with '0' (on the left) or '1' (on the right)
+  // formulaCount sets the number of empty formulas, usually 1 or 2.
   splitBranch(nodeId: string, formulaCount: number) {
     const draftNode = getNode(this.draftState.tree, nodeId)
     destructivelyAppendChildren(draftNode, (id) => {
