@@ -1,12 +1,12 @@
 import { TextareaAutosize } from '@material-ui/core'
 import React, { FC, useState } from 'react'
 
-import { CustomDispatch, RudolfStore } from '../RudolfReducer'
+import {} from '../RudolfReducer'
 import jsonviewJSS from '../styles/JSONView_styles'
+import { DefaultProps } from '../typings'
 
-export const JSONView: FC<RudolfStore & { dispatch: CustomDispatch }> = ({
-  tree,
-  justifications,
+export const JSONView: FC<DefaultProps> = ({
+  currentState: { tree, justifications },
   feedback,
 }) => {
   const classes = jsonviewJSS()
