@@ -193,7 +193,7 @@ const rearrangeFormulas = (
   const idx = forms.findIndex((form) => form.row === mainFormulaRow)
   if (idx === -1) {
     throw new Error(
-      `Formula at row ${mainFormulaRow} has already been discharged.`
+      `Formula at row ${mainFormulaRow} is discharged more than once. (Try "unchecking" the formula.)`
     )
   }
   const mainFormula = forms[idx]
@@ -218,7 +218,8 @@ const extractMessage = ({
 
 const feedbackMessages: { [message: string]: string } = {
   'WRONG NUMBER OF PREMISES': 'Wrong number of branches.',
-  "THIS DOESN'T FOLLOW BY THIS RULE": 'Incorrect use of resolution rule.',
+  "THIS DOESN'T FOLLOW BY THIS RULE":
+    'Incorrect use of resolution rule. (Did you forget to check off the resolved formula?)',
 }
 
 const translateFeedback = (feedback: FeedbackMessage): FeedbackMessage => ({
