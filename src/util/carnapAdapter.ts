@@ -47,7 +47,9 @@ export const convertToSequent = (
               convertToSequent(
                 node as FormulaNode,
                 justifications,
-                formulasInOrder.filter((form) => !form.resolved)
+                formulasInOrder.filter(
+                  (form) => !(form.row === parentRow && form.resolved)
+                )
               )
             ),
           },
@@ -189,6 +191,11 @@ const rearrangeFormulas = (
   mainFormulaRow: number
 ): TreeForm[] => {
   const idx = forms.findIndex((form) => form.row === mainFormulaRow)
+  if (idx === -1) {
+    throw new Error(
+      `Formula at row ${mainFormulaRow} has already been discharged.`
+    )
+  }
   const mainFormula = forms[idx]
   const formulasWithoutMain = forms.slice(0, idx).concat(forms.slice(idx + 1))
   const newList = [...formulasWithoutMain, mainFormula]
