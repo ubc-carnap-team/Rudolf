@@ -1,6 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Rudolf from './Rudolf'
+
+beforeAll(() => {
+  window.Carnap = {
+    checkIchikawaJenkinsSLTableau: (_sequent, _callback) => ({
+      success: true,
+      feedback: {},
+      sequent: {},
+    }),
+  }
+})
+
 describe('Main Component', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div')
