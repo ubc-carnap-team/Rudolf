@@ -22,13 +22,13 @@ import {
   parsePremises,
 } from './util/nodes'
 
-export type RudolfStore = {
+export interface RudolfStore {
   tree: FormulaNode
   nextRow: number
   justifications: JustificationMap
 }
 
-export class RudolfReducer extends ImmerReducer<RudolfStore> {
+class RudolfReducerClass extends ImmerReducer<RudolfStore> {
   updateFormula(nodeId: string, formulaIndex: number, newValue: string) {
     const draftNode = getNode(this.draftState.tree, nodeId)
     draftNode.formulas[formulaIndex].value = newValue
@@ -53,6 +53,10 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     this.draftState.justifications = {}
   }
 
+  // add a single node to the bottom of each open branch of the subtree
+  // whose root is the targeted node
+  // the id of each new node will be its parent node's id concatenated with '0'
+  // formulaCount sets the number of empty formulas, usually 1 or 2.
   continueBranch(nodeId: string, formulaCount: number) {
     const draftNode = getNode(this.draftState.tree, nodeId)
     destructivelyAppendChildren(draftNode, (id) => [
@@ -69,6 +73,10 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
     this.draftState.nextRow += formulaCount
   }
 
+  // add two new branches to the bottom of each open branch of the subtree
+  // whose root is the targeted node
+  // the id of each new node will be its parent node's id concatenated with '0' (on the left) or '1' (on the right)
+  // formulaCount sets the number of empty formulas, usually 1 or 2.
   splitBranch(nodeId: string, formulaCount: number) {
     const draftNode = getNode(this.draftState.tree, nodeId)
     destructivelyAppendChildren(draftNode, (id) => {
@@ -107,7 +115,7 @@ export class RudolfReducer extends ImmerReducer<RudolfStore> {
   }
 }
 
-export const initialState = (premises: string): RudolfStore => {
+export const getInitialState = (premises: string): RudolfStore => {
   const premiseArray = premises.split(',')
   return {
     tree: parsePremises(premiseArray),
@@ -116,8 +124,8 @@ export const initialState = (premises: string): RudolfStore => {
   }
 }
 
-export const rudolfReducer: ImmerReducerFunction<typeof RudolfReducer> = createReducerFunction(
-  RudolfReducer
+export const RudolfReducerFunction: ImmerReducerFunction<typeof RudolfReducerClass> = createReducerFunction(
+  RudolfReducerClass
 )
 
 export const {
@@ -131,6 +139,6 @@ export const {
   updateContradiction,
   updateFormula,
   updateJustification,
-} = createActionCreators(RudolfReducer)
-export type RudolfAction = Actions<typeof RudolfReducer>
+} = createActionCreators(RudolfReducerClass)
+export type RudolfAction = Actions<typeof RudolfReducerClass>
 export type CustomDispatch = Dispatch<RudolfAction>

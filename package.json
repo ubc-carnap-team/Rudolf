@@ -1,6 +1,6 @@
 {
   "name": "truth-tree",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "homepage": "https://McTano.github.io/Rudolf",
   "private": false,
   "license": "GPL-3.0-or-later",
@@ -19,7 +19,6 @@
     "@types/react-input-autosize": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
-    "bootstrap": "^4.3.1",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
@@ -69,7 +68,8 @@
     "husky": "^4.2.5",
     "parcel-bundler": "^1.12.4",
     "prettier": "^2.1.1",
-    "pretty-quick": "^2.0.1"
+    "pretty-quick": "^2.0.1",
+    "sass": "^1.35.2"
   },
   "husky": {
     "hooks": {

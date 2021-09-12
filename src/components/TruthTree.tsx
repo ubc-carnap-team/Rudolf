@@ -1,23 +1,13 @@
-import React from 'react'
+import React, { FC } from 'react'
 import NodeView from './NodeView'
-import {
-  RudolfStore,
-  CustomDispatch,
-  updateJustification,
-} from '../RudolfReducer'
+import { updateJustification } from '../RudolfReducer'
 import nodeviewJSS, { rowHeight } from '../styles/NodeView_styles'
 import { range } from '../util/helpers'
 import StyledAutosizeInput from './StyledAutosizeInput'
 import CustomTooltip from './CustomTooltip'
-import { CheckerFeedback } from '../typings/Checker'
+import { DefaultProps } from '../typings/index'
 
-type Props = {
-  treeState: RudolfStore
-  dispatch: CustomDispatch
-  feedback: CheckerFeedback
-}
-
-const TruthTree = ({ treeState, dispatch, feedback }: Props) => {
+const TruthTree: FC<DefaultProps> = ({ treeState, feedback, dispatch }) => {
   const classes = nodeviewJSS()
   const { nextRow, tree, justifications } = treeState
   const rows = range(1, nextRow)

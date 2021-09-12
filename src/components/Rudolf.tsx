@@ -1,12 +1,15 @@
-import '../styles/all.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import '../styles/all.scss'
 
 import { IconButton } from '@material-ui/core'
 import { Redo, Undo } from '@material-ui/icons'
-import React, { useEffect, useReducer, useRef, useState } from 'react'
+import React, { FC, useEffect, useReducer, useRef, useState } from 'react'
 import { ArcherContainer } from 'react-archer'
 
-import { createTree, initialState, rudolfReducer } from '../RudolfReducer'
+import {
+  createTree,
+  getInitialState,
+  RudolfReducerFunction,
+} from '../RudolfReducer'
 import appJSS from '../styles/App_styles'
 import feedbackJSS from '../styles/feedback_styles'
 import { makeUndoable } from '../undoableReducer'
@@ -23,20 +26,20 @@ type Props = {
   debug?: boolean
 }
 
-const Rudolf: React.FC<Props> = ({
+const Rudolf: FC<Props> = ({
   initialPremises = '',
   checker,
   debug = false,
 }): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
+  const [[pastStates, treeState, futureStates], dispatch] = useReducer(
+    ...makeUndoable(RudolfReducerFunction, getInitialState(premises))
+  )
   const [feedback, setFeedback] = useState<CheckerFeedback>({
     success: true,
     feedback: {},
     sequent: { label: premises, forest: [], rule: '' },
   })
-  const [[pastStates, treeState, futureStates], dispatch] = useReducer(
-    ...makeUndoable(rudolfReducer, initialState(premises))
-  )
 
   const handleSubmitPremises = (rawInput: string) => {
     setPremises(rawInput)
@@ -46,7 +49,8 @@ const Rudolf: React.FC<Props> = ({
 
   const { tree, justifications } = treeState
 
-  const checkerFunction =
+  // coerce checker function to either a function or undefined
+  const checkerFunction: Checker | undefined =
     typeof checker === 'function' ? checker : window.Carnap?.[checker]
 
   useEffect((): void => {
@@ -59,6 +63,7 @@ const Rudolf: React.FC<Props> = ({
           setFeedback({ success: false, errorMessage: message })
         )
     } else if (window.Carnap) {
+      // Carnap object exists but the provided checker name doesn't produce a function.
       console.error(
         `The name ${checker} is not defined as a function on the Carnap object. ${Carnap}`
       )
@@ -73,7 +78,7 @@ const Rudolf: React.FC<Props> = ({
   const feedbackClasses = feedbackJSS()
   const topItemsRef = useRef<HTMLDivElement>(null)
   return (
-    <main className={classes.AppBounder}>
+    <main className={`${classes.AppBounder} rudolf`}>
       <div className={classes.TopItemsBounder} ref={topItemsRef}>
         {/* <PremisesSelector onChange={handleSubmitPremises} /> */}
         <PremiseInput

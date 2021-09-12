@@ -32,11 +32,20 @@ describe('convertToSequent', () => {
         {
           label: 'P/\\Q:|-:',
           rule: '&',
+          id: '',
           forest: [
             {
               label: 'P,Q:|-:',
-              rule: 'Lit',
-              forest: [{ label: '', rule: '', forest: [] }],
+              rule: 'St',
+              id: '0',
+              forest: [
+                {
+                  label: 'P,Q:|-:',
+                  id: '00',
+                  rule: 'Lit',
+                  forest: [{ label: '', rule: '', forest: [] }],
+                },
+              ],
             },
           ],
         },
