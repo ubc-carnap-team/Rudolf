@@ -7,9 +7,9 @@ import StyledAutosizeInput from './StyledAutosizeInput'
 import CustomTooltip from './CustomTooltip'
 import { DefaultProps } from '../typings/index'
 
-const TruthTree: FC<DefaultProps> = ({ currentState, feedback, dispatch }) => {
+const TruthTree: FC<DefaultProps> = ({ treeState, feedback, dispatch }) => {
   const classes = nodeviewJSS()
-  const { nextRow, tree, justifications } = currentState
+  const { nextRow, tree, justifications } = treeState
   const rows = range(1, nextRow)
   return (
     <CustomTooltip title={!feedback.success ? feedback.errorMessage : ''}>

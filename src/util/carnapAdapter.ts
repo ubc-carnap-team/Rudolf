@@ -3,7 +3,6 @@ import {
   FeedbackNode,
   SequentNode,
   FeedbackMessage,
-  CheckerFeedbackSuccess,
   Checker,
 } from '../typings/Checker'
 import { FormulaNode, JustificationMap, TreeForm } from '../typings/TreeState'
@@ -35,19 +34,22 @@ export const convertToSequent = (
           )}).`
         )
       }
+      const formulasInOrder = rearrangeFormulas(formulas, parentRow)
       return {
         label: convertFormulas(formulas),
         rule: 'St',
         forest: [
           {
-            label: rearrangeFormulas(formulas, parentRow),
+            label: convertFormulas(formulasInOrder),
             rule,
             id,
             forest: forest.map((node) =>
               convertToSequent(
                 node as FormulaNode,
                 justifications,
-                formulas.filter((form) => !(form.row === parentRow))
+                formulasInOrder.filter(
+                  (form) => !(form.row === parentRow && form.resolved)
+                )
               )
             ),
           },
@@ -174,11 +176,12 @@ export const checkTree = async (
   tree: FormulaNode,
   justifications: JustificationMap,
   checker: Checker
-): Promise<CheckerFeedbackSuccess> => {
+): Promise<{ sequent: SequentNode; feedback: FeedbackMap }> => {
   const sequent = convertToSequent(tree, justifications)
+  console.info(sequent)
   const feedback: FeedbackNode = await checkSequent(sequent, checker)
   return {
-    success: true,
+    sequent,
     feedback: processFeedback(sequent, feedback),
   }
 }
@@ -186,12 +189,17 @@ export const checkTree = async (
 const rearrangeFormulas = (
   forms: TreeForm[],
   mainFormulaRow: number
-): string => {
+): TreeForm[] => {
   const idx = forms.findIndex((form) => form.row === mainFormulaRow)
+  if (idx === -1) {
+    throw new Error(
+      `Formula at row ${mainFormulaRow} is discharged more than once. (Try "unchecking" the formula.)`
+    )
+  }
   const mainFormula = forms[idx]
   const formulasWithoutMain = forms.slice(0, idx).concat(forms.slice(idx + 1))
   const newList = [...formulasWithoutMain, mainFormula]
-  return convertFormulas(newList)
+  return newList
 }
 
 const convertFormulas = (forms: TreeForm[]) =>
@@ -210,7 +218,8 @@ const extractMessage = ({
 
 const feedbackMessages: { [message: string]: string } = {
   'WRONG NUMBER OF PREMISES': 'Wrong number of branches.',
-  "THIS DOESN'T FOLLOW BY THIS RULE": 'Incorrect use of resolution rule.',
+  "THIS DOESN'T FOLLOW BY THIS RULE":
+    'Incorrect use of resolution rule. (Did you forget to check off the resolved formula?)',
 }
 
 const translateFeedback = (feedback: FeedbackMessage): FeedbackMessage => ({

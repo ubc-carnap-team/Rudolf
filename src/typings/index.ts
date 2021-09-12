@@ -2,7 +2,7 @@ import { CustomDispatch, RudolfStore } from '../RudolfReducer'
 import { CheckerFeedback } from './Checker'
 
 export interface DefaultProps {
-  currentState: RudolfStore
+  treeState: RudolfStore
   dispatch: CustomDispatch
   feedback: CheckerFeedback
 }

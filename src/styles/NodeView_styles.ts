@@ -41,7 +41,6 @@ const nodeviewJSS = createUseStyles({
     borderRadius: '.2em',
     borderWidth: '.1em',
     borderStyle: 'solid',
-    borderColor: 'transparent',
     rowGap,
   },
 

@@ -33,7 +33,6 @@ export interface FinishedNode extends TreeNodeProps {
 export interface ContradictionNode extends TreeNodeProps {
   nodeType: 'contradiction'
   formulas: []
-  // rule: string // ['X', number, number] e.g X
   contradictoryRows: string
 }
 

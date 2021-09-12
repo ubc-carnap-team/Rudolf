@@ -10,8 +10,10 @@ export interface SequentNode {
   id?: string
 }
 
+// the success case here means that the parsing and the
 export type CheckerFeedbackSuccess = {
   success: true
+  sequent: SequentNode
   feedback?: FeedbackMap
 }
 

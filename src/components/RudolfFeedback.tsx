@@ -3,15 +3,15 @@ import React from 'react'
 
 import { RudolfStore } from '../RudolfReducer'
 
-type Props = { currentState: RudolfStore }
+type Props = { treeState: RudolfStore }
 
-const RudolfFeedback: React.FC<Props> = (currentState) => (
+const RudolfFeedback: React.FC<Props> = (treeState) => (
   <a
     href={`mailto:phil.logic.ubc@gmail.com?subject=${encodeURIComponent(
       `USER FEEDBACK - `
     )}&body=${encodeURIComponent(
       `DESCRIBE YOUR PROBLEM OR SUGGESTION HERE \n\n\n\n${JSON.stringify(
-        currentState
+        treeState
       )}`
     )}`}
     style={{ alignSelf: 'flex-end' }}

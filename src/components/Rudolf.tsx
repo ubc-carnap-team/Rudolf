@@ -18,17 +18,27 @@ import PremiseInput from './PremiseInput'
 import RudolfFeedback from './RudolfFeedback'
 import TruthTree from './TruthTree'
 import { Checker, CheckerFeedback } from '../typings/Checker'
+import { DebugInfo } from './DebugInfo'
 
-type Props = { initialPremises?: string; checker: string | Checker }
+type Props = {
+  initialPremises?: string
+  checker: string | Checker
+  debug?: boolean
+}
 
-const Rudolf: FC<Props> = ({ initialPremises = '', checker }): JSX.Element => {
+const Rudolf: FC<Props> = ({
+  initialPremises = '',
+  checker,
+  debug = false,
+}): JSX.Element => {
   const [premises, setPremises] = useState(initialPremises)
-  const [[pastStates, currentState, futureStates], dispatch] = useReducer(
+  const [[pastStates, treeState, futureStates], dispatch] = useReducer(
     ...makeUndoable(RudolfReducerFunction, getInitialState(premises))
   )
-  const [feedback, updateFeedback] = useState<CheckerFeedback>({
+  const [feedback, setFeedback] = useState<CheckerFeedback>({
     success: true,
     feedback: {},
+    sequent: { label: premises, forest: [], rule: '' },
   })
 
   const handleSubmitPremises = (rawInput: string) => {
@@ -37,38 +47,32 @@ const Rudolf: FC<Props> = ({ initialPremises = '', checker }): JSX.Element => {
     dispatch(createTree(premiseArray))
   }
 
-  const { tree, justifications } = currentState
+  const { tree, justifications } = treeState
+
+  // coerce checker function to either a function or undefined
+  const checkerFunction: Checker | undefined =
+    typeof checker === 'function' ? checker : window.Carnap?.[checker]
 
   useEffect((): void => {
-    const handleCheck = async (
-      tree: any,
-      justifications: any,
-      checkerFunction: Checker
-    ) =>
+    if (typeof checkerFunction === 'function') {
       checkTree(tree, justifications, checkerFunction)
-        .then(({ feedback }) => updateFeedback({ success: true, feedback }))
+        .then(({ feedback, sequent }) =>
+          setFeedback({ success: true, sequent, feedback })
+        )
         .catch(({ message }: Error) =>
-          updateFeedback({ success: false, errorMessage: message })
+          setFeedback({ success: false, errorMessage: message })
         )
-
-    const carnapObject = window?.Carnap
-    if (typeof checker === 'function') {
-      handleCheck(tree, justifications, checker)
-    } else if (carnapObject) {
-      const checkerFunction = carnapObject[checker]
-      if (typeof checkerFunction == 'function') {
-        handleCheck(tree, justifications, checkerFunction)
-      } else {
-        console.error(
-          `The name ${checker} is not defined as a function on the Carnap client object. ${Carnap}`
-        )
-      }
+    } else if (window.Carnap) {
+      // Carnap object exists but the provided checker name doesn't produce a function.
+      console.error(
+        `The name ${checker} is not defined as a function on the Carnap object. ${Carnap}`
+      )
     } else {
       console.warn(
         'The Carnap global variable is not defined or does not contain an object. Skipping Check.'
       )
     }
-  }, [tree, justifications, checker])
+  }, [tree, justifications, checker, checkerFunction])
 
   const classes = appJSS()
   const feedbackClasses = feedbackJSS()
@@ -82,7 +86,7 @@ const Rudolf: FC<Props> = ({ initialPremises = '', checker }): JSX.Element => {
           onSubmit={handleSubmitPremises}
           setPremises={setPremises}
         />
-        <RudolfFeedback currentState={currentState} />
+        <RudolfFeedback treeState={treeState} />
         <span className="tree-buttons">
           <IconButton
             aria-label="Undo"
@@ -118,13 +122,10 @@ const Rudolf: FC<Props> = ({ initialPremises = '', checker }): JSX.Element => {
           strokeColor="black"
           noCurves={false}
         >
-          <TruthTree
-            currentState={currentState}
-            feedback={feedback}
-            dispatch={dispatch}
-          />
+          <TruthTree {...{ treeState, dispatch, feedback }} />
         </ArcherContainer>
       </div>
+      {debug && <DebugInfo {...{ ...treeState, feedback }} />}
     </main>
   )
 }

@@ -18,7 +18,7 @@ const PremisesSelector: React.FC<Props> = ({ onChange }) => {
   return (
     <label>
       Example premise:
-      <select className="select-premises" onChange={handleSelect}>
+      <select className="select-premises" onBlur={handleSelect}>
         {examples.map(([value, name]) => (
           <option value={value} key={value}>
             {name}
